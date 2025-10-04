@@ -1,0 +1,25 @@
+/* garante coluna (header no topo) e evita centralizar tudo */
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column; /* ESSENCIAL: coloca header em cima e conteúdo abaixo */
+}
+
+/* conteúdo fica responsável por crescer */
+.App-main {
+  flex: 1;
+  padding: 2rem;
+}
+
+/* estilos que já tinha */
+.card {
+  padding: 2em;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.read-the-docs {
+  color: #888;
+  font-size: 0.9rem;
+}

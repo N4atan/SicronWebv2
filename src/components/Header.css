@@ -1,0 +1,46 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: white;
+    color: black;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    /* espaço entre imagem e texto */
+}
+
+.logo-img {
+    width: 40px;
+    /* ajusta o tamanho da imagem */
+    height: 40px;
+    object-fit: contain;
+}
+
+.logo {
+    font-size: 40px;
+    /* aumenta ou diminui conforme quiser */
+    font-weight: 700;
+}
+
+.nav {
+    display: flex;
+    gap: 1rem;
+}
+
+.nav-link {
+    color: black;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.nav-link:hover {
+    color: darkgreen;
+}

@@ -1,0 +1,49 @@
+.how-section {
+    padding: 4rem 2rem;
+    background-color: white;
+    text-align: center;
+}
+
+.how-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #222;
+}
+
+.how-subtitle {
+    font-size: 1.1rem;
+    font-weight: 400;
+    margin-bottom: 3.1rem;
+    color: #555;
+}
+
+.cards-container {
+    display: flex;
+    justify-content: center;
+    gap: 200px;
+    flex-wrap: wrap;
+    /* responsivo para telas pequenas */
+}
+
+.card {
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    max-width: 250px;
+    text-align: center;
+}
+
+.card img {
+    width: 50px;
+    height: 80px;
+    object-fit: contain;
+    margin-bottom: 1rem;
+}
+
+.card-text {
+    font-size: 1rem;
+    color: #222;
+    font-weight: 500;
+    margin: 10px;
+}
