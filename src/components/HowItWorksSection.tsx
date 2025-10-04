@@ -1,4 +1,3 @@
-import React from "react";
 import "./HowItWorksSection.css";
 import card1Image from "../assets/icons8-comestível-48.png";
 import card2Image from "../assets/icons8-confiança-50.png";

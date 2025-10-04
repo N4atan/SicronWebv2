@@ -1,4 +1,3 @@
-import React from "react";
 import "./HeroSection.css";
 import heroImage from "../assets/humildade.webp"; // coloca a imagem na pasta src/assets/
 

@@ -1,4 +1,3 @@
-import React from "react";
 import "./Header.css";
 import logoImage from "../assets/Logo.svg"; // coloca a imagem na pasta src/assets/
 
