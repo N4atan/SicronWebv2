@@ -1,5 +1,5 @@
 import React from "react";
-import Header from "./components/header";
+import Header from "./components/Header";
 import HeroSection from "./components/HeroSection";
 import HowItWorksSection from "./components/HowItWorksSection";
 
@@ -19,3 +19,4 @@ export default function App() {
     // Ordem das seções, tomara que esteja bom
   );
 }
+
