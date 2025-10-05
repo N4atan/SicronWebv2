@@ -1,5 +1,6 @@
 import "./Header.css";
-import logoImage from "../assets/Logo.svg"; // coloca a imagem na pasta src/assets/
+import logoImage from "../assets/Logo.svg";
+import { Link } from "react-router-dom"; // importa o Link do react-router
 
 export default function Header() {
   return (
@@ -10,9 +11,10 @@ export default function Header() {
       </div>
 
       <nav className="nav">
-        <a href="#" className="nav-link">Início</a>
-        <a href="#" className="nav-link">ONGs</a>
-        <a href="#" className="nav-link">Sobre Nós</a>
+        <Link to="/" className="nav-link">Início</Link>
+        <Link to="/" className="nav-link">ONGs</Link>
+        <Link to="/sobre" className="nav-link">Sobre Nós</Link>
+        <Link to="/Login" className="nav-link">👤</Link>
       </nav>
     </header>
   );

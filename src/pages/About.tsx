@@ -1,27 +1,78 @@
-import "./About.css";
+import "./About.css"
+import Header from "../components/Header";
+import mundoOrigami from "../assets/mundo-origami-papel.jpg";
+import internetIcon from "../assets/internet.png";
+import emailIcon from "../assets/email.png";
 
-export default function About() {
+export default function Sobre() {
   return (
-    <section className="about-section">
-      <div className="about-container">
-        <h1>Sobre o Projeto Sicron</h1>
-        <p>
-          O <strong>Sicron</strong> é uma plataforma criada para conectar doadores,
-          ONGs e fornecedores em um só lugar, tornando o processo de doação
-          mais transparente, eficiente e acessível para todos.
-        </p>
+    <>
+    <Header />
+      <main>
+        {/* Seção SICRON */}
+        <section className="Secao-doadores">
+          <div className="Container">
+            <div className="Apresentação_conteudo">
+              {/* Texto */}
+              <div className="Texto-conteudoDoador">
+                <h1>SICRON</h1>
+                <p>
+                  A SICRON surgiu como um projeto acadêmico,
+                  <br />
+                  com um propósito real: transformar a solidariedade.
+                  <br />
+                  Durante nossa pesquisa, vimos uma grande carência.
+                  <br />
+                  Faltava transparência nas plataformas de doação.
+                  <br />
+                  Muitas não mostram o destino real dos recursos.
+                  <br />
+                  Criamos esta solução para mudar esse cenário.
+                  <br />
+                  Queremos dar voz ativa às ONGs brasileiras,
+                  <br />
+                  permitindo que exponham suas reais necessidades.
+                  <br />
+                  Aos doadores, oferecemos um meio confiável,
+                  <br />
+                  seguro, direto e com rastreabilidade total.
+                  <br />
+                  Cada contribuição pode ser claramente vista.
+                  <br />
+                  Ajudar se torna simples, transparente e justo.
+                  <br />
+                  SICRON: solidariedade com propósito real.
+                </p>
+              </div>
 
-        <p>
-          Nosso objetivo é transformar vidas através da tecnologia,
-          garantindo que cada doação chegue a quem realmente precisa,
-          com segurança e clareza.
-        </p>
+              {/* Imagem */}
+              <div className="Imagem-conteudo">
+                <img src={mundoOrigami} alt="Conectando doadores" />
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
 
-        <p>
-          Acreditamos no poder da colaboração e da empatia para criar
-          um impacto social positivo e duradouro.
-        </p>
-      </div>
-    </section>
+      {/* Footer */}
+      <footer>
+        <div className="BotoesDoacao">
+          <a href="#" className="Botao">Seja um doador!</a>
+          <a href="#" className="Botao">Receba Doações</a>
+        </div>
+
+        <div className="contato-container">
+          <div className="contato-item">
+            <img src={internetIcon} alt="internet" className="contato-icone" />
+            <span className="contato-texto">www.sicron.org.br</span>
+          </div>
+
+          <div className="contato-item">
+            <img src={emailIcon} alt="email" className="contato-icone" />
+            <span className="contato-texto">team@sicron.org</span>
+          </div>
+        </div>
+      </footer>
+    </>
   );
 }

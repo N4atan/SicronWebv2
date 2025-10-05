@@ -1,4 +1,3 @@
-
 import Header from "./components/Header";
 import HeroSection from "./components/HeroSection";
 import HowItWorksSection from "./components/HowItWorksSection";
@@ -14,7 +13,7 @@ export default function App() {
       <HeroSection />
       <HowItWorksSection />
       <ContactSection />
-      <Footer/>
+      <Footer />
     </div>
     // Ordem das seções, tomara que esteja bom
   );
