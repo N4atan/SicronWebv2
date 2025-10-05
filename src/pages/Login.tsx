@@ -1,5 +1,5 @@
 import "./Login.css";
-import logoImage from "../assets/Logo.svg";
+import logoImage from "../assets/icons/Logo.svg";
 import Header from "../components/Header";
 
 export default function Login() {

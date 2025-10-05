@@ -1,5 +1,5 @@
 import "./Header.css";
-import logoImage from "../assets/Logo.svg";
+import logoImage from "../assets/icons/Logo.svg";
 import { Link } from "react-router-dom"; // importa o Link do react-router
 
 export default function Header() {

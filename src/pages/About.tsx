@@ -1,8 +1,8 @@
 import "./About.css"
 import Header from "../components/Header";
-import mundoOrigami from "../assets/mundo-origami-papel.jpg";
-import internetIcon from "../assets/internet.png";
-import emailIcon from "../assets/email.png";
+import mundoOrigami from "../assets/images/mundo-origami-papel.jpg";
+import internetIcon from "../assets/icons/internet.png";
+import emailIcon from "../assets/icons/email.png";
 
 export default function Sobre() {
   return (

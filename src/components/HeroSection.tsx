@@ -1,5 +1,5 @@
 import "./HeroSection.css";
-import heroImage from "../assets/humildade.webp"; // coloca a imagem na pasta src/assets/
+import heroImage from "../assets/images/humildade.webp"; // coloca a imagem na pasta src/assets/
 
 export default function HeroSection() {
   return (

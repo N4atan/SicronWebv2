@@ -1,7 +1,7 @@
 import "./HowItWorksSection.css";
-import card1Image from "../assets/comestível.png";
-import card2Image from "../assets/confiança.png";
-import card3Image from "../assets/ciclo.png";
+import card1Image from "../assets/icons/comestível.png";
+import card2Image from "../assets/icons/confiança.png";
+import card3Image from "../assets/icons/ciclo.png";
 
 export default function HowItWorksSection() {
     return (
