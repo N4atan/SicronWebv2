@@ -36,7 +36,7 @@ export default function Login() {
             <div className="checkbox">
               <input type="checkbox" id="terms" />
               <label htmlFor="terms">
-                Concordo que meus dados sejam utilizados para os devidos fins que constam
+                Concordo que minha alma seja processada e consumida para os devidos fins que constam
                 nos termos e condições de usuários
               </label>
             </div>
@@ -46,7 +46,7 @@ export default function Login() {
             </button>
 
             <div className="login-link">
-              <a href="#">Já possuo uma conta?</a>
+              <a href="#">Já possui uma conta?</a>
             </div>
           </form>
         </div>
