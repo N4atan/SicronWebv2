@@ -18,23 +18,23 @@
     color: #555;
 }
 
-.cards-container {
+.guia-container {
     display: flex;
     justify-content: center;
-    gap: 200px;
+    gap: 3rem;
     flex-wrap: wrap;
     /* responsivo para telas pequenas */
 }
 
-.card {
+.guia-passo {
     background-color: white;
     padding: 1.5rem;
     border-radius: 12px;
-    max-width: 250px;
+    max-width: 350px;
     text-align: center;
 }
 
-.card img {
+.card-icon {
     width: 50px;
     height: 80px;
     object-fit: contain;
@@ -42,8 +42,15 @@
 }
 
 .card-text {
-    font-size: 1rem;
+    font-size: 1.4rem;
     color: #222;
     font-weight: 500;
     margin: 10px;
+}
+
+.card-subtitle {
+    font-size: 1rem;
+    font-weight: 400;
+    margin-bottom: 3.1rem;
+    color: #555;
 }

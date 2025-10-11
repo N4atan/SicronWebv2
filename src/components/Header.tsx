@@ -1,6 +1,8 @@
 import "./Header.css";
 import logoImage from "../assets/icons/Logo.svg";
 import { Link } from "react-router-dom"; // importa o Link do react-router
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
 
 export default function Header() {
   return (
@@ -14,7 +16,9 @@ export default function Header() {
         <Link to="/" className="nav-link">Início</Link>
         <Link to="/" className="nav-link">ONGs</Link>
         <Link to="/sobre" className="nav-link">Sobre Nós</Link>
-        <Link to="/Login" className="nav-link">👤</Link>
+        <Link to="/Login" className="nav-link">
+          <FontAwesomeIcon icon={faUser} />
+        </Link>
       </nav>
     </header>
   );

@@ -1,7 +1,27 @@
 import "./HowItWorksSection.css";
-import card1Image from "../assets/icons/comestível.png";
-import card2Image from "../assets/icons/confiança.png";
-import card3Image from "../assets/icons/ciclo.png";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHandHoldingHeart, faSeedling, faRotate } from "@fortawesome/free-solid-svg-icons";
+
+
+let guia_passos = [
+    {
+        icon: faSeedling,
+        title: 'ONGs Cadastram suas Necessidades',
+        subtitle: 'Organizações,especificando quantidades e detalhes.'
+    }, {
+        icon: faHandHoldingHeart,
+        title: 'Doadores Escolhem Como Ajudar',
+        subtitle: 'Navegue pelo catálogo de ONGs, filtre por região e selecione os itens que deseja patrocinar.'
+    }, {
+        icon: faRotate,
+        title: 'A Plataforma Cuida de Tudo',
+        subtitle: 'Seu dinheiro vira historia que fica na plataforma, onde a ONG escolhe fornecedores com preços expostos, faz a compra e reúnice os itens.'
+    }
+
+]
+
+
 
 export default function HowItWorksSection() {
     return (
@@ -13,24 +33,22 @@ export default function HowItWorksSection() {
                 </p>
             </div>
 
-            <div className="cards-container">
-                <div className="card">
-                    <img src={card1Image} alt="Passo 1" />
-                    <h3 className="card-text">ONGs Cadastram suas Necessidades</h3>
-                    <p className="how-subtitle">Organizações,especificando quantidades e detalhes.</p>
-                </div>
+            <div className="guia-container">
+                
+                { guia_passos.map((step, index) => (
+                    <div className="guia-passo" key={index}>
+                        <FontAwesomeIcon icon={step.icon} className="card-icon"/>
 
-                <div className="card">
-                    <img src={card2Image} alt="Passo 2" />
-                    <h3 className="card-text">Doadores Escolhem Como Ajudar</h3>
-                    <p className="how-subtitle">Navegue pelo catálogo de ONGs, filtre por região e selecione os itens que deseja patrocinar.</p>
-                </div>
+                        <h3 className="card-text">
+                            { step.title }
+                        </h3>
 
-                <div className="card">
-                    <img src={card3Image} alt="Passo 3" />
-                    <h3 className="card-text">A Plataforma Cuida de Tudo</h3>
-                    <p className="how-subtitle">Seu dinheiro vira historia que fica na plataforma, onde a ONG escolhe fornecedores com preços expostos, faz a compra e reúnice os itens.</p>
-                </div>
+                        <p className="card-subtitle">
+                            { step.subtitle }
+                        </p>
+                    </div>
+                ))}
+
             </div>
         </section>
     );

@@ -1,6 +1,8 @@
 import "./Login.css";
 import logoImage from "../assets/icons/Logo.svg";
 import Header from "../components/Header";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEnvelope, faLock, faUser } from "@fortawesome/free-solid-svg-icons";
 
 export default function Login() {
   return (
@@ -20,17 +22,17 @@ export default function Login() {
           <form>
             <div className="input-group">
               <input type="text" placeholder="Nome de usuário" />
-              <span className="icon">👤</span>
+              <FontAwesomeIcon icon={faUser} />
             </div>
 
             <div className="input-group">
               <input type="email" placeholder="E-mail" />
-              <span className="icon">📧</span>
+              <FontAwesomeIcon icon={faEnvelope} />
             </div>
 
             <div className="input-group">
               <input type="password" placeholder="Senha" />
-              <span className="icon">🔒</span>
+              <FontAwesomeIcon icon={faLock} />
             </div>
 
             <div className="checkbox">
