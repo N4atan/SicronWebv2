@@ -1,0 +1,23 @@
+.input-group {
+    display: flex;
+    align-items: center;
+    
+    padding: 12px 10px;
+
+    font-size: 1rem;
+
+    border-bottom: 1px solid #ccc;
+}
+
+.input-group input {
+    flex: 1;
+
+
+    border: none;
+    outline: none;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
