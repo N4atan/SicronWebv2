@@ -1,4 +1,5 @@
 import "./ContactSection.css";
+import ContatoForm from '../../Forms/Contato/Contato';
 
 export default function ContactSection() {
   return (
@@ -12,17 +13,7 @@ export default function ContactSection() {
       </div>
 
       <div className="contact-right">
-        <form className="contact-form">
-          <input type="text" placeholder="Nome completo" required />
-          <input type="email" placeholder="E-mail" required />
-          <input type="text" placeholder="Assunto" required />
-          <textarea
-            placeholder="Sua mensagem"
-            rows={5}
-            required
-          ></textarea>
-          <button type="submit">Enviar</button>
-        </form>
+        <ContatoForm />
       </div>
     </section>
   );

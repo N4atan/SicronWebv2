@@ -12,12 +12,14 @@
     position: sticky;
     top: 0;
     z-index: 100;
+
+    border-bottom: 1px solid #eee;
 }
 
 .logo-container {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 0.5rem;
 }
 
 .logo-img {
@@ -28,7 +30,7 @@
 }
 
 .logo {
-    font-size: 40px;
+    font-size: 30px;
     /* aumenta ou diminui conforme quiser */
     font-weight: 700;
 }

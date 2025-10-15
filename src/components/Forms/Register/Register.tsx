@@ -1,11 +1,12 @@
 
 import BtnPrimary from '../../Button/Primary/BtnPrimary';
 import { Checkbox } from '../../Inputs/Checkbox/Checkbox';
-import { InputIcon } from '../../Inputs/InputIcon/InputIcon';
+
 import { faEnvelope, faLock, faUser } from "@fortawesome/free-solid-svg-icons";
 import BtnSecondary from '../../Button/Secondary/BtnSecondary';
 
 import './Register.css';
+import Input from '../../Inputs/InputIcon/Input';
 
 
 export default function RegisterForm() {
@@ -17,19 +18,22 @@ export default function RegisterForm() {
             <h1>Bem-Vindo!</h1>
             <p>Veja como é rápido criar a sua conta!</p>
 
-            <InputIcon
+            <Input
+            variant='no-border'
             type="text"
             placeholder="Nome de Usuário"
             iconName={faUser}
             />
 
-            <InputIcon
+            <Input
+            variant='no-border'
             type="email"
             placeholder="E-mail"
             iconName={faEnvelope}
             />
 
-            <InputIcon
+            <Input
+            variant='no-border'
             type="password"
             placeholder="Senha"
             iconName={faLock}
