@@ -1,0 +1,55 @@
+
+input, textarea {
+    border: none;
+    outline: none;
+    text-overflow: ellipsis;
+}
+
+textarea {
+    resize: vertical;
+}
+
+
+.container-input {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    font-size: 1rem;
+}
+
+
+
+.input-icon-container {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    gap: 1rem;
+
+    padding: 15px;
+
+    background-color: #fff;
+}
+
+
+.borders {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.outline-border {
+    border-bottom: 1px solid #414141;
+}
+
+.input-field {
+    flex: 1;
+}
+
+.text-area-field {
+    padding: 15px;
+    min-height: 100px;
+
+    resize: vertical;
+}

@@ -6,7 +6,8 @@ import { faEnvelope, faLock, faUser } from "@fortawesome/free-solid-svg-icons";
 import BtnSecondary from '../../Button/Secondary/BtnSecondary';
 
 import './Register.css';
-import Input from '../../Inputs/InputIcon/Input';
+import Input from '../../Inputs/Input/Input';
+
 
 
 export default function RegisterForm() {
@@ -19,24 +20,26 @@ export default function RegisterForm() {
             <p>Veja como é rápido criar a sua conta!</p>
 
             <Input
-            variant='no-border'
+            variant='outline-border'
             type="text"
             placeholder="Nome de Usuário"
-            iconName={faUser}
+            icon={faUser}
             />
 
+
+
             <Input
-            variant='no-border'
+            variant='outline-border'
             type="email"
             placeholder="E-mail"
-            iconName={faEnvelope}
+            icon={faEnvelope}
             />
 
             <Input
-            variant='no-border'
+            variant='outline-border'
             type="password"
             placeholder="Senha"
-            iconName={faLock}
+            icon={faLock}
             />
 
             <Checkbox
