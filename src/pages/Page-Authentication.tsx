@@ -1,4 +1,4 @@
-import RegisterForm from "../components/Forms/Register/Register";
+import RegisterForm from "../components/Forms/Authentication/Autentication";
 import Header from "../components/Header/Header";
 
 

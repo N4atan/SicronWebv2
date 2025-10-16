@@ -1,5 +1,5 @@
 
-import BtnPrimary from '../../Button/Primary/BtnPrimary';
+import Button from '../../Button/Button';
 import Input from '../../Inputs/Input/Input';
 import './Contato.css'
 
@@ -37,7 +37,8 @@ export default function ContatoForm() {
             placeholder='Descreva sua mensagem aqui...'
             />
 
-            <BtnPrimary
+            <Button
+            variant='primary'
             type='submit'
             text='Enviar Mensagem'
             />
