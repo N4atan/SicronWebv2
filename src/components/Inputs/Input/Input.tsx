@@ -38,6 +38,7 @@ const DefaultInput = ({ variant, type, placeholder, label, icon, ...rest }: Inpu
             className   = 'input-field'
             type        = { type }
             placeholder = { placeholder }
+            {...rest}
             />
 
         </div>

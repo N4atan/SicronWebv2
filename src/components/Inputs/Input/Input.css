@@ -40,7 +40,8 @@ textarea {
 }
 
 .outline-border {
-    border-bottom: 1px solid #414141;
+    padding: 12px 15px;
+    border-bottom: 1px solid #ccc;
 }
 
 .input-field {

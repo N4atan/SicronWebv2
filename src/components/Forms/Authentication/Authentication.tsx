@@ -3,17 +3,19 @@ import { Checkbox } from '../../Inputs/Checkbox/Checkbox';
 
 import { faEnvelope, faLock, faUser } from "@fortawesome/free-solid-svg-icons";
 
-import './Autentication.css';
+import './Authentication.css';
 import Input from '../../Inputs/Input/Input';
 import Button from '../../Button/Button';
 import { useState } from 'react';
 
-function LoginForm({ eventChangeForm }) {
+function LoginForm({ eventChangeForm }: { eventChangeForm: () => void }) {
     return (
         <>
 
-            <h1>Bem-Vindo de Volta!</h1>
-            <p>Insira suas credenciais para acessar sua conta.</p>
+            <div>
+                <h1>Bem-Vindo de Volta!</h1>
+                <p>Insira suas credenciais para acessar sua conta.</p>
+            </div>
 
 
             <Input
@@ -37,18 +39,20 @@ function LoginForm({ eventChangeForm }) {
 
             <Button
                 variant='secondary'
-                text='Criar uma Conta'
-                onClick={eventChangeForm('register')}
+                text='Ainda não possui uma conta?'
+                onClick={eventChangeForm}
             />
         </>
     )
 };
 
-function RegisterForm({ eventChangeForm }) {
+function RegisterForm({ eventChangeForm }: { eventChangeForm: () => void }) {
     return (
         <>
-            <h1>Bem-Vindo!</h1>
-            <p>Veja como é rápido criar a sua conta.</p>
+            <div>
+                <h1>Bem-Vindo!</h1>
+                <p>Veja como é rápido criar a sua conta.</p>
+            </div>
 
             <Input
                 variant='outline-border'
@@ -85,15 +89,20 @@ function RegisterForm({ eventChangeForm }) {
             <Button
                 variant='secondary'
                 text='Já possui uma conta?'
-                onClick={() => eventChangeForm('login')}
+                onClick={eventChangeForm}
             />
         </>
     )
 }
 
 
-export default function AutenticationForm({ type }: { type: 'login' | 'register' }) {
-    const [formType, setFormType] = useState(type);
+export default function AuthenticationForm() {
+    const [formType, setFormType] = useState('register');
+
+    function handleClickChangeForm(type: 'login' | 'register') {
+        console.log(type);
+        setFormType(type);
+    }
 
 
     return (
@@ -101,13 +110,13 @@ export default function AutenticationForm({ type }: { type: 'login' | 'register'
             {/* Componente do header */}
             <div></div>
 
-            {type === 'login' ?
+            {formType == 'login' ?
                 <LoginForm
-                    eventChangeForm={(form) => () => setFormType(form)}
+                    eventChangeForm={() => handleClickChangeForm('register')}
                 />
                 :
                 <RegisterForm
-                    eventChangeForm={(form) => () => setFormType(form)}
+                    eventChangeForm={() => handleClickChangeForm('login')}
                 />
             }
 
