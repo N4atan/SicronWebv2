@@ -9,7 +9,7 @@ type ButtonProps = React.HTMLAttributes<HTMLButtonElement> & {
 export default function Button ({ variant, type, text, ...rest }: ButtonProps) {
     return (
         <button 
-            type={type} 
+            type={type}
             className={ variant === 'primary' ? "btn-primary" : "btn-secondary" }
             {...rest}
             >
