@@ -1,7 +1,7 @@
 import './Card.css';
 
 type CardProps = React.HTMLAttributes<HTMLDivElement> & {
-    titleSection: string;
+    titleSection?: string;
     subtitleSection?: string;
     children?: React.ReactNode;
 }
