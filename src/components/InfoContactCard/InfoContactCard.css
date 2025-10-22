@@ -1,15 +1,16 @@
-ul {
+.list-contact-info {
     list-style-type: none;
-    padding: 0
+    padding: 0;
+
+    li {
+        margin-bottom: 15px;
+    }
+
+    li:not(:last-child) {
+        border-bottom: 1px solid #ccc;
+    
+        padding-bottom: 15px;
+    }
 }
 
-list-contact-info li {
-    margin-bottom: 15px;
-}
-
-list-contact-info li:not(:last-child) {
-    border-bottom: 1px solid #ccc;
-
-    padding-bottom: 15px;
-}
 

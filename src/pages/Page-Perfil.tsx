@@ -5,6 +5,8 @@ import { faEnvelope, faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import ProfileCard from "../components/ProfileCard/ProfileCard";
 import InfoContactCard from './../components/InfoContactCard/InfoContactCard';
 import HistoryCard from "../components/HistoryCard/HistoryCard";
+import Card from "../components/Card/Card";
+import Contato from "../components/Forms/Contato/Contato";
 
 
 const listContact =[
@@ -53,6 +55,12 @@ export default function PagePerfil() {
             <HistoryCard
                 historyActivities={historyActivities}
             />
+
+            <Card
+                style={{ width: '500px'}}
+            >
+                <Contato/>
+            </Card>
         </>
     )
 }
