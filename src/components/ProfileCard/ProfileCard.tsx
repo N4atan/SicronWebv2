@@ -6,7 +6,7 @@ import './ProfileCard.css';
 type Props = React.HTMLAttributes<HTMLElement> & {
     src: string;
     name: string;
-    tags: string[];
+    tags?: string[];
 }
 
 export default function ProfileCard(props: Props){
@@ -16,7 +16,7 @@ export default function ProfileCard(props: Props){
 
             {/*  foto */}
             <div className='container-img-profile'>
-                <img src={props.src} alt={props.name} />
+                <img src={props.src || 'https://placehold.co/200'} alt={props.name} />
             </div>
 
             {/*  informações */}
@@ -29,8 +29,8 @@ export default function ProfileCard(props: Props){
 
                 {/* tags */}
                 <div>
-                    { props.tags.map(tag => (
-                        <span key={tag}>{tag}</span>
+                    { props.tags?.map(tag => (
+                        <span className='tags-profile' key={tag}>{tag}</span>
                     )) }
                 </div>
 

@@ -17,6 +17,10 @@
         color: #828282;
         font-weight: 500;
     }
+
+    .card-header {
+        margin-bottom: 20px;
+    }
 }
 
 
