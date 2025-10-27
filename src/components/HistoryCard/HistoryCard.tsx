@@ -15,7 +15,7 @@ export default function HistoryCard(props: Props){
     return (
         <Card
             titleSection="Atividade Recente"
-            style={{width: '500px'}}
+            style={{width: '100%'}}
         >
             { props.historyActivities?.length ? (
                 <ul className="list-history-activities">

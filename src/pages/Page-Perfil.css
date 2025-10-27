@@ -1,0 +1,33 @@
+.container-page {
+    max-width: 800px;
+    display: grid;
+    grid-template-columns: 280px 1fr 1fr;
+    gap: 20px;
+    grid-template-areas:
+    "aside main main";
+
+    margin: 0 auto;
+    padding-bottom: 2rem;
+
+    aside {
+        grid-area: aside;
+    }
+
+    main {
+        grid-area: main;
+    }
+}
+/*
+.container-page {
+    max-width: 800px;
+    display: flex;
+    gap: 20px;
+
+    aside {
+        flex: 0 0 280px;
+    }
+
+    main {
+        flex: 1;
+    }
+} */
