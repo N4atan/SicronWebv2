@@ -16,7 +16,6 @@ export default function InfoContactCard(props: Props) {
     return (
         <Card
             titleSection="Informações"
-            style={{ maxWidth: '300px' }}
         >
 
             <ul className="list-contact-info">

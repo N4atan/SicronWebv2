@@ -1,5 +1,5 @@
 .container-page {
-    max-width: 800px;
+/*    max-width: 800px; é no pé ou na mão*/
     display: grid;
     gap: 20px;
     
@@ -21,6 +21,7 @@
 
     grid-template-areas:
     "nav nav nav"
+    "aside main main"
     "aside main main";
 }
 
@@ -29,13 +30,16 @@
 
     grid-template-areas:
     "nav nav nav"
+    "main main aside"
     "main main aside";
 }
 
 .a-no {
+    grid-template-columns: 1fr 1fr 1fr;
     grid-template-areas: 
     "nav nav nav"
-    'main main main';
+    'main main main'
+    "aside aside aside";
 }
 
 /* O container <nav> que segura os rádios */
