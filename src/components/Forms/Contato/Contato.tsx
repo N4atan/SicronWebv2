@@ -4,7 +4,6 @@ import Input from '../../Inputs/Input/Input';
 import './Contato.css'
 
 
-
 export default function ContatoForm() {
     return (
         <form className="contact-form">
@@ -15,14 +14,14 @@ export default function ContatoForm() {
                     variant='default'
                     label='Qual é o seu nome?'
                     type='text'
-                    placeholder='Ex.: João da Silva'
+                    placeholder='Seu nome'
                 />
 
                 <Input
                     variant='default'
                     label='Seu e-mail:'
                     type='text'
-                    placeholder='Ex.: joao.silva@email.com'
+                    placeholder='seu@email.com'
                 />
             </div>
 
@@ -30,14 +29,14 @@ export default function ContatoForm() {
                 variant='default'
                 label='Qual o assunto?'
                 type='text'
-                placeholder='Ex.: Dúvida sobre doação'
+                placeholder='Como posso ajudar?'
             />
 
             <Input
                 variant='text-area'
                 label='Sua mensagem:'
                 type='text'
-                placeholder='Descreva sua mensagem aqui...'
+                placeholder='Escreva sua mensagem aqui'
             />
 
             <Button

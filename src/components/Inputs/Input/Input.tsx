@@ -11,12 +11,13 @@ type InputIconProps = React.HTMLAttributes<HTMLInputElement> & {
     placeholder? : string;
     label?       : string;
     icon?        : IconDefinition;
+    sizeStyle?   : 'default' | 'compact';
 }
 
 
 
-const DefaultInput = ({ variant, type, placeholder, label, icon, ...rest }: InputIconProps) => (
-    <div className='container-input'>
+const DefaultInput = ({ variant, type, placeholder, label, icon, sizeStyle, ...rest }: InputIconProps) => (
+    <div className={`container-input ${sizeStyle || 'default'}`}>
     { label &&
         <label>{ label }</label>
     }

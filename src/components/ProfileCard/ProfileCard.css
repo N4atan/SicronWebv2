@@ -18,13 +18,14 @@
     h1 {
         font-size: clamp(1rem, 1.5rem, 2.5rem);
         font-weight: 700;
+        margin-top: 15px;
     }
 
     .tags-profile {
         display: inline-block;
-        background-color: #eee;
+        border: 1px solid rgba(0, 0, 0, 0.2);
         color: #333;
-        padding: 2px 10px;
+        padding: 2px 1rem;
         margin: 10px 10px 0 0;
         border-radius: 0.5rem;
         font-size: 14px;

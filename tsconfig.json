@@ -16,6 +16,6 @@
     "noEmit": true,
     "jsx": "react-jsx" // ✅ ESTA É A LINHA CRÍTICA PARA CORRIGIR O ERRO
   },
-  "include": ["src"],
+  "include": ["src", "svg.d.ts"]
   //"references": [{ "path": "./tsconfig.node.json" }]
 }

@@ -15,7 +15,16 @@ textarea {
     flex-direction: column;
     gap: 0.5rem;
 
-    font-size: 1rem;
+    
+    font-weight: 600;
+}
+
+.default {
+    font-size: clamp(0.8rem, 1rem, 2rem);
+}
+
+.compact {
+    font-size: clamp(0.5rem, 0.8rem, 1rem);
 }
 
 
