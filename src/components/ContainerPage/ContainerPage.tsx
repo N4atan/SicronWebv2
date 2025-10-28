@@ -1,21 +1,35 @@
-
-
-
-import './ContainerPage.css'
+import { useEffect, useState } from "react";
+import "./ContainerPage.css";
 
 type Props = {
-    variant: string; //'a-left' | 'a-right' | 'a-no';
-    children?: React.ReactNode
-}
+  variant: "a-left" | "a-right" | "a-no";
+  children?: React.ReactNode;
+};
 
-export default function ContainerPage(props: Props){
+export default function ContainerPage(props: Props) {
+  const [isMobilePortrait, setIsMobilePortrait] = useState(false);
 
-    const configStyle = props.variant == 'a-no' ? 'a-no'
-    : props.variant == 'a-left' ? 'a-left' : 'a-right'
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 768px) and (orientation: portrait)");
 
-    return (
-        <div className={`container-page ${configStyle}`}>
-            {props.children}
-        </div>
-    )
+    const handleChange = (event: MediaQueryListEvent | MediaQueryList) => {
+      setIsMobilePortrait(event.matches);
+    };
+
+    handleChange(mediaQuery);
+
+    mediaQuery.addEventListener("change", handleChange);
+    return () => mediaQuery.removeEventListener("change", handleChange);
+  }, []);
+
+  let configStyle =
+    isMobilePortrait
+      ? "a-no"
+      : props.variant === "a-no"
+      ? "a-no"
+      : props.variant === "a-left"
+      ? "a-left"
+      : "a-right";
+
+  return <div className={`container-page ${configStyle}`}>{props.children}</div>;
 }

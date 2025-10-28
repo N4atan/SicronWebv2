@@ -10,7 +10,7 @@ export default function Header() {
     <header className="header">
       <div className="logo-container">
         <LogoComponent className='logo-img' />
-        <h1 className="logo">Sicron</h1>
+        <h1 className="logo">SICRON</h1>
       </div>
 
       <nav className="nav">

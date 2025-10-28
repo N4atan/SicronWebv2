@@ -6,16 +6,16 @@ input, textarea {
 }
 
 textarea {
-    resize: vertical;
+    resize: both;
 }
 
 
 .container-input {
     display: flex;
     flex-direction: column;
+
     gap: 0.5rem;
 
-    
     font-weight: 600;
 }
 
@@ -59,7 +59,7 @@ textarea {
 
 .text-area-field {
     padding: 10px 15px;
-    min-height: 100px;
+    /*min-height: 100px;*/
 
-    resize: vertical;
+    resize: both;
 }

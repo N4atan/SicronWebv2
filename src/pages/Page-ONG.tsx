@@ -8,15 +8,13 @@ import Card from "../components/Card/Card";
 import { faCalendar } from "@fortawesome/free-regular-svg-icons";
 import ContatoForm from "../components/Forms/Contato/Contato";
 
-
 export default function PageONG() {
-    const [ sideView, seSidetView ] = useState('a-left');
+    const [sideView, setSideView] = useState<'a-left' | 'a-right' | 'a-no'>('a-left');
     const [ view, setView ] = useState('contato'); // sobre | doar | contato 
 
     function handleChangeView(v: 'sobre' | 'doar' | 'contato') {
         setView(v);
     }
-
 
     return (
         <>
@@ -86,24 +84,20 @@ export default function PageONG() {
                 <main>
 
                     { view == 'sobre' &&
-
                     <Card
                         titleSection="Nossa Missão"
                     >
                         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo, molestias. Aperiam ex nihil totam. Est numquam similique vero sit? Totam, eaque commodi ut maxime provident ullam sit fugit hic quia?</p>
                     </Card>
-
                     }
 
                     {  view == 'contato' &&
-                    
                     <Card
                         titleSection="Entre em Contato"
                         subtitleSection="Tire suas dúvidas ou saiba como ajudar"
                     >
                         <ContatoForm />
                     </Card>
-                    
                     }
 
                 </main>
