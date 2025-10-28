@@ -4,7 +4,7 @@ import Card from '../Card/Card';
 import './ProfileCard.css';
 
 type Props = React.HTMLAttributes<HTMLElement> & {
-    src: string;
+    src?: string;
     name: string;
     tags?: string[];
 }
@@ -12,7 +12,7 @@ type Props = React.HTMLAttributes<HTMLElement> & {
 export default function ProfileCard(props: Props){
     return (
         // card principal
-        <Card {...props}>
+        <Card style={{ maxWidth: '800px', display: "flex", flexDirection: "row", gap: '20px', margin: '2rem auto' }} >
 
             {/*  foto */}
             <div className='container-img-profile'>

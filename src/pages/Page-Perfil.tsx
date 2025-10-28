@@ -9,7 +9,8 @@ import Card from "../components/Card/Card";
 import Contato from "../components/Forms/Contato/Contato";
 
 
-import './Page-Perfil.css';
+
+import ContainerPage from "../components/ContainerPage/ContainerPage";
 
 
 const listContact =[
@@ -48,13 +49,14 @@ export default function PagePerfil() {
             <ProfileCard
                 src="https://placehold.co/200"
                 name="Nome do Usuário"
-                style={{ maxWidth: '800px', display: "flex", flexDirection: "row", gap: '20px', margin: '2rem auto' }}
+                tags={['animal', 'anta' ]}
             />
 
 
 
-            <div className="container-page">
-
+            <ContainerPage
+                variant="a-left"
+            >
                 <aside>
                     <InfoContactCard
                         listContact={listContact}
@@ -66,8 +68,7 @@ export default function PagePerfil() {
                         historyActivities={historyActivities}
                     />
                 </main>
-
-            </div>
+            </ContainerPage>
         </>
     )
 }
