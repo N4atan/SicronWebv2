@@ -1,5 +1,6 @@
 .container-page {
-/*    max-width: 800px; é no pé ou na mão*/
+
+ max-width: 800px;;
     display: grid;
     gap: 20px;
     
@@ -31,7 +32,7 @@
     grid-template-areas:
     "nav nav nav"
     "main main aside"
-    "main main aside";
+    
 }
 
 .a-no {
