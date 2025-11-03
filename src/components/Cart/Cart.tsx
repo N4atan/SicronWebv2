@@ -1,4 +1,5 @@
 import Card from "../Card/Card";
+import './Cart.css'
 
 
 export default function Cart() {
@@ -10,18 +11,22 @@ export default function Cart() {
             (
                 <p>Seu carrinho está vazio!</p>
             )}
-
+            
+            <ul className="cart-list">
             { itensCart.map((item, id) => (
-                <div className="item-cart" key={id}>
+                <li key={id}>
+                    <div className="item-cart" >
 
-                    <div className="item-cart-row">
-                        <span>{item.name}</span>
-                        <span>{`${item.price * item.qtd}`}</span>
+                        <div className="item-cart-row">
+                            <span className="item-name"> {item.name} </span>
+                            <span className="item-fprice"> {`R$ ${item.price * item.qtd}`} </span>
+                        </div>
+
+                        <span className="item-details"> {`${item.qtd} X R$ ${item.price}`} </span>
                     </div>
-
-                    <span>{`${item.qtd} X ${item.price}`}</span>
-                </div>
+                </li>
             ))}
+            </ul>
 
         </Card>
     )

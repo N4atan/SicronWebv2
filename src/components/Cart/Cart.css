@@ -1,0 +1,20 @@
+.cart-list {
+    list-style: none;
+    
+    li {
+        margin-bottom: 1rem;
+    }
+
+    
+}
+
+.item-cart {
+    font-size: 0.8rem;
+    
+    .item-cart-row {
+        font-size: clamp(0.8rem, 1rem, 1.2rem);
+        display: flex;
+        justify-content: space-between;
+    }
+
+}

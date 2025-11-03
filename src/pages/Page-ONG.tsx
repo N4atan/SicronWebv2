@@ -10,9 +10,7 @@ import ContatoForm from "../components/Forms/Contato/Contato";
 import Cart from "../components/Cart/Cart";
 
 export default function PageONG() {
-    
     const [ tab, setTab ] = useState('sobre'); // sobre | doar | contato
-
 
 
     return (
