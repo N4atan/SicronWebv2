@@ -7,36 +7,30 @@ import { faEnvelope, faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import Card from "../components/Card/Card";
 import { faCalendar } from "@fortawesome/free-regular-svg-icons";
 import ContatoForm from "../components/Forms/Contato/Contato";
+import Cart from "../components/Cart/Cart";
 
 export default function PageONG() {
-    const [sideView, setSideView] = useState<'a-left' | 'a-right' | 'a-no'>('a-left');
-    const [ view, setView ] = useState('contato'); // sobre | doar | contato 
+    
+    const [ tab, setTab ] = useState('sobre'); // sobre | doar | contato
 
-    function handleChangeView(v: 'sobre' | 'doar' | 'contato') {
-        setView(v);
-    }
+
 
     return (
         <>
             <Header />
 
-            <ProfileCard 
-                name="ONG Genérica"
-                tags={['Animais']}
-            />
-            
-            <ContainerPage
-                variant={sideView}
-            >
+            <ProfileCard name="ONG Genérica" tags={['Animais']} />
 
-               <nav className="tabs-nav"> 
-                    
+            <ContainerPage variant={tab == 'doar' ? "a-right" : 'a-left'} >
+
+                <nav className="tabs-nav">
+
                     {/* --- Opção 1: Sobre --- */}
                     <div className="radio-tab-item">
                         <input 
                             type="radio" id="nav-sobre" name="nav-view"
-                            value="sobre" checked={view === 'sobre'}
-                            onChange={(e) => setView(e.target.value)}
+                            value="sobre" checked={tab === 'sobre'}
+                            onChange={(e) => setTab(e.target.value)}
                         />
                         <label htmlFor="nav-sobre">Sobre</label>
                     </div>
@@ -45,8 +39,8 @@ export default function PageONG() {
                     <div className="radio-tab-item">
                         <input 
                             type="radio" id="nav-doar" name="nav-view"
-                            value="doar" checked={view === 'doar'}
-                            onChange={(e) => setView(e.target.value)}
+                            value="doar" checked={tab === 'doar'}
+                            onChange={(e) => setTab(e.target.value)}
                         />
                         <label htmlFor="nav-doar">Doar</label>
                     </div>
@@ -55,52 +49,49 @@ export default function PageONG() {
                     <div className="radio-tab-item">
                         <input 
                             type="radio" id="nav-contato" name="nav-view"
-                            value="contato" checked={view === 'contato'}
-                            onChange={(e) => setView(e.target.value)}
+                            value="contato" checked={tab === 'contato'}
+                            onChange={(e) => setTab(e.target.value)}
                         />
                         <label htmlFor="nav-contato">Contato</label>
                     </div>
                 </nav>
 
 
-                { sideView != 'a-no' &&
-                <aside>
+                { tab == 'sobre' && (
+                    <>
+                        <aside>
+                            <InfoContactCard listContact={listContact} />
+                        </aside>
 
-                    { view == 'sobre' &&
+                        <main>
+                            <Card titleSection="Nossa Missão" >
+                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit voluptatum at quia ratione? Enim animi blanditiis aspernatur et inventore voluptate ex eveniet, praesentium aperiam ut in ad deleniti voluptatum autem!</p>
+                            </Card>
+                        </main>
+                    </>
+                )}
 
-                    <InfoContactCard listContact={listContact} />
+                { tab == 'doar' && (
+                    <>
+                    <aside>
+                        <Cart />
+                    </aside>
+                    </>
+                )}
 
-                    }
+                { tab == 'contato' && (
+                    <>
+                    <aside>
+                        <InfoContactCard listContact={listContact2}  />
+                    </aside>
 
-                    {  view == 'contato' &&
-                    
-                    <InfoContactCard listContact={listContact2} />
-                    
-                    }
-
-                </aside>
-                }
-
-                <main>
-
-                    { view == 'sobre' &&
-                    <Card
-                        titleSection="Nossa Missão"
-                    >
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo, molestias. Aperiam ex nihil totam. Est numquam similique vero sit? Totam, eaque commodi ut maxime provident ullam sit fugit hic quia?</p>
-                    </Card>
-                    }
-
-                    {  view == 'contato' &&
-                    <Card
-                        titleSection="Entre em Contato"
-                        subtitleSection="Tire suas dúvidas ou saiba como ajudar"
-                    >
-                        <ContatoForm />
-                    </Card>
-                    }
-
-                </main>
+                    <main>
+                        <Card titleSection="Entre em Contato" subtitleSection="">
+                            <ContatoForm />
+                        </Card>
+                    </main>
+                    </>
+                )}
 
             </ContainerPage>
         

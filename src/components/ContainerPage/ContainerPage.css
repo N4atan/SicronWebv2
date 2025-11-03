@@ -22,7 +22,6 @@
 
     grid-template-areas:
     "nav nav nav"
-    "aside main main"
     "aside main main";
 }
 
@@ -32,7 +31,6 @@
     grid-template-areas:
     "nav nav nav"
     "main main aside"
-    
 }
 
 .a-no {

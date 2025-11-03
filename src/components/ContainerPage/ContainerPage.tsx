@@ -22,14 +22,11 @@ export default function ContainerPage(props: Props) {
     return () => mediaQuery.removeEventListener("change", handleChange);
   }, []);
 
-  let configStyle =
-    isMobilePortrait
-      ? "a-no"
-      : props.variant === "a-no"
-      ? "a-no"
-      : props.variant === "a-left"
-      ? "a-left"
-      : "a-right";
+  const configStyle =
+    isMobilePortrait             ? "a-no"
+    : props.variant === "a-no"   ? "a-no"
+    : props.variant === "a-left" ? "a-left"
+    : "a-right";
 
-  return <div className={`container-page ${configStyle}`}>{props.children}</div>;
+  return <div className={`container-page ${configStyle}`}> {props.children} </div>;
 }
