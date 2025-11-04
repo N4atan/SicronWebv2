@@ -66,10 +66,13 @@
             border-radius: 6px;
             color: #333;
 
-            &:hover {
+            &:hover,
+            &:active {
                 background-color: #eee;
                 cursor: pointer;
             }
+
+            
         }
     }
 }

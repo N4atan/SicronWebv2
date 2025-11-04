@@ -6,25 +6,21 @@ import { faHeart } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import './ListaItens.css'
 
+type Product = {
+    tag: string;
+    name: string;
+    price: number;
+    description: string;
+    qtd?: number
+};
 
+type Props = {
+    datalist: Product[];
+    onAddCart: (newitem: Product) => void;
+};
 
-export default function ListaItens(){
-    const [ datalist, setDataList ] = useState([
-        {
-            name: 'Kit Material Escolar',
-            description: 'Caneta, Cadernos, Estojo, Lápis, Borracha, Apontador, Mochila',
-            tag: 'Educação',
-            price: 120.00
-
-        },
-        {
-            name: 'Kit Primeiros Socorros',
-            description: 'Kit completo com medicamentos básicos e materiais de primeiros socorros',
-            tag: 'Saúde',
-            price: 80.00
-
-        },
-    ])
+export default function ListaItens(props: Props){
+    
 
     function getIcon(tag: string) {
         switch (tag) {
@@ -42,7 +38,7 @@ export default function ListaItens(){
         <>
             <ul className="lista-itens">
 
-            { datalist.map((item, index) => {
+            { props.datalist.map((item, index) => {
                 const icon = getIcon(item.tag);
                 return (
                     <li key={index} className="container-li">
@@ -58,7 +54,9 @@ export default function ListaItens(){
 
                             <span className="i-desc" > {item.description} </span>
 
-                            <button className="btn-donation">
+                            <button className="btn-donation"
+                                onClick={() => props.onAddCart(item)}
+                            >
                                 <FontAwesomeIcon icon={faHeart} />
                                 Doar
                             </button>

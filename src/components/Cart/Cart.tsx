@@ -2,19 +2,32 @@ import Button from "../Button/Button";
 import Card from "../Card/Card";
 import './Cart.css'
 
+type Product = {
+    tag: string;
+    name: string;
+    price: number;
+    description: string;
+    qtd?: number
+};
 
-export default function Cart() {
+type Props = {
+    datalist: Array<Product>;
+}
+
+export default function Cart(props: Props) {
     return (
         <Card
             titleSection='Carrinho de Doações'
         >
-            { itensCart.length == 0 || !itensCart &&
+            { props.datalist.length == 0  &&
             (
                 <p>Seu carrinho está vazio!</p>
             )}
             
-            <ul className="cart-list">
-            { itensCart.map((item, id) => (
+            { props.datalist.length != 0 && (
+                <>
+                <ul className="cart-list">
+            { props.datalist.map((item, id) => (
                 <li key={id}>
                     <div className="item-cart" >
 
@@ -31,28 +44,16 @@ export default function Cart() {
             
             <div className="cart-footer">
                 <span className="">Total</span>
-                <span className=""> {`R$ ${itensCart.reduce((fprice, item) => {return fprice + item.price}, 0)}`} </span>
+                <span className=""> {`R$ ${props.datalist.reduce((fprice, item) => {return fprice + item.price}, 0)}`} </span>
             </div>
             
 
             <Button variant="primary" text="Finalizar Doação" style={{width: '100%', marginBottom: '0.8rem'}}/>
             <Button variant="secondary" text="Limpar Carrinho" style={{width: '100%'}}/>
+                </>
+            )}
 
         </Card>
     )
 }
 
-
-
-const itensCart = [
-    { 
-        name: 'Caneta Esferográfica',
-        price: 1.00,
-        qtd: 3
-    },
-    { 
-        name: 'Caderno 86 Folhas',
-        price: 14.99,
-        qtd: 2
-    },
-]
