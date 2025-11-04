@@ -2,7 +2,7 @@
     background: #2bb673;
     color: white;
 
-    padding: 12px;;
+    padding: 10px;
 
     font-size: clamp(14px, 1rem, 1.5rem);
     font-weight: bold;
@@ -23,7 +23,7 @@
 .btn-secondary {
     background-color: #fff;
     
-    padding: 12px;
+    padding: 10px;
     
     color: #333;
     font-size: clamp(12px, 0.8rem, 1rem);

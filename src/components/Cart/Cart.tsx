@@ -1,3 +1,4 @@
+import Button from "../Button/Button";
 import Card from "../Card/Card";
 import './Cart.css'
 
@@ -22,11 +23,20 @@ export default function Cart() {
                             <span className="item-fprice"> {`R$ ${item.price * item.qtd}`} </span>
                         </div>
 
-                        <span className="item-details"> {`${item.qtd} X R$ ${item.price}`} </span>
+                        <span className="item-details"> {`${item.qtd} x R$ ${item.price}`} </span>
                     </div>
                 </li>
             ))}
             </ul>
+            
+            <div className="cart-footer">
+                <span className="">Total</span>
+                <span className=""> {`R$ ${itensCart.reduce((fprice, item) => {return fprice + item.price}, 0)}`} </span>
+            </div>
+            
+
+            <Button variant="primary" text="Finalizar Doação" style={{width: '100%', marginBottom: '0.8rem'}}/>
+            <Button variant="secondary" text="Limpar Carrinho" style={{width: '100%'}}/>
 
         </Card>
     )

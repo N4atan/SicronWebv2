@@ -5,16 +5,32 @@
         margin-bottom: 1rem;
     }
 
+    li:last-child {
+        border-bottom: 1px solid #ccc;
+    
+        padding-bottom: 1rem;
+    }
     
 }
 
 .item-cart {
     font-size: 0.8rem;
+    font-weight: 400;
+    color: #5c5c5c;
     
     .item-cart-row {
-        font-size: clamp(0.8rem, 1rem, 1.2rem);
+        font-size: clamp(0.5rem, 0.8rem, 1.2rem);
+        color: #2c2c2c;
         display: flex;
         justify-content: space-between;
     }
 
+}
+
+.cart-footer {
+    font-size: clamp(0.8rem, 0.9rem, 1.2rem);
+        color: #2c2c2c;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1rem;
 }
