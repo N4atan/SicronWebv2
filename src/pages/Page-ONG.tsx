@@ -8,6 +8,7 @@ import Card from "../components/Card/Card";
 import { faCalendar } from "@fortawesome/free-regular-svg-icons";
 import ContatoForm from "../components/Forms/Contato/Contato";
 import Cart from "../components/Cart/Cart";
+import ListaItens from "../components/ListaItens/ListaItens";
 
 export default function PageONG() {
     const [ tab, setTab ] = useState('sobre'); // sobre | doar | contato
@@ -74,6 +75,12 @@ export default function PageONG() {
                     <aside>
                         <Cart />
                     </aside>
+
+                    <main>
+                        <Card titleSection="Itens Necessários" subtitleSection="Ajude-nos a fazer a diferença.">
+                            <ListaItens />
+                        </Card>
+                    </main>
                     </>
                 )}
 
