@@ -7,14 +7,19 @@ type Product = {
     name: string;
     price: number;
     description: string;
-    qtd?: number
+    qtd: number
 };
 
 type Props = {
     datalist: Array<Product>;
+    onClearCart: () => void;
 }
 
 export default function Cart(props: Props) {
+
+    // Calculando o valor total
+    const fprice = props.datalist.reduce((acc, item) => {return acc + (item.price * item.qtd)}, 0).toFixed(2);
+
     return (
         <Card
             titleSection='Carrinho de Doações'
@@ -23,7 +28,7 @@ export default function Cart(props: Props) {
             (
                 <p>Seu carrinho está vazio!</p>
             )}
-            
+
             { props.datalist.length != 0 && (
                 <>
                 <ul className="cart-list">
@@ -44,12 +49,12 @@ export default function Cart(props: Props) {
             
             <div className="cart-footer">
                 <span className="">Total</span>
-                <span className=""> {`R$ ${props.datalist.reduce((fprice, item) => {return fprice + item.price}, 0)}`} </span>
+                <span className=""> {`R$ ${fprice}`} </span>
             </div>
             
 
             <Button variant="primary" text="Finalizar Doação" style={{width: '100%', marginBottom: '0.8rem'}}/>
-            <Button variant="secondary" text="Limpar Carrinho" style={{width: '100%'}}/>
+            <Button variant="secondary" text="Limpar Carrinho" style={{width: '100%'}} onClick={props.onClearCart}/>
                 </>
             )}
 

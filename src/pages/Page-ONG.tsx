@@ -15,27 +15,27 @@ type Product = {
     name: string;
     price: number;
     description: string;
-    qtd?: number
+    qtd: number
 };
 
 export default function PageONG() {
     const [ tab, setTab ] = useState('sobre'); // sobre | doar | contato
-    const [ datalist ] = useState([
+    const [ productsList, setProductsList ] = useState(Array<Product>(
             {
                 name: 'Kit Material Escolar',
                 description: 'Caneta, Cadernos, Estojo, Lápis, Borracha, Apontador, Mochila',
                 tag: 'Educação',
-                price: 120.00
-    
+                price: 120.00,
+                qtd: 1
             },
             {
                 name: 'Kit Primeiros Socorros',
                 description: 'Kit completo com medicamentos básicos e materiais de primeiros socorros',
                 tag: 'Saúde',
-                price: 80.00
-    
+                price: 80.00,
+                qtd: 1
             },
-        ])
+        ))
 
     const [ cartlist, setCartList ] = useState(Array<Product>());
 
@@ -49,7 +49,7 @@ export default function PageONG() {
                 // 2. Se sim, mapeia o array e atualiza a quantidade (de forma imutável)
                 return prevItems.map(item =>
                     item.name === itemClicado.name
-                        ? { ...item, qtd: (item.qtd ?? 0) + 1 } // Incrementa
+                        ? { ...item, qtd: item.qtd + 1 } // Incrementa
                         : item
                 );
             } else {
@@ -58,7 +58,9 @@ export default function PageONG() {
             }
         });}
 
-    
+    const handleClearCart = () => {
+        setCartList([]);
+    }
 
     return (
         <>
@@ -119,12 +121,12 @@ export default function PageONG() {
                 { tab == 'doar' && (
                     <>
                     <aside>
-                        <Cart datalist={cartlist}/>
+                        <Cart datalist={cartlist} onClearCart={handleClearCart}/>
                     </aside>
 
                     <main>
                         <Card titleSection="Itens Necessários" subtitleSection="Ajude-nos a fazer a diferença.">
-                            <ListaItens datalist={datalist} onAddCart={handleAddToCart} />
+                            <ListaItens datalist={productsList} onAddCart={handleAddToCart} />
                         </Card>
                     </main>
                     </>

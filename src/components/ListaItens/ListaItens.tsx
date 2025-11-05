@@ -11,7 +11,7 @@ type Product = {
     name: string;
     price: number;
     description: string;
-    qtd?: number
+    qtd: number
 };
 
 type Props = {
