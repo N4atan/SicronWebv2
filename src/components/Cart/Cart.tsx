@@ -1,6 +1,8 @@
+import { faBoxOpen } from "@fortawesome/free-solid-svg-icons";
 import Button from "../Button/Button";
 import Card from "../Card/Card";
 import './Cart.css'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 type Product = {
     tag: string;
@@ -22,11 +24,14 @@ export default function Cart(props: Props) {
 
     return (
         <Card
-            titleSection='Carrinho de Doações'
+            titleSection='Caxinha de Doações'
         >
             { props.datalist.length == 0  &&
-            (
-                <p>Seu carrinho está vazio!</p>
+            (   
+                <div className="container-empty">
+                    <FontAwesomeIcon icon={faBoxOpen} size={"2x"} color="#333"/>
+                    <p>Sua caxinha está vazia!</p>
+                </div>
             )}
 
             { props.datalist.length != 0 && (

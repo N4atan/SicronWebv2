@@ -20,7 +20,7 @@ type Product = {
 
 export default function PageONG() {
     const [ tab, setTab ] = useState('sobre'); // sobre | doar | contato
-    const [ productsList, setProductsList ] = useState(Array<Product>(
+    const [ productsList ] = useState(Array<Product>(
             {
                 name: 'Kit Material Escolar',
                 description: 'Caneta, Cadernos, Estojo, Lápis, Borracha, Apontador, Mochila',
