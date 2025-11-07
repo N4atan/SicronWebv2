@@ -52,7 +52,7 @@ export default function PagePerfil() {
 
         try {
             async function fetchData(){
-                const response: SimplifiedUser | null = await api.fetchUser(id);
+                const response: SimplifiedUser | null = await api.fetchUser(String(id));
 
                 setUser(response);
                 console.table(response);
