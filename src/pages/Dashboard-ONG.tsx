@@ -2,7 +2,7 @@ import Card from "../components/Card/Card";
 import Header from "../components/Header/Header";
 import { useState } from "react";
 
-export default function AdminOng() {
+export default function DashboardONG() {
     const [itens] = useState([
         {
             nome: "Cesta Básica Completa",

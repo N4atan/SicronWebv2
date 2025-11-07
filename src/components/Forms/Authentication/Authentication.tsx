@@ -6,9 +6,28 @@ import { faEnvelope, faLock, faUser } from "@fortawesome/free-solid-svg-icons";
 import './Authentication.css';
 import Input from '../../Inputs/Input/Input';
 import Button from '../../Button/Button';
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
+import { api, SimplifiedUser } from "../../../services/api";
 
-function LoginForm({ eventChangeForm }: { eventChangeForm: () => void }) {
+interface LoginFormProps {
+    email: string;
+    setEmail: Dispatch<SetStateAction<string>>;
+    password: string;
+    setPassword: Dispatch<SetStateAction<string>>;
+    eventChangeForm: (text: string) => void;
+}
+
+interface RegisterFormProps {
+    username: string;
+    setUsername: Dispatch<SetStateAction<string>>;
+    email: string;
+    setEmail: Dispatch<SetStateAction<string>>;
+    password: string;
+    setPassword: Dispatch<SetStateAction<string>>;
+    eventChangeForm: (text: string) => void;
+}
+
+function LoginForm(props: LoginFormProps) {
     return (
         <>
 
@@ -23,6 +42,7 @@ function LoginForm({ eventChangeForm }: { eventChangeForm: () => void }) {
                 type="email"
                 placeholder="E-mail"
                 icon={faEnvelope}
+                onChange={(e) => props.setEmail((e.target as HTMLInputElement).value)}
             />
 
             <Input
@@ -30,23 +50,26 @@ function LoginForm({ eventChangeForm }: { eventChangeForm: () => void }) {
                 type="password"
                 placeholder="Senha"
                 icon={faLock}
+                onChange={(e) => props.setPassword((e.target as HTMLInputElement).value)}
             />
 
             <Button
                 variant='primary'
                 text='Entrar na Minha Conta'
+                type='submit'
             />
 
             <Button
                 variant='secondary'
                 text='Ainda não possui uma conta?'
-                onClick={eventChangeForm}
+                type='button'
+                onClick={() => props.eventChangeForm('register')}
             />
         </>
     )
 };
 
-function RegisterForm({ eventChangeForm }: { eventChangeForm: () => void }) {
+function RegisterForm(props: RegisterFormProps) {
     return (
         <>
             <div>
@@ -59,6 +82,8 @@ function RegisterForm({ eventChangeForm }: { eventChangeForm: () => void }) {
                 type="text"
                 placeholder="Nome de Usuário"
                 icon={faUser}
+                onChange={(e) => props.setUsername((e.target as HTMLInputElement).value)}
+                value={props.username}
             />
 
 
@@ -67,6 +92,8 @@ function RegisterForm({ eventChangeForm }: { eventChangeForm: () => void }) {
                 type="email"
                 placeholder="E-mail"
                 icon={faEnvelope}
+                onChange={(e) => props.setEmail((e.target as HTMLInputElement).value)}
+                value={props.email}
             />
 
             <Input
@@ -74,6 +101,8 @@ function RegisterForm({ eventChangeForm }: { eventChangeForm: () => void }) {
                 type="password"
                 placeholder="Senha"
                 icon={faLock}
+                onChange={(e) => props.setPassword((e.target as HTMLInputElement).value)}
+                value={props.password}
             />
 
             <Checkbox
@@ -84,12 +113,14 @@ function RegisterForm({ eventChangeForm }: { eventChangeForm: () => void }) {
             <Button
                 variant='primary'
                 text='Criar Minha Conta'
+                type='submit'
             />
 
             <Button
                 variant='secondary'
                 text='Já possui uma conta?'
-                onClick={eventChangeForm}
+                type='button'
+                onClick={() => props.eventChangeForm('login')}
             />
         </>
     )
@@ -97,29 +128,77 @@ function RegisterForm({ eventChangeForm }: { eventChangeForm: () => void }) {
 
 
 export default function AuthenticationForm() {
-    const [formType, setFormType] = useState('register');
+    const [ formType, setFormType ] = useState<'login' | 'register'>('register');
+    const [ username, setUsername ] = useState<string>('');
+    const [ email   , setEmail    ] = useState<string>('');
+    const [ password, setPassword ] = useState<string>('');
 
+    function clearData(){
+        setUsername('');
+        setEmail('');
+        setPassword('');
+    }
+
+    function anyIsEmpty(): boolean{
+        return username.trim().length == 0 || email.trim().length == 0 || password.trim().length == 0;
+    }
+    
     function handleClickChangeForm(type: 'login' | 'register') {
         console.log(type);
         setFormType(type);
     }
 
+    async function handleSubmitRegister(event: React.FormEvent) {
+        event.preventDefault();
+
+        try {
+            if(anyIsEmpty()) return alert('Preencha os campos corretamente!');
+
+            const user: SimplifiedUser = await api.fetchCreateUser(username, email, password);
+
+            console.table(user);
+
+            localStorage.setItem('userSicron', JSON.stringify(user))
+
+            alert('Registro com sucesso!');
+            clearData();
+
+        } catch (error: unknown) {
+            console.error(error);
+            alert(`Erro no registro: ${error}`);
+        }
+    }
+
+    function handleSubmitLogin(event: React.FormEvent) {
+        event.preventDefault();
+    }
+
 
     return (
-        <div className="form-container">
+        <form className="form-container" onSubmit={formType == 'register'? handleSubmitRegister : handleSubmitLogin}>
             {/* Componente do header */}
             <div></div>
 
             {formType == 'login' ?
                 <LoginForm
+                    email={email}
+                    setEmail={setEmail}
+                    password={password}
+                    setPassword={setPassword}
                     eventChangeForm={() => handleClickChangeForm('register')}
                 />
                 :
                 <RegisterForm
+                    username={username}
+                    setUsername={setUsername}
+                    email={email}
+                    setEmail={setEmail}
+                    password={password}
+                    setPassword={setPassword}
                     eventChangeForm={() => handleClickChangeForm('login')}
                 />
             }
 
-        </div>
+        </form>
     )
 }

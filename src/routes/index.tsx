@@ -5,16 +5,18 @@ import App from "../App";
 import PageAuthentication from "../pages/Page-Authentication";
 import PagePerfil from "../pages/Page-Perfil";
 import PageONG from "../pages/Page-ONG";
-import AdminOng from "../pages/Admin-Ong";
+import DashboardONG from "../pages/Dashboard-ONG";
+import DashboardAdmin from "../pages/Dashboard-Admin";
 
 export default function AppRoutes() {
     return (
         <Routes>
             <Route path="/" element={<App />} />
             <Route path="/login" element={<PageAuthentication />} />
-            <Route path='/perfil' element={<PagePerfil />} />
+            <Route path='/perfil/:id' element={<PagePerfil />} />
             <Route path='/ong' element={<PageONG />} />
-            <Route path='/admin' element={<AdminOng />} />
+            <Route path='/dashboard-ong' element={<DashboardONG />} />
+            <Route path='/dashboard-admin' element={<DashboardAdmin />} />
         </Routes>
     );
 }
