@@ -3,6 +3,9 @@ import Card from "../components/Card/Card";
 import Header from "../components/Header/Header";
 import { useEffect, useState } from "react";
 import { api, SimplifiedUser } from "../services/api";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
+import EntityUpdate from "../components/Forms/EntityUpdate/EntityUpdate";
 
 
 
@@ -11,20 +14,26 @@ export default function DashboardAdmin() {
     const [ isLoading, setIsLoading ] = useState(true);
     const [ dataUsers, setDataUsers ] = useState<SimplifiedUser[]>();
     const [ keyHeader, setKeyHeader ] = useState<string[]>([]);
+    const [ isEditEntity, setIsEditEntity ] = useState(false);
+    const [ entityForEdit, setEntityForEdit ] = useState(null);
+    const [ typeEntity, setTypeEntity ] = useState('');
+
+    const handleClickForEdit = (obj: any, type: string) => {
+        setIsEditEntity(true);
+        setEntityForEdit(obj);
+        setTypeEntity(type);
+    }
 
     useEffect(()=>{
         const fetchData = async () => {
             try{
 
-                const responseApi = await api.fetchUsers();
+                const responseApiUsers = await api.fetchUsers();
 
-                console.log('React: Exibindo resposta:', responseApi);
+                setDataUsers(responseApiUsers);
 
-
-                setDataUsers(responseApi);
-
-                if (responseApi && responseApi.length > 0) {
-                    setKeyHeader(Object.keys(responseApi[0]));
+                if (responseApiUsers && responseApiUsers.length > 0) {
+                    setKeyHeader(Object.keys(responseApiUsers[0]));
                 }
 
             } catch (e: any) {
@@ -65,6 +74,10 @@ export default function DashboardAdmin() {
                                 {keyHeader.map((key) => (
                                     <th key={key} style={{ padding: '10px' }}>{key}</th>
                                 ))}
+
+                                <th>
+                                    ações
+                                </th>
                             </tr>
                         </thead>
 
@@ -74,13 +87,26 @@ export default function DashboardAdmin() {
                                     {keyHeader.map((key: string) => (
                                         <td key={key} style={{ padding: '10px' }}>{(user as any)[key]}</td>
                                     ))}
+
+                                    <td>
+                                        <FontAwesomeIcon icon={faPencil} style={{marginRight: '10px'}} cursor={'pointer'} onClick={() => handleClickForEdit(user, 'Usuário')} />
+                                        <FontAwesomeIcon icon={faTrash}  cursor={'pointer'} />
+                                    </td> 
                                 </tr>
                             ))}
                         </tbody>
                     </table>
                 )}
-                
+    
             </Card>
+
+            { isEditEntity && (
+                <EntityUpdate 
+                    entity={entityForEdit} 
+                    typeEntity={typeEntity} 
+                    onClose={() => setIsEditEntity(false)}
+                />
+            )}
         </>
     );
 }

@@ -2,7 +2,6 @@ import Card from "../components/Card/Card";
 import Header from "../components/Header/Header";
 import { useEffect, useState } from "react";
 import {api} from "../services/api";
-import { data } from "react-router-dom";
 
 
 

@@ -22,10 +22,8 @@ class Api {
     public async fetchUsers(): Promise<Array<SimplifiedUser>> {
         try{
             const response = await this.api.get('/users');
-            console.info('Api: Exibindo Response:', response);
 
             const data = response.data;
-            console.info('Api: Exibindo Data:', data);
 
             return response.data.users.map((u: any) => ({
                 id: u.id,
@@ -68,6 +66,12 @@ class Api {
 
         return response.data.user;
     }
+
+    public async fetchUpdateUser(user: SimplifiedUser){
+        const response = await this.api.put(`/users/${user.id}`, {...user});
+        
+    }
+
 }
 
 export const api = new Api();
