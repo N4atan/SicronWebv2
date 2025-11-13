@@ -1,0 +1,75 @@
+/* EntityCreate.css */
+
+.form-createEntity {
+  display: flex;
+  flex-direction: column;
+  /* Importante: Se o Card tem padding, 100% pode estourar. 
+     Se continuar estourando, tente reduzir para 95% ou use flex no pai. */
+  height: 90%; 
+  overflow: hidden; /* Garante que o formulário não vaze do card */
+}
+
+/* --- Área dos Tabs --- */
+.container-tabs {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding-bottom: 15px; /* Espaço embaixo dos radios */
+  border-bottom: 1px solid #f0f0f0;
+  flex-shrink: 0;
+  margin-bottom: 10px;
+}
+
+.radio-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  color: #444;
+}
+
+/* --- Corpo com Scroll (O Segredo está aqui) --- */
+.container-body {
+  flex: 1;              /* Ocupa o espaço do meio */
+  overflow-y: auto;     /* Scroll apenas aqui */
+  
+  display: flex;
+  flex-direction: column;
+  gap: 12px;            /* Reduzi o espaço entre inputs para ficar mais compacto */
+  padding-right: 10px;  /* Espaço para a barra de rolagem não colar no texto */
+  
+  /* Pequeno ajuste para não cortar a sombra do último input */
+  padding-bottom: 10px; 
+}
+
+/* --- ESTILIZAÇÃO DA BARRA DE ROLAGEM (Scrollbar Clean) --- */
+/* Funciona no Chrome, Edge, Safari */
+.container-body::-webkit-scrollbar {
+  width: 6px;               /* Barra bem fininha */
+}
+
+.container-body::-webkit-scrollbar-track {
+  background: transparent;  /* Fundo transparente */
+}
+
+.container-body::-webkit-scrollbar-thumb {
+  background-color: #ccc;   /* Cor da barra (cinza claro) */
+  border-radius: 10px;      /* Arredondada */
+}
+
+.container-body::-webkit-scrollbar-thumb:hover {
+  background-color: #bbb;   /* Um pouco mais escura ao passar o mouse */
+}
+
+/* --- Área dos Botões (Footer Fixo) --- */
+.container-buttons {
+  padding-top: 15px;
+  margin-top: 10px;
+  border-top: 1px solid #f0f0f0; /* Linha separando o scroll do botão */
+  
+  display: flex;
+  justify-content: flex-end; /* Joga o botão para a direita */
+  flex-shrink: 0;
+  gap: 15px;
+}

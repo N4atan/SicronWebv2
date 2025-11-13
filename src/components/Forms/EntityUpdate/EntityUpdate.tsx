@@ -14,6 +14,7 @@ type Props = {
     entity: any;
     typeEntity: string;
     onClose: () => void;
+    onRefresh: () => void;
 }
 
 
@@ -21,22 +22,31 @@ type Props = {
 export default function EntityUpdate(props: Props) {
     const [ formData, setFormData ] = useState(props.entity);
     
-    const handleChange = (e: any, key: string) => {
-        const newValue = e.target.value;
-        
+    
+
+    const handleChange = (field: string, value: any) => {
         setFormData((prevData: any) => ({
             ...prevData,
-            [key]: newValue
+            [field]: value
         }))
     }
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         console.log('Dados para salvar:');
         console.table(formData);
 
-        api.fetchUpdateUser(formData);
+        const response = await api.fetchUpdateUser(formData);
+
+        if (!response) {
+            alert(api.errorResponse);
+            return;
+        }
+
+        alert('Salvo com Sucesso!');
+        props.onClose();
+        props.onRefresh();
     }
     
     const keys: Array<string> = Object.keys(props.entity);
@@ -60,7 +70,7 @@ export default function EntityUpdate(props: Props) {
                             variant="default"
                             label={key}
                             value={(formData as any)[key]}
-                            onChange={(event) => handleChange(event, key)}
+                            onChange={(e) => handleChange(key, e.target.value)}
                         />
                     ))}
                     

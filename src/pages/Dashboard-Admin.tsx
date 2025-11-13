@@ -2,10 +2,13 @@
 import Card from "../components/Card/Card";
 import Header from "../components/Header/Header";
 import { useEffect, useState } from "react";
-import { api, SimplifiedUser } from "../services/api";
+import { api, SimplifiedUser, SimplifiedOng } from "../services/api";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
 import EntityUpdate from "../components/Forms/EntityUpdate/EntityUpdate";
+import DynamicTable from "../components/Table/DynamicTable/DynamicTable";
+import EntityCreate from "../components/Forms/EntityCreate/EntityCreate";
+import Button from "../components/Button/Button";
 
 
 
@@ -13,10 +16,29 @@ import EntityUpdate from "../components/Forms/EntityUpdate/EntityUpdate";
 export default function DashboardAdmin() {
     const [ isLoading, setIsLoading ] = useState(true);
     const [ dataUsers, setDataUsers ] = useState<SimplifiedUser[]>();
-    const [ keyHeader, setKeyHeader ] = useState<string[]>([]);
+    const [ dataOngs, setDataOngs   ] = useState<SimplifiedOng>();
+    
     const [ isEditEntity, setIsEditEntity ] = useState(false);
     const [ entityForEdit, setEntityForEdit ] = useState(null);
     const [ typeEntity, setTypeEntity ] = useState('');
+
+    const [ isCreatingEntity, setIsCreatingEntity ] = useState(false);
+
+    const fetchData = async () => {
+        try{
+
+            const responseApiUsers = await api.fetchUsers();
+
+            setDataUsers(responseApiUsers);
+
+        } catch (e: any) {
+            console.error('React: Erro:', e);
+            alert(e);
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
 
     const handleClickForEdit = (obj: any, type: string) => {
         setIsEditEntity(true);
@@ -24,27 +46,29 @@ export default function DashboardAdmin() {
         setTypeEntity(type);
     }
 
-    useEffect(()=>{
-        const fetchData = async () => {
-            try{
 
-                const responseApiUsers = await api.fetchUsers();
+    const handleClickForDelete = async (obj: any, type: string) => {
+        const response = await api.fetchDeleteUser(obj.id);
 
-                setDataUsers(responseApiUsers);
-
-                if (responseApiUsers && responseApiUsers.length > 0) {
-                    setKeyHeader(Object.keys(responseApiUsers[0]));
-                }
-
-            } catch (e: any) {
-                console.error('React: Erro:', e);
-                alert(e);
-            } finally {
-                setIsLoading(false);
-            }
+        if (!response) {
+            alert(api.errorResponse);
+            return;
         }
 
+        alert(response);
+
         fetchData();
+    }
+
+    
+    useEffect(()=>{
+        try {
+            fetchData();
+        } catch (e: unknown) {
+            alert(e)
+        } finally {
+            setIsLoading(false);
+        }
     }, [])
 
     return (
@@ -58,46 +82,16 @@ export default function DashboardAdmin() {
 
             </div>
 
-            
-
-            {/* Seção de Itens de Doação */}
-            
-            <Card 
-                titleSection="Usuários"
-                subtitleSection="Gerencie todos os usuários cadastrados no sistema."
+            <Card
+                titleSection="Barra de Ações"
                 style={{ margin: '50px auto', maxWidth: '1000px' }}
             >
-                { !isLoading && dataUsers && (
-                    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }}>
-                        <thead>
-                            <tr style={{ borderBottom: '1px solid #eee', textAlign: 'left' }}>
-                                {keyHeader.map((key) => (
-                                    <th key={key} style={{ padding: '10px' }}>{key}</th>
-                                ))}
-
-                                <th>
-                                    ações
-                                </th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            { dataUsers.map((user: SimplifiedUser, rowIdx: number) => (
-                                <tr key={rowIdx} style={{ borderBottom: '1px solid #eee' }} >
-                                    {keyHeader.map((key: string) => (
-                                        <td key={key} style={{ padding: '10px' }}>{(user as any)[key]}</td>
-                                    ))}
-
-                                    <td>
-                                        <FontAwesomeIcon icon={faPencil} style={{marginRight: '10px'}} cursor={'pointer'} onClick={() => handleClickForEdit(user, 'Usuário')} />
-                                        <FontAwesomeIcon icon={faTrash}  cursor={'pointer'} />
-                                    </td> 
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                )}
-    
+                <Button 
+                    variant="primary"
+                    type="button"
+                    text="Adicionar"
+                    onClick={() => setIsCreatingEntity(true)}
+                />
             </Card>
 
             { isEditEntity && (
@@ -105,8 +99,50 @@ export default function DashboardAdmin() {
                     entity={entityForEdit} 
                     typeEntity={typeEntity} 
                     onClose={() => setIsEditEntity(false)}
+                    onRefresh={() => fetchData()}
                 />
             )}
+
+
+            { isCreatingEntity && (
+                <EntityCreate 
+                onClose={() =>setIsCreatingEntity(false)}
+                />
+            )}
+            
+        
+            <Card 
+                titleSection="Usuários"
+                subtitleSection="Gerencie todos os usuários cadastrados no sistema."
+                style={{ margin: '50px auto', maxWidth: '1000px' }}
+            >   
+                { isLoading && (
+                    <p>Carregando Dados...</p>
+                )}
+
+                { !isLoading && (
+                    <DynamicTable 
+                        typeData="user"
+                        listData={dataUsers!}
+                        onEdit={handleClickForEdit}
+                        onDelete={handleClickForDelete}
+                    />
+                )}
+    
+            </Card>
+
+            <Card 
+                titleSection="ONGS"
+                subtitleSection="Gerencie todas as ongs cadastrados no sistema."
+                style={{ margin: '50px auto', maxWidth: '1000px' }}
+            >
+                { isLoading && (
+                    <p>Carregando Dados...</p>
+                )}
+
+                
+
+            </Card>
         </>
     );
 }
