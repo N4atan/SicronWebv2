@@ -153,11 +153,16 @@ export default function AuthenticationForm() {
 
         try {
             if(anyIsEmpty()) return alert('Preencha os campos corretamente!');
+            
+            const user = await api.fetchCreateUser({username, email, password});
 
-            const user: SimplifiedUser = await api.fetchCreateUser(username, email, password);
+            if (!user) {
+                console.info(api.errorResponse);
+                alert(api.errorResponse);
+                return;
+            }
 
             console.table(user);
-
             localStorage.setItem('userSicron', JSON.stringify(user))
 
             alert('Registro com sucesso!');

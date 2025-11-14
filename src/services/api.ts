@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable prefer-const */
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
 export interface SimplifiedUser {
     id: number,
     username: string,
     email: string,
     role: string,
+    password?: string
 }
 
 export interface SimplifiedOng {
@@ -15,35 +16,36 @@ export interface SimplifiedOng {
     razao_social: string,
     nome_fantasia: string,
     cnpj: string,
-    wallet  : number,
+    wallet: number,
     cep_location: string,
     numero_telefone: string,
     email_contato: string
 }
 
+// Mantive seus schemas como estavam
 export const FORM_SCHEMAS = {
     user: [
         { name: 'username', value: '', label: 'Nome de Usuário', type: 'text', placeholder: 'Ex: joaosilva' },
-        { name: 'email'   , value: '', label: 'E-mail', type: 'email', placeholder: 'joao@email.com' },
-        { name: 'passwrd' , value: '', label: 'Senha', type: 'text', placeholder: '' },
-        { name: 'role'    , value: '', label: 'Função', type: 'text', placeholder: 'Ex: admin, user...' },
+        { name: 'email', value: '', label: 'E-mail', type: 'email', placeholder: 'joao@email.com' },
+        { name: 'passwrd', value: '', label: 'Senha', type: 'text', placeholder: '' },
+        { name: 'role', value: 'user', label: 'Função', type: 'text', placeholder: 'Ex: admin, user...' },
     ],
     ong: [
-        { name: 'gestor_id'      , value: '', label: 'ID do Gestor', type: 'number', placeholder: 'Ex: 10' },
-        { name: 'razao_social'   , value: '', label: 'Razão Social', type: 'text', placeholder: 'Ex: Associação Amigos da Terra' },
-        { name: 'nome_fantasia'  , value: '', label: 'Nome Fantasia', type: 'text', placeholder: 'Ex: ONG Verde Vida' },
-        { name: 'cnpj'           , value: '', label: 'CNPJ', type: 'text', placeholder: '00.000.000/0000-00' },
-        { name: 'cep_location'   , value: '', label: 'CEP', type: 'text', placeholder: 'Ex: 12345-678' },
+        { name: 'gestor_id', value: '', label: 'ID do Gestor', type: 'number', placeholder: 'Ex: 10' },
+        { name: 'razao_social', value: '', label: 'Razão Social', type: 'text', placeholder: 'Ex: Associação Amigos da Terra' },
+        { name: 'nome_fantasia', value: '', label: 'Nome Fantasia', type: 'text', placeholder: 'Ex: ONG Verde Vida' },
+        { name: 'cnpj', value: '', label: 'CNPJ', type: 'text', placeholder: '00.000.000/0000-00' },
+        { name: 'cep_location', value: '', label: 'CEP', type: 'text', placeholder: 'Ex: 12345-678' },
         { name: 'numero_telefone', value: '', label: 'Telefone', type: 'text', placeholder: 'Ex: (11) 99999-9999' },
-        { name: 'email_contato'  , value: '', label: 'E-mail de Contato', type: 'email', placeholder: 'contato@ong.com' },
+        { name: 'email_contato', value: '', label: 'E-mail de Contato', type: 'email', placeholder: 'contato@ong.com' },
     ]
 }
 
 class Api {
     private api;
     public errorResponse: string;
-    
-    constructor(){
+
+    constructor() {
         this.api = axios.create({
             baseURL: 'https://sicronweb-backend.onrender.com/api'
         })
@@ -51,12 +53,22 @@ class Api {
         this.errorResponse = '';
     }
 
+    // Método auxiliar para tratar erros repetitivos
+    private handleAxiosError(error: any, defaultMessage: string) {
+        console.error(defaultMessage, error);
+        
+        if (axios.isAxiosError(error) && error.response && error.response.data) {
+            // Pega a mensagem exata enviada pelo backend (ex: "Razão Social já cadastrada!")
+            this.errorResponse = error.response.data.message || defaultMessage;
+        } else {
+            this.errorResponse = defaultMessage;
+        }
+    }
+
     public async fetchUsers(): Promise<Array<SimplifiedUser>> {
-        try{
+        this.errorResponse = '';
+        try {
             const response = await this.api.get('/users');
-
-            const data = response.data;
-
             return response.data.users.map((u: any) => ({
                 id: u.id,
                 username: u.username,
@@ -64,87 +76,103 @@ class Api {
                 role: u.role
             }));
         } catch (error) {
-            console.error("Erro na camada da API:", error);
-            // Lança o erro para o useEffect pegar
-            throw new Error("Falha ao buscar usuários.");
+            this.handleAxiosError(error, "Falha ao buscar usuários.");
+            return []; // Retorna array vazio para não quebrar o .map no front
         }
     }
 
     public async fetchCreateUser(user: Partial<SimplifiedUser>): Promise<SimplifiedUser | null> {
-        try{
-            const response = await this.api.post('/users', {...user});
-
-            if (response.status != 201) {
-                this.errorResponse = response.data.message;
-                return null;
-            }
-
-
+        this.errorResponse = '';
+        try {
+            const response = await this.api.post('/users', { ...user });
+            
+            // Se chegou aqui, é sucesso (201)
             const fullUser = response.data.userCreated;
-
-            const simplifiedUser: SimplifiedUser = {
+            
+            return {
                 id: fullUser.id,
                 username: fullUser.username,
                 email: fullUser.email,
                 role: fullUser.role
             };
 
-
-            return simplifiedUser;
-
         } catch (error) {
-            console.error("Erro na camada da API:", error);
-            // Lança o erro para o useEffect pegar
-            throw new Error("Falha ao cadastrar usuário.");
+            this.handleAxiosError(error, "Falha ao cadastrar usuário.");
+            return null;
         }
     }
 
     public async fetchUser(id: string): Promise<SimplifiedUser | null> {
-        const response = await this.api.get(`/users/${id}`);
-
-        return response.data.user;
-    }
-
-    public async fetchUpdateUser(user: SimplifiedUser): Promise<SimplifiedUser | null>{
         this.errorResponse = '';
-
-        const response = await this.api.put(`/users/${user.id}`, {...user});
-        
-        if (response.status != 200) {
-            this.errorResponse = response.data.message;
+        try {
+            const response = await this.api.get(`/users/${id}`);
+            return response.data.user;
+        } catch (error) {
+            this.handleAxiosError(error, "Usuário não encontrado.");
             return null;
         }
+    }
 
-        return {
-            id: response.data.updateUser.id,
-            username: response.data.updateUser.username,
-            email: response.data.updateUser.email,
-            role: response.data.updateUser.role
+    public async fetchUpdateUser(user: SimplifiedUser): Promise<SimplifiedUser | null> {
+        this.errorResponse = '';
+        try {
+            const response = await this.api.put(`/users/${user.id}`, { ...user });
+            
+            return {
+                id: response.data.updateUser.id,
+                username: response.data.updateUser.username,
+                email: response.data.updateUser.email,
+                role: response.data.updateUser.role
+            };
+        } catch (error) {
+            this.handleAxiosError(error, "Falha ao atualizar usuário.");
+            return null;
         }
     }
 
     public async fetchDeleteUser(idUser: number): Promise<String | null> {
-        const response = await this.api.delete(`/users/${idUser}`);
-
-        if (response.status != 204) {
-            this.errorResponse = response.data.message;
+        this.errorResponse = '';
+        try {
+            await this.api.delete(`/users/${idUser}`);
+            return 'Usuário Removido!';
+        } catch (error) {
+            this.handleAxiosError(error, "Falha ao remover usuário.");
             return null;
         }
-
-        return 'Usuário Removido!';
     }
 
     public async fetchCreateOng(ong: Partial<SimplifiedOng>): Promise<SimplifiedOng | null> {
         this.errorResponse = '';
-        
-        const response = await this.api.post('/ongs', {...ong})
-
-        if (response.status != 201) {
-            this.errorResponse = response.data.message;
+        try {
+            const response = await this.api.post('/ongs', { ...ong });
+            return response.data.ongCreated;
+        } catch (error) {
+            // Aqui a mágica acontece: O erro 409 cai aqui, e a função salva a mensagem "Razão Social..."
+            this.handleAxiosError(error, "Falha ao criar ONG.");
             return null;
         }
+    }
 
-        return response.data.ongCreated;
+    public async fetchOngs(): Promise<SimplifiedOng[] | null> {
+        this.errorResponse = '';
+        try {
+            const response = await this.api.get('/ongs');
+            return response.data.ongs;
+        } catch (error) {
+            this.handleAxiosError(error, "Falha ao listar ONGs.");
+            return null;
+        }
+    }
+
+    public async fetchDeleteOng(idOng: number): Promise<String | null> {
+        this.errorResponse = '';
+        try {
+            await this.api.delete(`/ongs/${idOng}`);
+            return 'ONG Removida!';
+        } catch (error) {
+            this.handleAxiosError(error, "Falha ao remover ong.");
+            return null;
+        }
     }
 }
 

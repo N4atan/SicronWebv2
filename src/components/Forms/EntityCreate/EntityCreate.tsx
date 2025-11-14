@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import Card from "../../Card/Card";
 import { Overlay } from "../../Overlay/Overlay";
 import Input from "../../Inputs/Input/Input";
-import { api, FORM_SCHEMAS, SimplifiedOng } from "../../../services/api"; // Ajuste o import conforme seu projeto
+import { api, FORM_SCHEMAS } from "../../../services/api"; 
 import Button from "../../Button/Button";
 import './EntityCreate.css';
 
 type Props = {
     onClose: () => void;
+    // Adicionei onRefresh opcional, caso queira atualizar a tabela ao fechar
+    onRefresh?: () => void; 
 };
 
 export default function EntityCreate(props: Props) {
@@ -22,43 +24,47 @@ export default function EntityCreate(props: Props) {
         );
     };
 
-
+    // --- LÓGICA RESTAURADA AQUI ---
     const handleSave = async () => {
+        // Transforma array de inputs em objeto JSON
         const data = currentFields.reduce((acc: any, field: any) => {
-            acc[field.name] = field.value;
+            // Se o input for do tipo number, garante que o JSON envie um número, não string "10"
+            acc[field.name] = field.type === 'number' ? Number(field.value) : field.value;
             return acc;
-        }, {})
+        }, {});
 
         try {
             let response;
-            
-            if (tab == 'user') {
 
+            if (tab === 'user') {
+                response = await api.fetchCreateUser(data);
             }
 
-            if (tab == 'ong') {
+            if (tab === 'ong') {
                 response = await api.fetchCreateOng(data);
             }
 
-            if(!response) {
-                console.info(api.errorResponse);
-                alert(api.errorResponse);
+            // Se response for null, a classe API já capturou o erro (400, 409, 500)
+            // e salvou a mensagem em api.errorResponse
+            if (!response) {
+                alert(api.errorResponse); 
+                return;
             }
 
-            alert(`${tab} Salvo(a) com Sucesso(a)!`);
+            alert(`${tab === 'user' ? 'Usuário' : 'ONG'} criado(a) com Sucesso!`);
             
-        } catch(e: unknown) {
-            console.error(e);
-            alert(e);
-        } finally {
+            if (props.onRefresh) props.onRefresh(); // Atualiza a tabela pai, se existir
+            props.onClose();
 
+        } catch (e: any) {
+            console.error(e);
+            alert("Erro inesperado na aplicação.");
         }
     }
-
-
+    // ------------------------------
 
     useEffect(() => {
-        // Quando troca a tab, reseta os campos baseados no schema original
+        // Reseta os campos quando troca a aba, para não misturar dados de User com ONG
         setCurrentFields(FORM_SCHEMAS[tab]);
     }, [tab]);
 
@@ -67,9 +73,16 @@ export default function EntityCreate(props: Props) {
             <Card
                 titleSection="Criando Entidade"
                 subtitleSection="Selecione o tipo e preencha os campos."
-                style={{ width: '500px', height: '600px', margin: '15px auto' }} 
+                // Layout responsivo com scroll interno
+                style={{ 
+                    width: '500px', 
+                    maxHeight: '90vh', 
+                    height: 'auto', 
+                    margin: '15px auto',
+                    display: 'flex',
+                    flexDirection: 'column'
+                }} 
             >
-
                 <form className="form-createEntity">
 
                     <div className="container-tabs">
@@ -105,12 +118,12 @@ export default function EntityCreate(props: Props) {
                                 key={fieldConfigs.name}
                                 type={fieldConfigs.type}
                                 label={fieldConfigs.label}
-                                value={fieldConfigs.value || ''} // Garante que não seja undefined
+                                value={fieldConfigs.value || ''}
+                                placeholder={fieldConfigs.placeholder}
                                 onChange={(e: any) => handleChange(fieldConfigs.name, e.target.value)}
                             />
                         ))}
                     </div>
-
 
                     <div className="container-buttons">
                         <Button
@@ -118,18 +131,17 @@ export default function EntityCreate(props: Props) {
                             text="Cancelar"
                             type="button"
                             onClick={props.onClose}
-                            style={{ width: '80px' }} // Opcional: Largura fixa no botão
+                            style={{ width: '80px' }}
                         />
 
                         <Button
                             variant="primary"
                             text="Criar"
-                            type="button"
+                            type="button" // Mudei para button pois chamamos handleSave no onClick manualmente
                             onClick={() => handleSave()}
-                            style={{ width: '120px' }} // Opcional: Largura fixa no botão
+                            style={{ width: '120px' }}
                         />
                     </div>
-
                 </form>
             </Card>
         </Overlay>
