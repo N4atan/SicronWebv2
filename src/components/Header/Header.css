@@ -1,53 +1,127 @@
 .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 2rem;
-    background-color: #ffffffda;
-    
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-
-    color: black;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-
-    border-bottom: 1px solid #eee;
+  display: flex;
+  align-items: center;
+  padding: clamp(0.8rem, 2vw, 1rem) clamp(1rem, 4vw, 2rem);
+  background-color: #ffffffda;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: black;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 1px solid #eee;
+  transition: all 0.3s ease;
+  gap: 2rem;
 }
 
+/* 3 colunas no desktop */
 .logo-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.05rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex: 1;
+  /* ocupa a parte esquerda */
 }
 
-/* Arthur virará femboy dia 31 durante 3 horas */
 .logo-img {
-    width: 30px;
-    height: 30px;
-    object-fit: contain;
-    align-self: center;
+  width: clamp(24px, 3vw, 30px);
+  height: clamp(24px, 3vw, 30px);
+  object-fit: contain;
 }
 
 .logo {
-    font-size: 1rem;
-    font-weight: 600;
-    color: rgb(7, 156, 7);
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  font-weight: 600;
+  color: rgb(7, 156, 7);
 }
 
+/* O NAV vai bem no meio */
 .nav {
-    display: flex;
-    gap: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.2rem;
+  flex: 2;
+  /* ocupa o espaço central */
 }
 
 .nav-link {
-    color: black;
-    text-decoration: none;
-    font-weight: 500;
+  color: black;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
 }
 
 .nav-link:hover {
-    color: darkgreen;
+  color: darkgreen;
+}
+
+/* Tweaks à direita */
+.tweaks {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+  /* ocupa a parte direita */
+  justify-content: flex-end;
+}
+
+.tweaks-link {
+  color: black;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+}
+
+/* ===========================
+          MOBILE
+   =========================== */
+@media (max-width: 720px) {
+  .header {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .nav {
+    flex: 0 0 100%;
+  }
+
+  .nav,
+  .tweaks {
+    flex-direction: column;
+    width: 100%;
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height .3s ease, opacity .3s ease;
+  }
+
+  .tweaks {
+    order: 2;
+    margin-top: .5rem;
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .nav {
+    order: 1;
+  }
+
+  .header.menu-open .nav,
+  .header.menu-open .tweaks {
+    max-height: 300px;
+    opacity: 1;
+  }
 }

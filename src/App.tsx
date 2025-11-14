@@ -1,6 +1,7 @@
 import Header from "./components/Header/Header";
 import HeroSection from "./components/Sections/Hero/HeroSection";
 import HowItWorksSection from "./components/Sections/HowItWork/HowItWorksSection";
+import ImpactSection from "./components/Sections/Impact/ImpactSection";
 
 import "./App.css";
 import ContactSection from "./components/Sections/Contact/ContactSection";
@@ -11,6 +12,7 @@ export default function App() {
     <div className="App">
       <Header />
       <HeroSection />
+      <ImpactSection />
       <HowItWorksSection />
       <ContactSection />
       <Footer />
