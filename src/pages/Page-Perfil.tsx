@@ -48,26 +48,26 @@ export default function PagePerfil() {
 
     useEffect(()=> {
 
-        if(!id) return alert('Usuário não especificado na URL.');
-
-        try {
-            async function fetchData(){
+        async function fetchData(){
+            try {
+                // O isLoading já começa 'true', não precisa setar de novo
                 const response: SimplifiedUser | null = await api.fetchUser(String(id));
-
                 setUser(response);
                 console.table(response);
-            };
 
-            fetchData();
+            } catch (error) {
+                console.error("Erro ao buscar usuário:", error);
+                alert(`Erro ao buscar usuário: ${error}`);
+            } finally {
+                // AGORA SIM: Isso só roda depois do 'await' ou do 'catch'
+                setIsLoading(false);
+            }
+        };
 
-        } catch (error) {
-            console.error("Erro ao buscar usuário:", error);
-            alert(`Erro ao buscar usuário: ${error});`);
-        } finally {
-            setIsLoading(false);
-        }
+        fetchData();
 
     }, [id])
+
 
     return (
         <>

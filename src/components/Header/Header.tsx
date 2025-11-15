@@ -26,7 +26,7 @@ export default function Header() {
   <nav className="nav">
     <Link to="/" className="nav-link">Início</Link>
     <Link to="/ongs" className="nav-link">ONGs</Link>
-    <Link to="/sobre" className="nav-link">Sobre Nós</Link>
+    <Link to="/cadastros" className="nav-link">Cadastros</Link>
   </nav>
 
   <div className="tweaks">

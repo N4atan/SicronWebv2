@@ -15,7 +15,7 @@ export default function AppRoutes() {
             <Route path="/"                 element={<App />} />
             <Route path="/login"            element={<PageAuthentication />} />
             <Route path='/perfil/:id'       element={<PagePerfil />} />
-            <Route path="/solicitar-cadastro"         element={<PageSolicitarCadastro />} />
+            <Route path="/cadastros"        element={<PageSolicitarCadastro />} />
             <Route path='/ong'              element={<PageONG />} />
             <Route path='/dashboard-ong'    element={<DashboardONG />} />
             <Route path='/dashboard-admin'  element={<DashboardAdmin />} />
