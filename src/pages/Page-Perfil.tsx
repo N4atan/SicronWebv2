@@ -10,6 +10,7 @@ import { useParams } from "react-router-dom";
 import { api, SimplifiedUser } from './../services/api';
 import { useEffect, useState } from "react";
 import Card from "../components/Card/Card";
+import UserProfileCard from "../components/UserProfileCard/UserProfileCard";
 
 
 const listContact =[
@@ -73,26 +74,24 @@ export default function PagePerfil() {
         <>
             <Header />
 
-            { isLoading || !user && (
-                <Card>
-                    <p>
-                        {isLoading? 'Buscando Usuário...' : 'Usuário não encontrado'}
-                    </p>
+            { isLoading ||!user && (
+                <Card
+                    style={{width: '300px', margin: '1rem auto'}}
+                >
+                    <p>{!user ? 'Usuário não encontrado' : 'Buscando usuário...'}</p>
                 </Card>
             )}
 
-            { user && (
-                <>
-                <ProfileCard
-                    src="https://placehold.co/200"
-                    name={user.username}
-                    tags={['-', '-' ]}
-                />
-
+            { !isLoading && user && (
                 <ContainerPage
-                    variant="a-left"
+                variant="a-left"
+                isPageUser={true}
                 >
                     <aside>
+                        <UserProfileCard 
+                            name={user.username}               
+                        />
+
                         <InfoContactCard
                             listContact={[
                                 {
@@ -110,7 +109,6 @@ export default function PagePerfil() {
                         />
                     </main>
                 </ContainerPage>
-                </>
             )}
         </>
     )

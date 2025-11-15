@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import "./ContainerPage.css";
 
 type Props = {
-  variant: "a-left" | "a-right" | "a-no";
+  variant: "a-left" | "a-right" | "mobile";
   children?: React.ReactNode;
+  isPageUser?: boolean;
 };
 
 export default function ContainerPage(props: Props) {
@@ -22,11 +23,10 @@ export default function ContainerPage(props: Props) {
     return () => mediaQuery.removeEventListener("change", handleChange);
   }, []);
 
-  const configStyle =
-    isMobilePortrait             ? "a-no"
-    : props.variant === "a-no"   ? "a-no"
-    : props.variant === "a-left" ? "a-left"
-    : "a-right";
-
+  const configStyle = isMobilePortrait && props.isPageUser
+    ? "mobile-user"
+    : isMobilePortrait ? "mobile" : props.variant;
+  
+  
   return <div className={`container-page ${configStyle}`}> {props.children} </div>;
 }

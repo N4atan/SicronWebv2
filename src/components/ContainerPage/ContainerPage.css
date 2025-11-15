@@ -1,6 +1,6 @@
 .container-page {
 
- max-width: 800px;;
+    max-width: 800px;;
     display: grid;
     gap: 20px;
     
@@ -10,6 +10,9 @@
 
     aside {
         grid-area: aside;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
     }
     
     main {
@@ -33,12 +36,20 @@
     "main main aside"
 }
 
-.a-no {
+.mobile {
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-areas: 
     "nav nav nav"
     'main main main'
     "aside aside aside";
+}
+
+.mobile-user {
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-areas: 
+    "nav nav nav"
+    "aside aside aside"
+    'main main main';
 }
 
 /* O container <nav> que segura os rádios */
