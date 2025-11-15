@@ -1,5 +1,5 @@
 import "./HeroSection.css";
-
+import saImage from "../../../assets/images/criancas.webp";
 
 export default function HeroSection() {
   return (
@@ -14,7 +14,7 @@ export default function HeroSection() {
       </div>
 
       <div className="hero-image">
-        <img src='https://placehold.co/400' alt="Doadores ajudando pessoas" />
+        <img src={saImage} alt="Doadores ajudando pessoas"/>
       </div>
     </section>
   );
