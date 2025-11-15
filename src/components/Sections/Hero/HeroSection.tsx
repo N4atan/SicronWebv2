@@ -1,5 +1,5 @@
 import "./HeroSection.css";
-import saImage from "../../../assets/images/criancas.webp";
+import saImage from "../../../assets/images/Kids-happy.jpg";
 
 export default function HeroSection() {
   return (
