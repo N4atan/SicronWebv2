@@ -6,6 +6,7 @@ import ImpactSection from "./components/Sections/Impact/ImpactSection";
 import "./App.css";
 import ContactSection from "./components/Sections/Contact/ContactSection";
 import Footer from "./components/Footer/Footer";
+import OurImpact from "./components/OurImpact/OurImpact";
 
 export default function App() {
   return (
@@ -13,6 +14,7 @@ export default function App() {
       <Header />
       <HeroSection />
       <ImpactSection />
+      <OurImpact />
       <HowItWorksSection />
       <ContactSection />
       <Footer />
