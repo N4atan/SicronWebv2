@@ -6,7 +6,7 @@ import PageAuthentication from "../pages/Page-Authentication";
 import PagePerfil from "../pages/Page-Perfil";
 import PageONG from "../pages/Page-ONG";
 import DashboardONG from "../pages/Dashboard-ONG";
-import DashboardAdmin from "../pages/Dashboard-Admin/Dashboard-Admin";
+import DashboardAdmin from "../pages/Dashboard-Admin";
 import PageSolicitarCadastro from "../pages/Page-SolicitarCadastro";
 
 export default function AppRoutes() {
