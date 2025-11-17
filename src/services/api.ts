@@ -2,6 +2,13 @@
 /* eslint-disable prefer-const */
 import axios, { AxiosError } from 'axios';
 
+export enum StatusOng {
+    PENDENTE,
+    APROVADA,
+    REJEITADA
+}
+
+
 export interface SimplifiedUser {
     id: number,
     username: string,
@@ -12,14 +19,17 @@ export interface SimplifiedUser {
 
 export interface SimplifiedOng {
     id: number,
-    gestor_id: number,
+    gestor_email: string,
     razao_social: string,
     nome_fantasia: string,
+    objetivo: string,
     cnpj: string,
     wallet: number,
     cep_location: string,
     numero_telefone: string,
-    email_contato: string
+    email_contato: string,
+    criado_em?: string,
+    status?: StatusOng;
 }
 
 // Mantive seus schemas como estavam
@@ -31,11 +41,11 @@ export const FORM_SCHEMAS = {
         { name: 'role', value: 'user', label: 'Função', type: 'text', placeholder: 'Ex: admin, user...' },
     ],
     ong: [
-        { name: 'gestor_id', value: '', label: 'ID do Gestor', type: 'number', placeholder: 'Ex: 10' },
+        { name: 'gestor_email', value: '', label: 'Email do Gestor', type: 'text', placeholder: '* Ele deve estar cadastrado na plataforma! *' },
         { name: 'razao_social', value: '', label: 'Razão Social', type: 'text', placeholder: 'Ex: Associação Amigos da Terra' },
         { name: 'nome_fantasia', value: '', label: 'Nome Fantasia', type: 'text', placeholder: 'Ex: ONG Verde Vida' },
         { name: 'cnpj', value: '', label: 'CNPJ', type: 'text', placeholder: '00.000.000/0000-00' },
-        { name: 'cep_location', value: '', label: 'CEP', type: 'text', placeholder: 'Ex: 12345-678' },
+        { name: 'cep_location', value: '', label: 'Cidade - Estado', type: 'text', placeholder: 'Ex: São Leopoldo, RS' },
         { name: 'numero_telefone', value: '', label: 'Telefone', type: 'text', placeholder: 'Ex: (11) 99999-9999' },
         { name: 'email_contato', value: '', label: 'E-mail de Contato', type: 'email', placeholder: 'contato@ong.com' },
     ]
