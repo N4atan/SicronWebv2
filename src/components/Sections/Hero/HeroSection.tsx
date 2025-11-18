@@ -5,10 +5,10 @@ export default function HeroSection() {
   return (
     <section className="hero-section">
       <div className="hero-text">
-        <h1 className="hero-title">
+        <h1 className="title-section">
           Conectando doadores<br />a quem realmente precisa
         </h1>
-        <p className="hero-subtitle">
+        <p className="subtitle-section">
           Faça a diferença na vida de pessoas de<br />forma segura e transparente
         </p>
       </div>

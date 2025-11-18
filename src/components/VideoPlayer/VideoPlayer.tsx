@@ -16,8 +16,8 @@ export default function VideoPlayer({
 }: VideoPlayerProps) {
     return (
         <section className="video-player" {...rest}>
-            <h1 className="video-title">{title}</h1>
-            <h2 className="video-subtitle">{subtitle}</h2>
+            <h1 className="title-section">{title}</h1>
+            <h2 className="subtitle-section">{subtitle}</h2>
 
             <video
                 className="video-element"

@@ -27,8 +27,8 @@ export default function HowItWorksSection() {
     return (
         <section className="how-section">
             <div className="how-header">
-                <h2 className="how-title">Como Funciona</h2>
-                <p className="how-subtitle">
+                <h2 className="title-section">Como Funciona</h2>
+                <p className="subtitle-section">
                     Doar nunca foi tão simples e transparente
                 </p>
             </div>

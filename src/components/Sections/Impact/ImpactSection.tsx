@@ -9,9 +9,9 @@ export default function ImpactSection() {
         <section className="impact-section">
             <VideoPlayer
                 src={kidsDonation}
-                title="Conheça Nossa História"
-                subtitle="Veja como estamos mudando a vida de milhares de pessoas ao redor do país"
-                text="Nosso trabalho só é possível graças ao apoio de pessoas como você. Juntos, podemos fazer ainda mais pela educação e bem-estar do mundo."
+                title="Conectando Você a Quem Precisa"
+                subtitle="Tecnologia e logística para transformar doações em entregas garantidas"
+                text="É para gerar momentos como este que existimos. Quando você escolhe um item na nossa plataforma, nós garantimos a compra e o envio , transformando sua doação digital em um impacto físico e visível na vida de quem precisa."
             />
         </section>
     );

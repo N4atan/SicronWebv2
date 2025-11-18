@@ -1,6 +1,7 @@
 .video-player {
   display: flex;
   flex-direction: column;
+  text-align: center;
   gap: 1.5rem;
   padding: 2rem;
   border-radius: 12px;
@@ -9,18 +10,7 @@
   /* centraliza */
 }
 
-.video-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  text-align: center;
-  color: black;
-}
 
-.video-subtitle {
-  font-size: 1.1rem;
-  font-weight: normal;
-  text-align: center;
-}
 
 .video-description {
   font-size: 1rem;
