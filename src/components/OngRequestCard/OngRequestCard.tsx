@@ -17,7 +17,7 @@ export default function OngRequestCard(props: Props) {
             <p>!!Área de Atuação</p>
 
             <div className='badge'>
-                <span>{ongRequest.status || 'STATUS'}</span>
+                <span>{'STATUS'}</span>
             </div>
 
             <div className='container-objective'>
@@ -54,19 +54,18 @@ export default function OngRequestCard(props: Props) {
                     Ver Documentação
                 </button>
 
-                { ongRequest.status === StatusOng.PENDENTE && (
-                    <>
-                        <button className='btn-reject' >
-                            <FontAwesomeIcon icon={faXmark} />
-                            Rejeitar
-                        </button>
+                
+            
+                <button className='btn-reject' >
+                    <FontAwesomeIcon icon={faXmark} />
+                    Rejeitar
+                </button>
 
-                        <button className='btn-approve' >
-                            <FontAwesomeIcon icon={faCheck} />
-                            Aprovar
-                        </button>
-                    </>
-                )}
+                <button className='btn-approve' >
+                    <FontAwesomeIcon icon={faCheck} />
+                    Aprovar
+                </button>
+                
             </div>
 
         </div>

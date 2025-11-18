@@ -97,11 +97,15 @@ export default function DashboardAdmin() {
                             dataOngs={dataOngs}
                         />
                     )}
-
                     { tabActive === 'ongs' && (
-                        <OngRequestCard 
-                            ongRequest={dataOngs[0]}
-                        />
+                        /* Futuramente será um componente */
+                        <div className="ong-container">
+                            {
+                                dataOngs.map((ong) => (
+                                 <OngRequestCard ongRequest={ong} />                            
+                                ))
+                            } 
+                        </div>
                     )}
 
                 </section>

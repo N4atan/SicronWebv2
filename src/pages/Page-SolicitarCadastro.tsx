@@ -2,12 +2,13 @@ import { useState } from "react";
 import Header from "../components/Header/Header";
 import Card from "../components/Card/Card";
 import Input from "../components/Inputs/Input/Input";
-import { FORM_SCHEMAS } from "../services/api";
+import { FORM_SCHEMAS, api } from "../services/api";
 import Footer from "../components/Footer/Footer";
 import Button from "../components/Button/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBuildingNgo, faLaptopFile, faTreeCity } from "@fortawesome/free-solid-svg-icons";
 import ContainerPage from "../components/ContainerPage/ContainerPage";
+import { on } from "events";
 
 
 
@@ -21,6 +22,31 @@ export default function PageSolicitarCadastro(){
             )
         );
     };
+
+
+    const handleSave = async () => {
+        // Transforma array de inputs em objeto JSON
+        const data = currentFields.reduce((acc: any, field: any) => {
+            // Se o input for do tipo number, garante que o JSON envie um número, não string "10"
+            acc[field.name] = field.type === 'number' ? Number(field.value) : field.value;
+            return acc;
+        }, {});
+
+        try {
+            let response = await api.fetchCreateOng(data);
+
+            if (!response) {
+                alert(api.errorResponse); 
+                return;
+            }
+
+            alert(`Pedido Realizado!`);
+        } catch (e: any) {
+            console.error(e);
+            alert("Erro inesperado na aplicação.");
+        }
+    }
+
 
     return (
         <>
@@ -79,6 +105,8 @@ export default function PageSolicitarCadastro(){
                         <Button 
                         variant={"primary"}
                         text="Enviar Solicitação"
+                        type="button"
+                        onClick={() => handleSave()}
                         />
                     </form>
                     

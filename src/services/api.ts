@@ -28,8 +28,6 @@ export interface SimplifiedOng {
     cep_location: string,
     numero_telefone: string,
     email_contato: string,
-    criado_em?: string,
-    status?: StatusOng;
 }
 
 // Mantive seus schemas como estavam
@@ -45,7 +43,7 @@ export const FORM_SCHEMAS = {
         { name: 'razao_social', value: '', label: 'Razão Social', type: 'text', placeholder: 'Ex: Associação Amigos da Terra' },
         { name: 'nome_fantasia', value: '', label: 'Nome Fantasia', type: 'text', placeholder: 'Ex: ONG Verde Vida' },
         { name: 'cnpj', value: '', label: 'CNPJ', type: 'text', placeholder: '00.000.000/0000-00' },
-        { name: 'cep_location', value: '', label: 'Cidade - Estado', type: 'text', placeholder: 'Ex: São Leopoldo, RS' },
+        { name: 'cep_location', value: '', label: 'CEP', type: 'text', placeholder: 'Ex: 99999-999' },
         { name: 'numero_telefone', value: '', label: 'Telefone', type: 'text', placeholder: 'Ex: (11) 99999-9999' },
         { name: 'email_contato', value: '', label: 'E-mail de Contato', type: 'email', placeholder: 'contato@ong.com' },
     ]
@@ -152,12 +150,13 @@ class Api {
     }
 
     public async fetchCreateOng(ong: Partial<SimplifiedOng>): Promise<SimplifiedOng | null> {
+        console.table(ong);
+        
         this.errorResponse = '';
         try {
             const response = await this.api.post('/ongs', { ...ong });
             return response.data.ongCreated;
         } catch (error) {
-            // Aqui a mágica acontece: O erro 409 cai aqui, e a função salva a mensagem "Razão Social..."
             this.handleAxiosError(error, "Falha ao criar ONG.");
             return null;
         }
@@ -165,6 +164,7 @@ class Api {
 
     public async fetchOngs(): Promise<SimplifiedOng[] | null> {
         this.errorResponse = '';
+
         try {
             const response = await this.api.get('/ongs');
             return response.data.ongs;
