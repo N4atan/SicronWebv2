@@ -8,6 +8,7 @@ import PageONG from "../pages/Page-ONG";
 import DashboardONG from "../pages/Dashboard-ONG";
 import DashboardAdmin from "../pages/Dashboard-Admin/Dashboard-Admin";
 import PageSolicitarCadastro from "../pages/Page-SolicitarCadastro";
+import ExploreOngs from "../pages/ExploreOngs/ExploreOngs";
 
 export default function AppRoutes() {
     return (
@@ -16,7 +17,8 @@ export default function AppRoutes() {
             <Route path="/login"            element={<PageAuthentication />} />
             <Route path='/perfil/:id'       element={<PagePerfil />} />
             <Route path="/cadastros"        element={<PageSolicitarCadastro />} />
-            <Route path='/ong'              element={<PageONG />} />
+            <Route path='/perfil-ong'       element={<PageONG />} />
+            <Route path='/explorar'         element={<ExploreOngs />} />
             <Route path='/dashboard-ong'    element={<DashboardONG />} />
             <Route path='/dashboard-admin'  element={<DashboardAdmin />} />
         </Routes>

@@ -25,7 +25,7 @@ export default function Header() {
 
   <nav className="nav">
     <Link to="/" className="nav-link">Início</Link>
-    <Link to="/ongs" className="nav-link">ONGs</Link>
+    <Link to="/explorar" className="nav-link">Explora ONGs</Link>
     <Link to="/cadastros" className="nav-link">Cadastros</Link>
   </nav>
 

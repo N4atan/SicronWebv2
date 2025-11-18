@@ -22,12 +22,15 @@ export interface SimplifiedOng {
     gestor_email: string,
     razao_social: string,
     nome_fantasia: string,
+    foco_principal: string,
     objetivo: string,
     cnpj: string,
     wallet: number,
-    cep_location: string,
+    local: string,
     numero_telefone: string,
     email_contato: string,
+    status: StatusOng,
+    criadaEm: string
 }
 
 // Mantive seus schemas como estavam
@@ -42,8 +45,10 @@ export const FORM_SCHEMAS = {
         { name: 'gestor_email', value: '', label: 'Email do Gestor', type: 'text', placeholder: '* Ele deve estar cadastrado na plataforma! *' },
         { name: 'razao_social', value: '', label: 'Razão Social', type: 'text', placeholder: 'Ex: Associação Amigos da Terra' },
         { name: 'nome_fantasia', value: '', label: 'Nome Fantasia', type: 'text', placeholder: 'Ex: ONG Verde Vida' },
+        { name: 'foco_principal', value: '', label: 'Foco Principal', type: 'text', placeholder: 'Ex: Meio Ambiente' },
+        { name: 'objetivo', value: '', label: 'Objetivo', type: 'textarea', placeholder: 'Ex: Preservação ambiental' },
         { name: 'cnpj', value: '', label: 'CNPJ', type: 'text', placeholder: '00.000.000/0000-00' },
-        { name: 'cep_location', value: '', label: 'CEP', type: 'text', placeholder: 'Ex: 99999-999' },
+        { name: 'local', value: '', label: 'Localização', type: 'text', placeholder: 'Ex: São Paulo, SP' },
         { name: 'numero_telefone', value: '', label: 'Telefone', type: 'text', placeholder: 'Ex: (11) 99999-9999' },
         { name: 'email_contato', value: '', label: 'E-mail de Contato', type: 'email', placeholder: 'contato@ong.com' },
     ]
@@ -162,12 +167,31 @@ class Api {
         }
     }
 
-    public async fetchOngs(): Promise<SimplifiedOng[] | null> {
+    public async fetchOngs(filters: Record<string, any>): Promise<SimplifiedOng[] | null> {
         this.errorResponse = '';
 
+        const query = new URLSearchParams();
+
+        // 1. Itera sobre o objeto de filtros recebido
+        Object.keys(filters).forEach(key => {
+            const value = filters[key];
+
+            // 2. Só adiciona o parâmetro se o valor não for vazio, nulo ou undefined
+            if (value !== undefined && value !== null && value !== '') {
+                query.append(key, String(value));
+            }
+        });
+
         try {
-            const response = await this.api.get('/ongs');
-            return response.data.ongs;
+            // CORREÇÃO AQUI: Passamos a query como objeto 'params' no segundo argumento do .get()
+            const response = await this.api.get('/ongs', {
+                params: query
+            });
+
+            console.log('Response:', response)
+
+            // Assumindo que a resposta do back-end é { ongs: [...] }
+            return response.data;
         } catch (error) {
             this.handleAxiosError(error, "Falha ao listar ONGs.");
             return null;

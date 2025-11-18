@@ -31,13 +31,13 @@
 /* CARDS */
 .impact-cards {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    grid-template-columns: 1fr 1fr;
     gap: 1rem;
     margin: 1.5rem 0;
 }
 
 .card {
-    background: #ffecec;
+    background: #fcfcfc;
     padding: 1.2rem;
     border-radius: 10px;
     text-align: center;
@@ -52,7 +52,7 @@
 .card strong {
     font-size: 1.8rem;
     font-weight: 700;
-    color: rgb(7, 156, 7);
+    color: #079c07;
     line-height: 1;
 }
 

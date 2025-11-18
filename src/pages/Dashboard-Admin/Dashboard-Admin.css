@@ -49,6 +49,6 @@
 
 .ong-container {
     display: flex;
-    flex-flow: column wrap;
-    gap: 2rem;
+    flex-flow: row wrap;
+    gap: 10px;
 }

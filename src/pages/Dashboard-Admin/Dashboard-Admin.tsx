@@ -31,7 +31,7 @@ export default function DashboardAdmin() {
             }
 
             if (entity === 'ong') {
-                const response = await api.fetchOngs();
+                const response = await api.fetchOngs({});
                 if (response) setDataOngs(response);
             }
         } catch (e: any) {
@@ -56,9 +56,13 @@ export default function DashboardAdmin() {
         };
 
         loadAllData();
-    }, []);
 
+
+    }, []);
     
+    
+    console.log('Data Users:', dataUsers);
+    console.log('Data Ongs:', dataOngs);
 
     return (
         <main style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>

@@ -9,27 +9,30 @@ type Props = {
 }
 
 export default function OngRequestCard(props: Props) {
+    const isAdmin = true; // Simulação de verificação de admin
+    
     const { ongRequest } = props;
+
 
     return (
         <div className='card-ongRequest'>
             <h3>{ongRequest.nome_fantasia}</h3>
-            <p>!!Área de Atuação</p>
+            <p>{ongRequest.foco_principal}</p>
 
             <div className='badge'>
-                <span>{'STATUS'}</span>
+                <span>{ongRequest.status}</span>
             </div>
 
             <div className='container-objective'>
                 <p>Objetivo</p>
-                <p>!!Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores optio voluptatem est sed debitis facere temporibus aperiam accusantium aliquid sit, accusamus earum reprehenderit? Ducimus enim quibusdam dolore beatae minus sit?</p>
+                <p>{ongRequest.objetivo}</p>
             </div>
 
             <div className='container-infos'>
 
                 <div className='row-info'>
                     <FontAwesomeIcon icon={faLocationDot} />
-                    <span>{ongRequest.cep_location}</span>
+                    <span>{ongRequest.local}</span>
                 </div>
 
                 <div className='row-info'>
@@ -44,7 +47,7 @@ export default function OngRequestCard(props: Props) {
 
                 <div className='row-info'>
                     <FontAwesomeIcon icon={faClock} />
-                    <span>Data do Registro</span>
+                    <span>{ongRequest.criadaEm}</span>
                 </div>
             </div>
 

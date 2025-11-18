@@ -122,7 +122,7 @@ export default function TabCadastro({onfreshData, isLoading, dataUsers, dataOngs
         <Card
             titleSection="ONGS"
             subtitleSection="Gerencie todas as ongs cadastrados no sistema."
-            style={{ margin: '50px auto', maxWidth: '1000px' }}
+            style={{ margin: '50px auto'}}
         >
             {isLoading ? (
                 <p>Carregando ONGs...</p>

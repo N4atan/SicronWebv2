@@ -93,7 +93,7 @@ export default function PageSolicitarCadastro(){
                         {currentFields.map((field) => (
                             <Input
                             key         = {field.name} 
-                            variant     = "default"
+                            variant     = {field.type === 'textarea' ? 'text-area' : 'default'}
                             label       = {field.label}
                             placeholder = {field.placeholder}
                             type        = {field.type}

@@ -59,7 +59,7 @@ export default function Cart(props: Props) {
             
 
             <Button variant="primary" text="Finalizar Doação" style={{width: '100%', marginBottom: '0.8rem'}}/>
-            <Button variant="secondary" text="Limpar Carrinho" style={{width: '100%'}} onClick={props.onClearCart}/>
+            <Button variant="secondary" text="Limpar Caixinha" style={{width: '100%'}} onClick={props.onClearCart}/>
                 </>
             )}
 
