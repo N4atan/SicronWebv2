@@ -10,6 +10,8 @@ import Button from "../../components/Button/Button";
 import OngRequestCard from "../../components/OngRequestCard/OngRequestCard";
 import './Dashboard-Admin.css';
 import TabCadastro from "./Tabs/Cadastros/Cadastro";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAddressCard, faBuildingNgo } from "@fortawesome/free-solid-svg-icons";
 
 // Defino um tipo para evitar erros de string solta
 export type EntityType = 'user' | 'ong';
@@ -70,21 +72,23 @@ export default function DashboardAdmin() {
 
             <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
 
-                <aside style={{ backgroundColor: '#ffff', width: '220px', overflowY: 'auto', borderRight: '1px solid rgb(0, 0, 0, 0.1)', padding: '20px 0'}}>
-                    <h2 style={{textAlign: 'center'}}>
-                        Dashboard Admin    
-                    </h2>
-                    
-                    
+                <aside style={{ width: '200px', backgroundColor: '#ffff', overflowY: 'auto', borderRight: '1px solid rgb(0, 0, 0, 0.1)'}}>
+                        
                     <ul className="ul-tabs" >
                         <li>
                             <input type="radio" name="tab" id="tab-cadastros" onChange={() => setTabActive('cadastros')} />
-                            <label htmlFor="tab-cadastros">Cadastros</label>
+                            <label htmlFor="tab-cadastros">
+                                <FontAwesomeIcon icon={faAddressCard} />
+                                Registros    
+                            </label>
                         </li>
 
                         <li>
                             <input type="radio" name="tab" id="tab-ongs" onChange={() => setTabActive('ongs')} />
-                            <label htmlFor="tab-ongs">ONGs</label>
+                            <label htmlFor="tab-ongs">
+                                <FontAwesomeIcon icon={faBuildingNgo} />
+                                Solicitações  
+                            </label>
                         </li>
                     </ul>
 
