@@ -19,7 +19,6 @@ export interface SimplifiedUser {
 
 export interface SimplifiedOng {
     id: number,
-    gestor_email: string,
     razao_social: string,
     nome_fantasia: string,
     foco_principal: string,
@@ -29,6 +28,7 @@ export interface SimplifiedOng {
     local: string,
     numero_telefone: string,
     email_contato: string,
+    gestor_email: string,
     status: StatusOng,
     criadaEm: string
 }
@@ -36,21 +36,21 @@ export interface SimplifiedOng {
 // Mantive seus schemas como estavam
 export const FORM_SCHEMAS = {
     user: [
-        { name: 'username', value: '', label: 'Nome de Usuário', type: 'text', placeholder: 'Ex: joaosilva' },
-        { name: 'email', value: '', label: 'E-mail', type: 'email', placeholder: 'joao@email.com' },
-        { name: 'passwrd', value: '', label: 'Senha', type: 'text', placeholder: '' },
-        { name: 'role', value: 'user', label: 'Função', type: 'text', placeholder: 'Ex: admin, user...' },
+        { name: 'username' , value: ''      , label: 'Nome de Usuário'  , type: 'text', placeholder: 'Ex: joaosilva' },
+        { name: 'email'    , value: ''      , label: 'E-mail'           , type: 'email', placeholder: 'joao@email.com' },
+        { name: 'passwrd'  , value: ''      , label: 'Senha'            , type: 'text', placeholder: '' },
+        { name: 'role'     , value: 'user'  , label: 'Função'           , type: 'text', placeholder: 'Ex: admin, user...' },
     ],
     ong: [
-        { name: 'gestor_email', value: '', label: 'Email do Gestor', type: 'text', placeholder: '* Ele deve estar cadastrado na plataforma! *' },
-        { name: 'razao_social', value: '', label: 'Razão Social', type: 'text', placeholder: 'Ex: Associação Amigos da Terra' },
-        { name: 'nome_fantasia', value: '', label: 'Nome Fantasia', type: 'text', placeholder: 'Ex: ONG Verde Vida' },
-        { name: 'foco_principal', value: '', label: 'Foco Principal', type: 'text', placeholder: 'Ex: Meio Ambiente' },
-        { name: 'objetivo', value: '', label: 'Objetivo', type: 'textarea', placeholder: 'Ex: Preservação ambiental' },
-        { name: 'cnpj', value: '', label: 'CNPJ', type: 'text', placeholder: '00.000.000/0000-00' },
-        { name: 'local', value: '', label: 'Localização', type: 'text', placeholder: 'Ex: São Paulo, SP' },
-        { name: 'numero_telefone', value: '', label: 'Telefone', type: 'text', placeholder: 'Ex: (11) 99999-9999' },
-        { name: 'email_contato', value: '', label: 'E-mail de Contato', type: 'email', placeholder: 'contato@ong.com' },
+        { name: 'gestor_email'      , value: '', label: 'Email do Gestor'   , type: 'text', placeholder: '* Ele deve estar cadastrado na plataforma! *' },
+        { name: 'razao_social'      , value: '', label: 'Razão Social'      , type: 'text', placeholder: 'Ex: Associação Amigos da Terra' },
+        { name: 'nome_fantasia'     , value: '', label: 'Nome Fantasia'     , type: 'text', placeholder: 'Ex: ONG Verde Vida' },
+        { name: 'foco_principal'    , value: '', label: 'Foco Principal'    , type: 'text', placeholder: 'Ex: Meio Ambiente' },
+        { name: 'objetivo'          , value: '', label: 'Objetivo'          , type: 'textarea', placeholder: 'Ex: Preservação ambiental' },
+        { name: 'cnpj'              , value: '', label: 'CNPJ'              , type: 'text', placeholder: '00.000.000/0000-00' },
+        { name: 'local'             , value: '', label: 'Localização'       , type: 'text', placeholder: 'Ex: São Paulo, SP' },
+        { name: 'numero_telefone'   , value: '', label: 'Telefone'          , type: 'text', placeholder: 'Ex: (11) 99999-9999' },
+        { name: 'email_contato'     , value: '', label: 'E-mail de Contato' , type: 'email', placeholder: 'contato@ong.com' },
     ]
 }
 
@@ -172,25 +172,24 @@ class Api {
 
         const query = new URLSearchParams();
 
-        // 1. Itera sobre o objeto de filtros recebido
         Object.keys(filters).forEach(key => {
             const value = filters[key];
 
-            // 2. Só adiciona o parâmetro se o valor não for vazio, nulo ou undefined
+            
             if (value !== undefined && value !== null && value !== '') {
                 query.append(key, String(value));
             }
         });
 
         try {
-            // CORREÇÃO AQUI: Passamos a query como objeto 'params' no segundo argumento do .get()
             const response = await this.api.get('/ongs', {
                 params: query
             });
 
             console.log('Response:', response)
 
-            // Assumindo que a resposta do back-end é { ongs: [...] }
+            console.log(response.data);
+
             return response.data;
         } catch (error) {
             this.handleAxiosError(error, "Falha ao listar ONGs.");

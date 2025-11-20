@@ -18,9 +18,15 @@ export default function DynamicTable(props: Props)  {
 
     const listKeys = data.length > 0 ? Object.keys(data[0]) : [];
 
+    listKeys.splice(listKeys.indexOf('id'), 1);
+
+    if (props.typeData === 'ong') {
+        listKeys.splice(listKeys.indexOf('objetivo'), 1);
+    }
+
 
     return (
-        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }}>
+        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px', overflowX: 'auto' }}>
             <thead>
                 <tr style={{ borderBottom: '1px solid #eee', textAlign: 'left' }}>
                     {listKeys.map((key) => (
@@ -56,6 +62,14 @@ export default function DynamicTable(props: Props)  {
                     </tr>
                 ))}
             </tbody>
+
+            <tfoot>
+                <tr>
+                    <td style={{padding: '10px 10px 0', textAlign: 'right', fontStyle: 'italic'}} colSpan={listKeys.length+1}>
+                        Total de {data.length} {props.typeData}
+                    </td>
+                </tr>
+            </tfoot>
         </table>
     )
 }

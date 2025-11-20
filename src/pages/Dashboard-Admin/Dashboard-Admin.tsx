@@ -9,9 +9,11 @@ import EntityCreate from "../../components/Forms/EntityCreate/EntityCreate";
 import Button from "../../components/Button/Button";
 import OngRequestCard from "../../components/OngRequestCard/OngRequestCard";
 import './Dashboard-Admin.css';
-import TabCadastro from "./Tabs/Cadastros/Cadastro";
+import TabCadastro from "./Tabs/Tab-Registros/Tab-Registros";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAddressCard, faBuildingNgo } from "@fortawesome/free-solid-svg-icons";
+import TabRegistro from "./Tabs/Tab-Registros/Tab-Registros";
+import TabOngs from "./Tabs/Tab-Ongs/Tab-Ongs";
 
 // Defino um tipo para evitar erros de string solta
 export type EntityType = 'user' | 'ong';
@@ -61,10 +63,7 @@ export default function DashboardAdmin() {
 
 
     }, []);
-    
-    
-    console.log('Data Users:', dataUsers);
-    console.log('Data Ongs:', dataOngs);
+
 
     return (
         <main style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
@@ -98,7 +97,7 @@ export default function DashboardAdmin() {
                 <section style={{ flex: 1, padding: '20px', overflowY: 'auto' }}>
 
                     { tabActive === 'cadastros' && (
-                        <TabCadastro
+                        <TabRegistro
                             onfreshData={fetchData}
                             isLoading={isLoading}
                             dataUsers={dataUsers}
@@ -106,14 +105,10 @@ export default function DashboardAdmin() {
                         />
                     )}
                     { tabActive === 'ongs' && (
-                        /* Futuramente será um componente */
-                        <div className="ong-container">
-                            {
-                                dataOngs.map((ong) => (
-                                 <OngRequestCard ongRequest={ong} />                            
-                                ))
-                            } 
-                        </div>
+                        <TabOngs 
+                            dataOngs={dataOngs}
+                        />
+                        
                     )}
 
                 </section>

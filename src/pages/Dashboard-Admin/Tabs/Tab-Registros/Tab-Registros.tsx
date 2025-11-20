@@ -17,7 +17,7 @@ type Props = {
 }
 
 
-export default function TabCadastro({onfreshData, isLoading, dataUsers, dataOngs}: Props) {
+export default function TabRegistro({onfreshData, isLoading, dataUsers, dataOngs}: Props) {
     // Controle do Modal de Edição
     const [isEditEntity, setIsEditEntity] = useState(false);
     const [entityForEdit, setEntityForEdit] = useState<any>(null);
@@ -70,7 +70,7 @@ export default function TabCadastro({onfreshData, isLoading, dataUsers, dataOngs
     return (
         <>
         <Card
-            titleSection="Barra de Ações"
+            titleSection="Barra de Ação Rápida"
             style={{ margin: '50px auto', maxWidth: '1000px' }}
         >
             <Button
@@ -103,7 +103,7 @@ export default function TabCadastro({onfreshData, isLoading, dataUsers, dataOngs
         <Card
             titleSection="Usuários"
             subtitleSection="Gerencie todos os usuários cadastrados no sistema."
-            style={{ margin: '50px auto', maxWidth: '1000px' }}
+            style={{ margin: '50px auto' }}
         >
             {isLoading ? (
                 <p>Carregando Usuários...</p>
@@ -122,7 +122,7 @@ export default function TabCadastro({onfreshData, isLoading, dataUsers, dataOngs
         <Card
             titleSection="ONGS"
             subtitleSection="Gerencie todas as ongs cadastrados no sistema."
-            style={{ margin: '50px auto'}}
+            style={{ margin: '50px auto' }}
         >
             {isLoading ? (
                 <p>Carregando ONGs...</p>

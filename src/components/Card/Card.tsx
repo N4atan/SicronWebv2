@@ -9,10 +9,12 @@ type CardProps = React.HTMLAttributes<HTMLDivElement> & {
 export default function Card(props: CardProps) {
     return (
       <section className="card-section" {...props}>
-          <div className='card-header'>
-            { props.titleSection    && <h1>{ props.titleSection }</h1>}
-            { props.subtitleSection && <h2>{ props.subtitleSection }</h2> }
-          </div>
+          { props.titleSection && (
+            <div className='card-header'>
+              <h1>{ props.titleSection }</h1>
+              <h2>{ props.subtitleSection }</h2>
+            </div>
+          )}
 
           {props.children}
       </section>
