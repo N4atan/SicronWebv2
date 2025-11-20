@@ -29,28 +29,28 @@ export interface SimplifiedOng {
     numero_telefone: string,
     email_contato: string,
     gestor_email: string,
-    status: StatusOng,
+    status: string,
     criadaEm: string
 }
 
 // Mantive seus schemas como estavam
 export const FORM_SCHEMAS = {
     user: [
-        { name: 'username' , value: ''      , label: 'Nome de Usuário'  , type: 'text', placeholder: 'Ex: joaosilva' },
-        { name: 'email'    , value: ''      , label: 'E-mail'           , type: 'email', placeholder: 'joao@email.com' },
-        { name: 'passwrd'  , value: ''      , label: 'Senha'            , type: 'text', placeholder: '' },
-        { name: 'role'     , value: 'user'  , label: 'Função'           , type: 'text', placeholder: 'Ex: admin, user...' },
+        { name: 'username' , value: ''      , label: 'Nome de Usuário'  , type: 'text'  , placeholder: 'Ex: joaosilva' },
+        { name: 'email'    , value: ''      , label: 'E-mail'           , type: 'email' , placeholder: 'joao@email.com' },
+        { name: 'passwrd'  , value: ''      , label: 'Senha'            , type: 'text'  , placeholder: '' },
+        { name: 'role'     , value: 'user'  , label: 'Função'           , type: 'text'  , placeholder: 'Ex: admin, user...' },
     ],
     ong: [
-        { name: 'gestor_email'      , value: '', label: 'Email do Gestor'   , type: 'text', placeholder: '* Ele deve estar cadastrado na plataforma! *' },
-        { name: 'razao_social'      , value: '', label: 'Razão Social'      , type: 'text', placeholder: 'Ex: Associação Amigos da Terra' },
-        { name: 'nome_fantasia'     , value: '', label: 'Nome Fantasia'     , type: 'text', placeholder: 'Ex: ONG Verde Vida' },
-        { name: 'foco_principal'    , value: '', label: 'Foco Principal'    , type: 'text', placeholder: 'Ex: Meio Ambiente' },
-        { name: 'objetivo'          , value: '', label: 'Objetivo'          , type: 'textarea', placeholder: 'Ex: Preservação ambiental' },
-        { name: 'cnpj'              , value: '', label: 'CNPJ'              , type: 'text', placeholder: '00.000.000/0000-00' },
-        { name: 'local'             , value: '', label: 'Localização'       , type: 'text', placeholder: 'Ex: São Paulo, SP' },
-        { name: 'numero_telefone'   , value: '', label: 'Telefone'          , type: 'text', placeholder: 'Ex: (11) 99999-9999' },
-        { name: 'email_contato'     , value: '', label: 'E-mail de Contato' , type: 'email', placeholder: 'contato@ong.com' },
+        { name: 'gestor_email'      , value: '', label: 'Email do Gestor'   , type: 'text'      , placeholder: '* Ele deve estar cadastrado na plataforma! *' },
+        { name: 'razao_social'      , value: '', label: 'Razão Social'      , type: 'text'      , placeholder: 'Ex: Associação Amigos da Terra' },
+        { name: 'nome_fantasia'     , value: '', label: 'Nome Fantasia'     , type: 'text'      , placeholder: 'Ex: ONG Verde Vida' },
+        { name: 'foco_principal'    , value: '', label: 'Foco Principal'    , type: 'text'      , placeholder: 'Ex: Meio Ambiente' },
+        { name: 'objetivo'          , value: '', label: 'Objetivo'          , type: 'textarea'  , placeholder: 'Ex: Preservação ambiental' },
+        { name: 'cnpj'              , value: '', label: 'CNPJ'              , type: 'text'      , placeholder: '00.000.000/0000-00' },
+        { name: 'local'             , value: '', label: 'Localização'       , type: 'text'      , placeholder: 'Ex: São Paulo, SP' },
+        { name: 'numero_telefone'   , value: '', label: 'Telefone'          , type: 'text'      , placeholder: 'Ex: (11) 99999-9999' },
+        { name: 'email_contato'     , value: '', label: 'E-mail de Contato' , type: 'email'     , placeholder: 'contato@ong.com' },
     ]
 }
 
@@ -186,9 +186,6 @@ class Api {
                 params: query
             });
 
-            console.log('Response:', response)
-
-            console.log(response.data);
 
             return response.data;
         } catch (error) {
@@ -204,6 +201,21 @@ class Api {
             return 'ONG Removida!';
         } catch (error) {
             this.handleAxiosError(error, "Falha ao remover ong.");
+            return null;
+        }
+    }
+
+    public async fetchUpdateStatusOng(idOng: number, status: string): Promise<SimplifiedOng | null> {
+        this.errorResponse = '';
+
+        try {
+            const response = await this.api.patch(`/ongs/${idOng}`, { status });
+
+            console.log(response);
+
+            return response.data;
+        } catch (error) {
+            this.handleAxiosError(error, "Falha ao atualizar status da ong.");
             return null;
         }
     }

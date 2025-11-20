@@ -1,17 +1,20 @@
 import './OngRequestCard.css';
-import { SimplifiedOng, StatusOng } from '../../services/api';
+import { api, SimplifiedOng, StatusOng } from '../../services/api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faClock, faEnvelope, faFileLines, faLocationDot, faPhone, faXmark } from '@fortawesome/free-solid-svg-icons';
 
 
 type Props = {
     ongRequest: SimplifiedOng;
+    onClickButton: (id: number, status: 'APROVADA' | 'REJEITADA') => void;
 }
 
 export default function OngRequestCard(props: Props) {
     const isAdmin = true; // Simulação de verificação de admin
     
     const { ongRequest } = props;
+
+    
 
 
     return (
@@ -52,22 +55,24 @@ export default function OngRequestCard(props: Props) {
             </div>
 
             <div className='container-actions'>
-                <button className='btn-documents' >
+                <button className='btn-documents' onClick={() => alert('Em Desenvolvimento...')} >
                     <FontAwesomeIcon icon={faFileLines} />
                     Ver Documentação
                 </button>
 
-                
-            
-                <button className='btn-reject' >
-                    <FontAwesomeIcon icon={faXmark} />
-                    Rejeitar
-                </button>
+                { ongRequest.status == 'PENDENTE' && (
+                    <>
+                        <button className='btn-reject' onClick={() => props.onClickButton(ongRequest.id, 'REJEITADA')} >
+                            <FontAwesomeIcon icon={faXmark} />
+                            Rejeitar
+                        </button>
 
-                <button className='btn-approve' >
-                    <FontAwesomeIcon icon={faCheck} />
-                    Aprovar
-                </button>
+                        <button className='btn-approve' onClick={() => props.onClickButton(ongRequest.id, 'APROVADA')} >
+                            <FontAwesomeIcon icon={faCheck} />
+                            Aprovar
+                        </button>
+                    </>
+                )}
                 
             </div>
 

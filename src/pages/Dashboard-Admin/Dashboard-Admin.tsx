@@ -107,6 +107,8 @@ export default function DashboardAdmin() {
                     { tabActive === 'ongs' && (
                         <TabOngs 
                             dataOngs={dataOngs}
+                            isLoading={isLoading}
+                            onRefreshData={fetchData}
                         />
                         
                     )}

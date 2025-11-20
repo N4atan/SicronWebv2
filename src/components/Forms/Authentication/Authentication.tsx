@@ -38,7 +38,8 @@ function LoginForm(props: LoginFormProps) {
 
 
             <Input
-                variant='outline-border'
+                variant='default'
+                styleDefault='outline-border'
                 type="email"
                 placeholder="E-mail"
                 icon={faEnvelope}
@@ -46,7 +47,8 @@ function LoginForm(props: LoginFormProps) {
             />
 
             <Input
-                variant='outline-border'
+                variant='default'
+                styleDefault='outline-border'
                 type="password"
                 placeholder="Senha"
                 icon={faLock}
@@ -78,7 +80,8 @@ function RegisterForm(props: RegisterFormProps) {
             </div>
 
             <Input
-                variant='outline-border'
+                variant='default'
+                styleDefault='outline-border'
                 type="text"
                 placeholder="Nome de Usuário"
                 icon={faUser}
@@ -88,7 +91,8 @@ function RegisterForm(props: RegisterFormProps) {
 
 
             <Input
-                variant='outline-border'
+                variant='default'
+                styleDefault='outline-border'
                 type="email"
                 placeholder="E-mail"
                 icon={faEnvelope}
@@ -97,7 +101,8 @@ function RegisterForm(props: RegisterFormProps) {
             />
 
             <Input
-                variant='outline-border'
+                variant='default'
+                styleDefault='outline-border'
                 type="password"
                 placeholder="Senha"
                 icon={faLock}

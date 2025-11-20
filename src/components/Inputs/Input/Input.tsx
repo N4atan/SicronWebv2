@@ -1,75 +1,75 @@
+import React from 'react'; // Importante para os tipos
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
 import './Input.css';
 
-// 1. CORREÇÃO DO TIPO
-type InputIconProps = {
-    variant: 'default' | 'outline-border' | 'text-area';
-    type?: string;
-    placeholder?: string;
+
+interface InputProps extends React.InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement> {
+    variant?: 'default' | 'text-area' | 'selection';
+    styleDefault?: 'default' | 'outline-border';
     label?: string;
     icon?: IconDefinition;
     sizeStyle?: 'default' | 'compact';
-    
-    // 2. Adicionamos 'value' e 'onChange' explicitamente
-    //    Isso torna o componente um "Controlled Component"
-    value?: string | number | readonly string[];
-    onChange?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
-
-    // 3. Opcional: Adicionamos outras props comuns
-    name?: string;
-    disabled?: boolean;
+    options?: string[];
 }
 
-// 4. Renomeamos as props para evitar colisão com os atributos HTML
-//    (Ex: 'type' da sua prop vs 'type' do input)
-const DefaultInput = ({
-    variant,
-    type: inputType, // Renomeado
-    placeholder,
-    label,
-    icon,
-    sizeStyle,
-    ...rest // 'value', 'onChange', 'name', 'disabled' virão aqui
-}: InputIconProps) => (
-    <div className={`container-input ${sizeStyle || 'default'}`}>
-    { label &&
-        <label>{ label }</label>
-    }
 
-    { variant === 'text-area' ? (
-        <textarea
-            className='text-area-field borders'
-            placeholder={placeholder}
-            // 5. Agora o 'rest' (com value e onChange) é passado corretamente
-            {...rest}
-        />
-    )
-    :
-    (
-        <div className={`input-icon-container ${variant === 'outline-border' ? 'outline-border' : 'borders'}`}>
-        { icon &&
-            <FontAwesomeIcon icon={icon!} className='input-icon' />
-        }
+const SelectionInput = ({ options, ...rest }: InputProps) => (
+    <select
+        className='select-field borders'
+        {...rest} // Aqui entram onChange, value, name, etc.
+    >
+        {/* Segurança: verificamos se options existe antes de fazer map */}
+        {options?.map((option, index) => (
+            <option key={index} value={option}>
+                {option}
+            </option>
+        ))}
+    </select>
+)
 
-            <input
-                className='input-field'
-                type={inputType} // Usando a prop renomeada
-                placeholder={placeholder}
-                // 5. O 'rest' (com value e onChange) continua sendo passado aqui
-                {...rest}
-            />
 
-        </div>
-    )}
-    </div>
+const TextArea = (props: InputProps) => (
+    <textarea
+        className='text-area-field borders'
+        {...props} 
+    />
 );
 
+// 4. DEFAULT INPUT
+const DefaultInputField = ({ styleDefault, icon, ...rest }: InputProps) => (
+    <div className={`input-icon-container ${styleDefault === 'outline-border' ? 'outline-border' : 'borders'}`}>
+        {icon && <FontAwesomeIcon icon={icon} className='input-icon' />}
+
+        <input
+            className='input-field'
+            {...rest} 
+        />
+    </div>
+)
+
+// 5. COMPONENTE PRINCIPAL
+export default function Input({ label, sizeStyle, variant, ...rest }: InputProps) {
 
 
-export default function Input(props: InputIconProps) {
     return (
-        <DefaultInput {...props} />
-    )
+        <div className={`container-input ${sizeStyle || 'default'}`}>
+            {label && <label>{label}</label>}
+
+            {(() => {
+                switch (variant) {
+                    case 'text-area':
+                        return <TextArea {...rest} />;
+
+                    case 'selection':
+                        return <SelectionInput {...rest} />;
+                    // O 'options' está dentro de 'rest' aqui, então vai funcionar
+
+                    case 'default':
+                    default: // Sempre bom ter um fallback
+                        return <DefaultInputField {...rest} />;
+                }
+            })()}
+        </div>
+    );
 }

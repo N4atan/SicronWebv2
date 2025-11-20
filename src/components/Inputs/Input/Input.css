@@ -1,8 +1,9 @@
 
-input, textarea {
+input, textarea, select, option {
     border: none;
     outline: none;
     text-overflow: ellipsis;
+    all: none;
 }
 
 
@@ -59,4 +60,16 @@ input, textarea {
     min-height: 100px;
 
     resize: vertical;
+}
+
+.select-field {
+    background-color: white;
+    cursor: pointer;
+
+    padding: 10px 15px;
+
+    option {
+        color: #666666;
+        
+    }
 }
