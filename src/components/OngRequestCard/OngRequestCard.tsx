@@ -10,7 +10,7 @@ type Props = {
 }
 
 export default function OngRequestCard(props: Props) {
-    const isAdmin = true; // Simulação de verificação de admin
+    
     
     const { ongRequest } = props;
 
@@ -22,7 +22,7 @@ export default function OngRequestCard(props: Props) {
             <h3>{ongRequest.nome_fantasia}</h3>
             <p>{ongRequest.foco_principal}</p>
 
-            <div className='badge'>
+            <div className={`badge ${ongRequest.status == 'aprovada' ? 'badge-aprovada' : ongRequest.status == 'rejeitada' ? 'badge-rejeitada' : 'badge-pendente'}`}>
                 <span>{ongRequest.status}</span>
             </div>
 
@@ -60,7 +60,7 @@ export default function OngRequestCard(props: Props) {
                     Ver Documentação
                 </button>
 
-                { ongRequest.status == 'PENDENTE' && (
+                {/* Esconder botões em caso de status != pendente */}
                     <>
                         <button className='btn-reject' onClick={() => props.onClickButton(ongRequest.id, 'REJEITADA')} >
                             <FontAwesomeIcon icon={faXmark} />
@@ -72,7 +72,7 @@ export default function OngRequestCard(props: Props) {
                             Aprovar
                         </button>
                     </>
-                )}
+                
                 
             </div>
 
