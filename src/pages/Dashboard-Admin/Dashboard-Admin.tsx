@@ -11,7 +11,7 @@ import OngRequestCard from "../../components/OngRequestCard/OngRequestCard";
 import './Dashboard-Admin.css';
 import TabCadastro from "./Tabs/Tab-Registros/Tab-Registros";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAddressCard, faBuildingNgo } from "@fortawesome/free-solid-svg-icons";
+import { faAddressCard, faBuildingNgo, faSeedling } from "@fortawesome/free-solid-svg-icons";
 import TabRegistro from "./Tabs/Tab-Registros/Tab-Registros";
 import TabOngs from "./Tabs/Tab-Ongs/Tab-Ongs";
 
@@ -87,6 +87,14 @@ export default function DashboardAdmin() {
                             <label htmlFor="tab-ongs">
                                 <FontAwesomeIcon icon={faBuildingNgo} />
                                 Solicitações  
+                            </label>
+                        </li>
+
+                        <li onClick={() => alert('Em Desenvolvimento...')}>
+                            <input type="radio" name="tab" id="tab-ongs"  />
+                            <label htmlFor="tab-ongs">
+                                <FontAwesomeIcon icon={faSeedling} />
+                                Produtos  
                             </label>
                         </li>
                     </ul>
