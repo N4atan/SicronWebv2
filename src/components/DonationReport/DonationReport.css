@@ -1,0 +1,60 @@
+.report-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-bottom: 1rem;
+  }
+  
+  .report-row {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: #444;
+  }
+  
+  .report-status {
+    margin-left: auto;
+    background: #0f0f5a;
+    color: #fff;
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    width: fit-content;
+  }
+  
+  .report-list {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .report-item {
+    padding: 0.8rem 0;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .report-item:last-child {
+    border-bottom: none;
+  }
+  
+  .report-item-row {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+  }
+  
+  .item-details {
+    font-size: 0.9rem;
+    color: #666;
+  }
+  
+  .report-total {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin: 1rem 0;
+  }
+  

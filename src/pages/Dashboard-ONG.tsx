@@ -29,7 +29,7 @@ export default function DashboardONG() {
             <Header />
 
 
-            <div style={{ textAlign:"initial", margin: "50px", fontSize: "13px"}}>
+            <div style={{ textAlign: "initial", margin: "50px", fontSize: "13px" }}>
 
                 <h1>Painel Administrativo - ONG</h1>
                 <p>Gerencie os itens de doação da sua organização</p>
@@ -54,7 +54,7 @@ export default function DashboardONG() {
 
             {/* Seção de Itens de Doação */}
             <div style={{ margin: '50px auto', maxWidth: '1000px' }}>
-                <Card 
+                <Card
                     titleSection="Itens de Doação"
                     subtitleSection="Gerencie os itens necessários para sua ONG"
                 >
@@ -88,12 +88,12 @@ export default function DashboardONG() {
                                         </div>
                                     </td>
                                     <td style={{ padding: '10px' }}>
-                                        <span style={{ 
-                                            background: '#e23', 
-                                            color: '#fff', 
-                                            padding: '4px 8px', 
-                                            borderRadius: '6px', 
-                                            fontSize: '12px' 
+                                        <span style={{
+                                            background: '#e23',
+                                            color: '#fff',
+                                            padding: '4px 8px',
+                                            borderRadius: '6px',
+                                            fontSize: '12px'
                                         }}>
                                             {item.prioridade}
                                         </span>
@@ -107,7 +107,7 @@ export default function DashboardONG() {
                         </tbody>
                     </table>
 
-                    <button 
+                    <button
                         style={{
                             background: '#000',
                             color: '#fff',

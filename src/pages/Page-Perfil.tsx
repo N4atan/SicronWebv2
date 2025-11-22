@@ -1,6 +1,7 @@
 
 import Header from "../components/Header/Header";
 
+import DonationReport from "../components/DonationReport/DonationReport";
 import { faEnvelope, faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import ProfileCard from "../components/ProfileCard/ProfileCard";
 import InfoContactCard from './../components/InfoContactCard/InfoContactCard';
@@ -13,7 +14,7 @@ import Card from "../components/Card/Card";
 import UserProfileCard from "../components/UserProfileCard/UserProfileCard";
 
 
-const listContact =[
+const listContact = [
     {
         icon: faEnvelope,
         text: 'seu@email.com',
@@ -42,14 +43,14 @@ const historyActivities = [
 ]
 
 export default function PagePerfil() {
-    const [ user, setUser ] = useState<SimplifiedUser | null>(null);
-    const [ isLoading, setIsLoading ] = useState(true);
+    const [user, setUser] = useState<SimplifiedUser | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
 
     const { id } = useParams();
 
-    useEffect(()=> {
+    useEffect(() => {
 
-        async function fetchData(){
+        async function fetchData() {
             try {
                 // O isLoading já começa 'true', não precisa setar de novo
                 const response: SimplifiedUser | null = await api.fetchUser(String(id));
@@ -74,22 +75,22 @@ export default function PagePerfil() {
         <>
             <Header />
 
-            { isLoading ||!user && (
+            {isLoading || !user && (
                 <Card
-                    style={{width: '300px', margin: '1rem auto'}}
+                    style={{ width: '300px', margin: '1rem auto' }}
                 >
                     <p>{!user ? 'Usuário não encontrado' : 'Buscando usuário...'}</p>
                 </Card>
             )}
 
-            { !isLoading && user && (
+            {!isLoading && user && (
                 <ContainerPage
-                variant="a-left"
-                isPageUser={true}
+                    variant="a-left"
+                    isPageUser={true}
                 >
                     <aside>
-                        <UserProfileCard 
-                            name={user.username}               
+                        <UserProfileCard
+                            name={user.username}
                         />
 
                         <InfoContactCard
@@ -106,6 +107,17 @@ export default function PagePerfil() {
                     <main>
                         <HistoryCard
                             historyActivities={historyActivities}
+                        />
+                        <DonationReport
+                            id="don1"
+                            date="19/10/2025"
+                            ongName="Instituto Educação Para Todos"
+                            items={[
+                                { name: "Cadernos Universitários", qtd: 20, price: 12.5 },
+                                { name: "Canetas Esferográficas", qtd: 50, price: 2.0 }
+                            ]}
+                            total={350}
+                            onViewReceipt={() => console.log("abrir comprovante")}
                         />
                     </main>
                 </ContainerPage>
