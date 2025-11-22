@@ -15,6 +15,7 @@ import { faAddressCard, faBorderAll, faBuildingNgo, faCubes, faSeedling, faTable
 import TabRegistro from "./Tabs/Tab-Registros/Tab-Registros";
 import TabOngs from "./Tabs/Tab-Ongs/Tab-Ongs";
 import { faMicrosoft } from "@fortawesome/free-brands-svg-icons";
+import Modal from "../../components/Modal/Modal";
 
 // Defino um tipo para evitar erros de string solta
 export type EntityType = 'user' | 'ong';
@@ -148,7 +149,13 @@ export default function DashboardAdmin() {
                     )}
 
                 </section>
+                
 
+
+                <Modal 
+                    title="Modal Teste"
+                    isOpen={true}
+                />
             </div>
         </main>
     );
