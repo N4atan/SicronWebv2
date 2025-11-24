@@ -90,8 +90,8 @@ export default function DashboardAdmin() {
                         
                     <ul className="ul-tabs" >
                         <li onClick={() => alert('Em Desenvolvimento...')}>
-                            <input type="radio" name="tab" id="tab-ongs"  />
-                            <label htmlFor="tab-ongs">
+                            <input type="radio" name="tab" id="tab-geral"  />
+                            <label htmlFor="tab-geral">
                                 <FontAwesomeIcon icon={faCubes} />
                                 Visão Geral  
                             </label>
@@ -114,12 +114,13 @@ export default function DashboardAdmin() {
                                     <FontAwesomeIcon icon={opção.icon} />
                                     {opção.label}  
                                 </label>
+
                             </li>
-                        ))}
+                                        ))}
 
                         <li onClick={() => alert('Em Desenvolvimento...')}>
-                            <input type="radio" name="tab" id="tab-ongs"  />
-                            <label htmlFor="tab-ongs">
+                            <input type="radio" name="tab" id="tab-produtos"  />
+                            <label htmlFor="tab-produtos">
                                 <FontAwesomeIcon icon={faSeedling} />
                                 Produtos  
                             </label>
@@ -152,10 +153,6 @@ export default function DashboardAdmin() {
                 
 
 
-                <Modal 
-                    title="Modal Teste"
-                    isOpen={true}
-                />
             </div>
         </main>
     );

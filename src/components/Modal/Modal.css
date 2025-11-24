@@ -1,7 +1,10 @@
 .container-modal {
+    /* max-height: 80%; */
     height: 80%;
     width: 100%;
     max-width: 600px;
+
+    margin: 20px auto;
 
     display: flex;
     flex-direction: column;
@@ -11,7 +14,7 @@
     border: 1px solid rgb(0, 0, 0, 0.2);
     border-radius: 8px;
 
-    position: fixed;
+    
     z-index: 3000;
 
     .modal-header {
@@ -22,6 +25,10 @@
         padding: 16px;
 
         border-bottom: 1px solid rgb(0, 0, 0, 0.1);
+
+        p {
+            font-weight: 600;
+        }
     }
 
     .modal-body {

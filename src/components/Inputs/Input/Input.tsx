@@ -54,7 +54,9 @@ export default function Input({ label, sizeStyle, variant, ...rest }: InputProps
 
     return (
         <div className={`container-input ${sizeStyle || 'default'}`}>
-            {label && <label>{label}</label>}
+            {label && (
+                <label>{label}</label>
+            )}
 
             {(() => {
                 switch (variant) {

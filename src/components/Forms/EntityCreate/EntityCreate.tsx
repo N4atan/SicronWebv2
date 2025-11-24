@@ -5,6 +5,7 @@ import Input from "../../Inputs/Input/Input";
 import { api, FORM_SCHEMAS } from "../../../services/api"; 
 import Button from "../../Button/Button";
 import './EntityCreate.css';
+import Modal from "../../Modal/Modal";
 
 type Props = {
     onClose: () => void;
@@ -44,8 +45,7 @@ export default function EntityCreate(props: Props) {
                 response = await api.fetchCreateOng(data);
             }
 
-            // Se response for null, a classe API já capturou o erro (400, 409, 500)
-            // e salvou a mensagem em api.errorResponse
+
             if (!response) {
                 alert(api.errorResponse); 
                 return;
@@ -69,81 +69,59 @@ export default function EntityCreate(props: Props) {
     }, [tab]);
 
     return (
-        <Overlay>
-            <Card
-                titleSection="Criando Entidade"
-                subtitleSection="Selecione o tipo e preencha os campos."
-                // Layout responsivo com scroll interno
-                style={{ 
-                    width: '500px', 
-                    maxHeight: '90vh', 
-                    height: 'auto', 
-                    margin: '15px auto',
-                    display: 'flex',
-                    flexDirection: 'column'
-                }} 
-            >
-                <form className="form-createEntity">
+        <Modal
+            title='Adicionando Entidade'
+            pText="Criar"
+            pEvent={handleSave}
+            sText="Cancelar"
+            sEvent={props.onClose}
+            xEvent={props.onClose}
+        >
 
-                    <div className="container-tabs">
-                        <label className="radio-group" htmlFor="tab-user">
-                            <input
-                                type="radio"
-                                name="tab"
-                                id="tab-user"
-                                value="user"
-                                checked={tab === 'user'}
-                                onChange={() => setTab('user')}
-                            />
-                            Usuário
-                        </label>
+            <form className="form-createEntity">
 
-                        <label className="radio-group" htmlFor="tab-ong">
-                            <input
-                                type="radio"
-                                name="tab"
-                                id="tab-ong"
-                                value="ong"
-                                checked={tab === 'ong'}
-                                onChange={() => setTab('ong')}
-                            />
-                            ONG
-                        </label>
-                    </div>
-
-                    <div className="container-body">
-                        {currentFields.map((fieldConfigs: any) => (
-                            <Input
-                                variant="default"
-                                key={fieldConfigs.name}
-                                type={fieldConfigs.type}
-                                label={fieldConfigs.label}
-                                value={fieldConfigs.value || ''}
-                                placeholder={fieldConfigs.placeholder}
-                                onChange={(e: any) => handleChange(fieldConfigs.name, e.target.value)}
-                            />
-                        ))}
-                    </div>
-
-                    <div className="container-buttons">
-                        <Button
-                            variant="secondary"
-                            text="Cancelar"
-                            type="button"
-                            onClick={props.onClose}
-                            style={{ width: '80px' }}
+                <div className="container-tabs">
+                    <label className="radio-group" htmlFor="tab-user">
+                        <input
+                            type="radio"
+                            name="tab"
+                            id="tab-user"
+                            value="user"
+                            checked={tab === 'user'}
+                            onChange={() => setTab('user')}
                         />
+                        Usuário
+                    </label>
 
-                        <Button
-                            variant="primary"
-                            text="Criar"
-                            type="button" // Mudei para button pois chamamos handleSave no onClick manualmente
-                            onClick={() => handleSave()}
-                            style={{ width: '120px' }}
+                    <label className="radio-group" htmlFor="tab-ong">
+                        <input
+                            type="radio"
+                            name="tab"
+                            id="tab-ong"
+                            value="ong"
+                            checked={tab === 'ong'}
+                            onChange={() => setTab('ong')}
                         />
-                    </div>
-                </form>
-            </Card>
-        </Overlay>
+                        ONG
+                    </label>
+                </div>
+
+                <div className="container-body">
+                    {currentFields.map((fieldConfigs: any) => (
+                        <Input
+                            variant="default"
+                            key={fieldConfigs.name}
+                            type={fieldConfigs.type}
+                            label={fieldConfigs.label}
+                            value={fieldConfigs.value || ''}
+                            placeholder={fieldConfigs.placeholder}
+                            onChange={(e: any) => handleChange(fieldConfigs.name, e.target.value)}
+                        />
+                    ))}
+                </div>
+
+            </form>
+
+        </Modal>
     );
 }
