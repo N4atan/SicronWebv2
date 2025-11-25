@@ -13,6 +13,20 @@ type Props = {
 }
 
 export default function TabOngs(props: Props) {
+    const [ filterStatus, setFilterStaus ]          = useState<string>('todas   ');
+    const [ filterNickname, setFilterNickname ]     = useState();
+
+    const [ ongs, setOngs ] = useState<SimplifiedOng[]>(props.dataOngs);
+
+    useEffect(() => {
+
+        if (filterStatus == 'todas') {
+            setOngs(props.dataOngs)
+        } else {
+            setOngs(props.dataOngs.filter(ong => ong.status == filterStatus))
+        }
+
+    }, [filterStatus, props.dataOngs])
     
 
     const handleClickButton = async (id: number, status: 'APROVADA' | 'REJEITADA') => {
@@ -51,9 +65,10 @@ export default function TabOngs(props: Props) {
                     variant="selection"
                     label="Filtar por Status:"
                     options={[
-                        'Todas', 'Ativas', 'Pendentes', 'Rejeitadas'
+                        'Todas', 'Aprovada', 'Pendente', 'Rejeitada'
                     ]}
                     style={{ width: '150px'}}
+                    onChange={(e) => setFilterStaus(e.target.value.toLowerCase())}
                 />
 
                 <Input
@@ -67,7 +82,7 @@ export default function TabOngs(props: Props) {
 
             <div className="container-ongs">
                 {
-                    props.dataOngs.map((ong) => (
+                    ongs.map((ong) => (
                         <OngRequestCard key={ong.id} ongRequest={ong} onClickButton={handleClickButton} />
                     ))
                 }
