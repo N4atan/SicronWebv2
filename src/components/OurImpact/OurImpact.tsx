@@ -9,6 +9,30 @@ import { faBoxOpen, faFileInvoiceDollar, faHandHoldingHeart, faShieldHalved } fr
 import Card from '../Card/Card';
 
 export default function OurImpact() {
+
+    const dataCards = [
+        {
+            icon: faShieldHalved,
+            title: 'ONGs Verificadas',
+            sub: 'Todas as instituições passam por rigorosa auditoria.'
+        },
+        {
+            icon: faFileInvoiceDollar,
+            title: 'Transparência Total',
+            sub: 'Acesso completo às notas fiscais e relatórios.'
+        },
+        {
+            icon: faBoxOpen,
+            title: 'Itens Entregues',
+            sub: 'Garantimos que o item comprado chegue ao local certo.'
+        },
+        {
+            icon: faHandHoldingHeart,
+            title: 'Conexão Direta',
+            sub: 'Crie laços reais com as comunidades que você apoia.'
+        }
+    ]
+
     return (
         <section className="our-impact">
 
@@ -20,27 +44,16 @@ export default function OurImpact() {
                 </p>
 
                 <div className="impact-cards">
-                    <div className="card">
-                        <strong><FontAwesomeIcon icon={faShieldHalved} /></strong>
-                        <span>ONGs Verificadas</span>
-                    </div>
-                    <div className="card">
-                        <strong><FontAwesomeIcon icon={faFileInvoiceDollar} /></strong>
-                        <span>Transparência Total</span>
-                    </div>
-                    <div className="card">
-                        <strong><FontAwesomeIcon icon={faBoxOpen} /></strong>
-                        <span>Itens Entregues</span>
-                    </div>
-                    <div className="card">
-                        <strong><FontAwesomeIcon icon={faHandHoldingHeart} /></strong>
-                        <span>Entrega Garantida</span>
-                    </div>
+                    { dataCards.map((data) => (
+                        <div className="card">
+                            <div><FontAwesomeIcon icon={data.icon} /></div>
+                            <span>{data.title}</span>
+                            <span>{data.sub}</span>
+                        </div>
+                    ))}
                 </div>
 
-                <p className="impact-sub">
-                    Nossa missão é transformar incerteza em resultados garantidos. Por isso, cuidamos de toda a logística operacional: asseguramos que sua doação monetária seja convertida no item escolhido e entregue corretamente à ONG, oferecendo 100% de transparência com o envio das notas fiscais para você. É tecnologia e empatia trabalhando juntas para fechar o ciclo de confiança entre quem doa e quem recebe.
-                </p>
+                
             </div>
 
             <div className="impact-media">
