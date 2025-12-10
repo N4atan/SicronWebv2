@@ -108,17 +108,6 @@ export default function PagePerfil() {
                         <HistoryCard
                             historyActivities={historyActivities}
                         />
-                        <DonationReport
-                            id="don1"
-                            date="19/10/2025"
-                            ongName="Instituto Educação Para Todos"
-                            items={[
-                                { name: "Cadernos Universitários", qtd: 20, price: 12.5 },
-                                { name: "Canetas Esferográficas", qtd: 50, price: 2.0 }
-                            ]}
-                            total={350}
-                            onViewReceipt={() => console.log("abrir comprovante")}
-                        />
                     </main>
                 </ContainerPage>
             )}

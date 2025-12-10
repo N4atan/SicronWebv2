@@ -23,43 +23,45 @@ export default function DonationReport(props: Props) {
   return (
     <Card titleSection={`Doação #${props.id}`}>
       <div className="report-header">
-        <div className="report-row">
-          <FontAwesomeIcon icon={faCalendar} />
-          <span>{props.date}</span>
+        <div className="report-info">
+          <div className="report-row">
+            <FontAwesomeIcon icon={faCalendar} className="icon-muted" />
+            <span className="report-date">{props.date}</span>
+          </div>
+          <div className="report-row">
+            <FontAwesomeIcon icon={faBuilding} className="icon-muted" />
+            <span className="report-ong">{props.ongName}</span>
+          </div>
         </div>
-
-        <div className="report-row">
-          <FontAwesomeIcon icon={faBuilding} />
-          <span>{props.ongName}</span>
-        </div>
-
         <div className="report-status">Concluída</div>
       </div>
 
       <ul className="report-list">
         {props.items.map((item, index) => (
           <li key={index} className="report-item">
-            <div className="report-item-row">
+            <div className="report-item-main">
               <span className="item-name">{item.name}</span>
-              <span className="item-price">R$ {(item.price * item.qtd).toFixed(2)}</span>
+              <span className="item-total">R$ {(item.price * item.qtd).toFixed(2)}</span>
             </div>
-
-            <span className="item-details">
-              {item.qtd} unidade(s) × R$ {item.price.toFixed(2)}
-            </span>
+            <div className="report-item-sub">
+              <span className="item-quantity">{item.qtd}x</span>
+              <span className="item-unit-price">R$ {item.price.toFixed(2)}</span>
+            </div>
           </li>
         ))}
       </ul>
 
-      <div className="report-total">
-        <span>Total</span>
-        <span>R$ {props.total.toFixed(2)}</span>
+      <div className="report-footer">
+        <div className="report-total">
+          <span className="total-label">Total da Doação</span>
+          <span className="total-value">R$ {props.total.toFixed(2)}</span>
+        </div>
       </div>
 
-      <Button 
-        variant="primary" 
-        text="Visualizar Comprovante" 
-        style={{ width: "100%" }} 
+      <Button
+        variant="primary"
+        text="Visualizar Comprovante"
+        style={{ width: "100%" }}
         onClick={props.onViewReceipt}
       />
     </Card>

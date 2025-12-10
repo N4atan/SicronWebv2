@@ -1,60 +1,116 @@
 .report-header {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-    margin-bottom: 1rem;
-  }
-  
-  .report-row {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    color: #444;
-  }
-  
-  .report-status {
-    margin-left: auto;
-    background: #0f0f5a;
-    color: #fff;
-    padding: 0.2rem 0.6rem;
-    border-radius: 6px;
-    font-size: 0.8rem;
-    width: fit-content;
-  }
-  
-  .report-list {
-    list-style: none;
-    padding: 0;
-    margin: 1rem 0;
-    border-top: 1px solid #ddd;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  .report-item {
-    padding: 0.8rem 0;
-    border-bottom: 1px solid #eee;
-  }
-  
-  .report-item:last-child {
-    border-bottom: none;
-  }
-  
-  .report-item-row {
-    display: flex;
-    justify-content: space-between;
-    font-weight: 600;
-  }
-  
-  .item-details {
-    font-size: 0.9rem;
-    color: #666;
-  }
-  
-  .report-total {
-    display: flex;
-    justify-content: space-between;
-    font-size: 1.1rem;
-    font-weight: bold;
-    margin: 1rem 0;
-  }
-  
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.report-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.report-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: #555;
+  font-size: 0.95rem;
+}
+
+.icon-muted {
+  color: #999;
+  width: 16px;
+}
+
+.report-ong {
+  font-weight: 600;
+  color: #333;
+}
+
+.report-status {
+  background: #e6f7ed;
+  color: #2e7d32;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.report-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.report-item {
+  padding: 1rem 0;
+  border-bottom: 1px solid #f5f5f5;
+  transition: background-color 0.2s;
+}
+
+.report-item:last-child {
+  border-bottom: none;
+}
+
+.report-item-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.25rem;
+}
+
+.item-name {
+  font-weight: 600;
+  color: #333;
+  font-size: 1rem;
+}
+
+.item-total {
+  font-weight: 700;
+  color: #333;
+}
+
+.report-item-sub {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: #888;
+}
+
+.item-quantity {
+  background: #f5f5f5;
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.report-footer {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 2px dashed #eee;
+  margin-bottom: 1.5rem;
+}
+
+.report-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.total-label {
+  font-size: 1rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.total-value {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #0f0f5a; /* Keeping brand color for total */
+}
