@@ -1,12 +1,12 @@
 import "./OurImpact.css";
 
-import imgMain from "../../assets/images/mulheres.jpg";
-import img1 from "../../assets/images/Kid.jpg";
-import img2 from "../../assets/images/homem.png";
-import img3 from "../../assets/images/mundo-origami-papel.jpg";
+import imgMain from "../../../assets/images/mulheres.jpg";
+import img1 from    "../../../assets/images/Kid.jpg";
+import img2 from    "../../../assets/images/homem.png";
+import img3 from    "../../../assets/images/mundo-origami-papel.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBoxOpen, faFileInvoiceDollar, faHandHoldingHeart, faShieldHalved } from "@fortawesome/free-solid-svg-icons";
-import Card from '../Card/Card';
+
 
 export default function OurImpact() {
 

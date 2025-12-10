@@ -2,7 +2,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 3rem 2rem;
+  padding: 2rem 2rem 4rem;
   background-color: white;
   flex-wrap: wrap; /* para ficar responsivo */
   gap: 20px;
@@ -10,6 +10,7 @@
 
 .hero-text {
   flex: 1;
+  max-width: 800px;
 }
 
 .hero-title {
@@ -30,13 +31,14 @@
 .hero-image {
   margin-top: 2rem;
   flex: 0 1 600px;
-  display: flex;
+  
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 .hero-image img {
   width: 100%;
-  aspect-ratio: 16/9;
-  border-radius: 10px;
+  object-fit: cover;
   filter:blur(0.7px);
 }
 

@@ -1,8 +1,11 @@
 import "./HeroSection.css";
 import saImage from "../../../assets/images/Kids-happy.jpg";
 import Button from "../../Button/Button";
+import { useNavigate } from "react-router-dom";
 
 export default function HeroSection() {
+  const navigate = useNavigate()
+
   return (
     <section className="hero-section">
       <div className="hero-text">
@@ -17,6 +20,7 @@ export default function HeroSection() {
         <div className="container-buttons-hero">
           <Button 
             variant={'primary'} text={"Conhecer Causas"}  style={{height: '100%'}}
+            onClick={() => navigate('/explorar')}
           />
 
           <Button 

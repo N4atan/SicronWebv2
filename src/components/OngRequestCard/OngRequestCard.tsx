@@ -1,5 +1,5 @@
 import './OngRequestCard.css';
-import { api, SimplifiedOng, StatusOng } from '../../services/api';
+import { SimplifiedOng } from '../../services/api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faClock, faEnvelope, faFileLines, faLocationDot, faPhone, faXmark } from '@fortawesome/free-solid-svg-icons';
 
