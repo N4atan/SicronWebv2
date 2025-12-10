@@ -11,12 +11,27 @@ import OngRequestCard from "../../components/OngRequestCard/OngRequestCard";
 import './Dashboard-Admin.css';
 import TabCadastro from "./Tabs/Tab-Registros/Tab-Registros";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAddressCard, faBuildingNgo } from "@fortawesome/free-solid-svg-icons";
+import { faAddressCard, faBorderAll, faBuildingNgo, faCubes, faSeedling, faTableCellsLarge } from "@fortawesome/free-solid-svg-icons";
 import TabRegistro from "./Tabs/Tab-Registros/Tab-Registros";
 import TabOngs from "./Tabs/Tab-Ongs/Tab-Ongs";
+import { faMicrosoft } from "@fortawesome/free-brands-svg-icons";
+import Modal from "../../components/Modal/Modal";
 
 // Defino um tipo para evitar erros de string solta
 export type EntityType = 'user' | 'ong';
+
+const opçõesAside = [
+    { 
+        label: 'Cadastros',
+        icon: faAddressCard,
+        value: 'cadastros'
+    },
+    { 
+        label: 'ONGs',
+        icon: faBuildingNgo,
+        value: 'ongs'
+    }
+]
 
 export default function DashboardAdmin() {
     const [isLoading, setIsLoading] = useState(true);
@@ -74,19 +89,40 @@ export default function DashboardAdmin() {
                 <aside style={{ width: '200px', backgroundColor: '#ffff', overflowY: 'auto', borderRight: '1px solid rgb(0, 0, 0, 0.1)'}}>
                         
                     <ul className="ul-tabs" >
-                        <li>
-                            <input type="radio" name="tab" id="tab-cadastros" onChange={() => setTabActive('cadastros')} />
-                            <label htmlFor="tab-cadastros">
-                                <FontAwesomeIcon icon={faAddressCard} />
-                                Registros    
+                        <li onClick={() => alert('Em Desenvolvimento...')}>
+                            <input type="radio" name="tab" id="tab-geral"  />
+                            <label htmlFor="tab-geral">
+                                <FontAwesomeIcon icon={faCubes} />
+                                Visão Geral  
                             </label>
                         </li>
 
-                        <li>
-                            <input type="radio" name="tab" id="tab-ongs" onChange={() => setTabActive('ongs')} />
-                            <label htmlFor="tab-ongs">
-                                <FontAwesomeIcon icon={faBuildingNgo} />
-                                Solicitações  
+                        { opçõesAside.map((opção) => (
+                            <li 
+                                key={opção.value} 
+                                onClick={() => setTabActive(opção.value as 'cadastros' | 'ongs')}
+                                className={tabActive === opção.value ? 'active' : ''}
+                            >
+                                <input 
+                                    type="radio" 
+                                    name="tab" 
+                                    id={`tab-${opção.value}`}  
+                                    checked={tabActive === opção.value}
+                                    readOnly
+                                />
+                                <label htmlFor={`tab-${opção.value}`}>
+                                    <FontAwesomeIcon icon={opção.icon} />
+                                    {opção.label}  
+                                </label>
+
+                            </li>
+                                        ))}
+
+                        <li onClick={() => alert('Em Desenvolvimento...')}>
+                            <input type="radio" name="tab" id="tab-produtos"  />
+                            <label htmlFor="tab-produtos">
+                                <FontAwesomeIcon icon={faSeedling} />
+                                Produtos  
                             </label>
                         </li>
                     </ul>
@@ -114,6 +150,8 @@ export default function DashboardAdmin() {
                     )}
 
                 </section>
+                
+
 
             </div>
         </main>
