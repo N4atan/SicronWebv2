@@ -25,7 +25,7 @@ const guia_passos = [
 
 export default function HowItWorksSection() {
     return (
-        <section className="how-section">
+        <section className="how-section" id='how-section'>
             <div className="how-header">
                 <h2 className="title-section">Como Funciona</h2>
                 <p className="subtitle-section">
