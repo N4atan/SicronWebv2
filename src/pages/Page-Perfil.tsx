@@ -1,7 +1,7 @@
 
 import Header from "../components/Header/Header";
 
-import DonationReport from "../components/DonationReport/DonationReport";
+import DonationReceipt from "../components/DonationReceipt/DonationReceipt";
 import { faEnvelope, faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import ProfileCard from "../components/ProfileCard/ProfileCard";
 import InfoContactCard from './../components/InfoContactCard/InfoContactCard';
@@ -105,8 +105,16 @@ export default function PagePerfil() {
                     </aside>
 
                     <main>
-                        <HistoryCard
-                            historyActivities={historyActivities}
+                        <DonationReceipt
+                            id="123"
+                            date="2022-01-01"
+                            ongName="ONG Teste"
+                            donorName="Doador Teste"
+                            items={[
+                                { name: "Item 1", qtd: 1, price: 10 },
+                                { name: "Item 2", qtd: 2, price: 20 },
+                            ]}
+                            total={50}
                         />
                     </main>
                 </ContainerPage>
