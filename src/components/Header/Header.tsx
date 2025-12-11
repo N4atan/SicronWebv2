@@ -14,11 +14,12 @@ export default function Header() {
     { to: '/', label: 'Início' },
     { to: '/explorar', label: 'Explora ONGs' },
     { to: '/cadastros', label: 'Cadastros' },
+
   ];
 
   return (
     <header className={`header ${menuIsOpen ? "menu-open" : ""}`}>
-      
+
       {/* 1. LOGO (Sempre Visível) */}
       <div className="logo-container">
         <LogoComponent className="logo-img" />
@@ -37,41 +38,49 @@ export default function Header() {
         </nav>
 
         {/* Botão na Direita */}
-        <Button variant="primary" text={"Entrar"} />
+        <Link to="/login" className="nav-link" onClick={() => setMenuIsOpen(false)}>
+          <Button variant="primary" text={"Entrar"} />
+        </Link>
       </div>
 
       {/* 3. MOBILE VIEW (Visível apenas em telas pequenas) */}
       <div className="container-mobile-view">
-        
-        {/* Ícone Hambúrguer / X */}
-        <FontAwesomeIcon 
-          icon={menuIsOpen ? faXmark : faBars}
-          size="lg"
+
+        {/* Ícone Hambúrguer / X com círculo */}
+        <div
+          className={`menu-toggle-button ${menuIsOpen ? 'open' : ''}`}
           onClick={() => setMenuIsOpen(!menuIsOpen)}
-          style={{ cursor: 'pointer', zIndex: 1001, position: 'relative', color: 'black' }} 
-        />
-        
+        >
+          <FontAwesomeIcon
+            icon={menuIsOpen ? faXmark : faBars}
+            size="lg"
+          />
+        </div>
+
         {/* Menu Dropdown Flutuante */}
         <div className={`container-toggle-menu ${menuIsOpen ? "active" : ""}`}>
-          
+
           <nav className="nav-mobile">
             <ul className="mobile-list">
               {links.map((link, index) => (
                 <li key={index} className="mobile-item">
-                  <Link 
-                    to={link.to} 
-                    className="nav-link" 
+                  <Link
+                    to={link.to}
+                    className="nav-link"
                     onClick={() => setMenuIsOpen(false)} // Fecha o menu ao clicar
                   >
                     {link.label}
                   </Link>
                 </li>
               ))}
+
+              <li className="mobile-item">
+                <Link to="/login" className="nav-link" onClick={() => setMenuIsOpen(false)}>
+                  ENTRAR  
+                </Link>
+              </li>
             </ul>
           </nav>
-          
-        
-
         </div>
       </div>
 

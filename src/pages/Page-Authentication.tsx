@@ -1,6 +1,6 @@
 import AuthenticationForm from "../components/Forms/Authentication/Authentication";
 import Header from "../components/Header/Header";
-import dogImg from "../assets/images/dog_auth.png";
+import IllustrationImg from "../assets/images/undraw_welcome-cats_tw36.svg?react";
 import "./Page-Authentication.css";
 import Footer from "../components/Footer/Footer";
 
@@ -11,7 +11,7 @@ export default function PageAuthentication() {
 
             <div className="auth-main-container">
                 <div className="auth-illustration-side">
-                    <img src={dogImg} alt="feliz cachorro sicron" className="auth-dog-image" />
+                    <IllustrationImg style={{ width: "80%", height: "100%" }} />
                 </div>
 
                 <div className="auth-form-side">
