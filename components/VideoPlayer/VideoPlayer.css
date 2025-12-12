@@ -1,0 +1,26 @@
+.video-player {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  gap: 1.5rem;
+  padding: 2rem;
+  border-radius: 12px;
+  max-width: 50rem;
+  margin: 0 auto;
+  /* centraliza */
+}
+
+.video-description {
+  font-size: 1rem;
+  text-align: center;
+  color: #555;
+  line-height: 1.5;
+  max-width: 700px;
+}
+
+.video-element {
+  width: 100%;
+  border-radius: 20px;
+  aspect-ratio: 16 / 9;
+  background: #000;
+}

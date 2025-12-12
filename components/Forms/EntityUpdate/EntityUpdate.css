@@ -1,0 +1,46 @@
+/* EntityUpdate.css */
+
+/* O formulário ocupa todo o espaço disponível dentro do Card */
+.form-editEntity {
+    display: flex;
+    flex-direction: column;
+    height: 100%;       /* Garante que o form ocupe a altura do pai */
+    overflow: hidden;   /* Impede scroll duplo */
+}
+
+/* A ÁREA DOS INPUTS QUE ROLA */
+.container-body {
+    flex: 1;            /* Ocupa todo espaço livre */
+    min-height: 0;      /* Truque essencial para scroll aninhado */
+    overflow-y: auto;   /* Scroll automático */
+    
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 5px;       /* Respiro visual */
+}
+
+/* Scrollbar Bonitinha (Opcional) */
+.container-body::-webkit-scrollbar {
+    width: 6px;
+}
+.container-body::-webkit-scrollbar-track {
+    background: transparent;
+}
+.container-body::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 10px;
+}
+
+/* A ÁREA DOS BOTÕES FIXA NO RODAPÉ */
+.container-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    
+    padding-top: 20px;  
+    margin-top: 10px;
+    border-top: 1px solid #f0f0f0; /* Linha separadora suave */
+    
+    flex-shrink: 0;     /* Não deixa os botões serem esmagados */
+}
