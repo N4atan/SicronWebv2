@@ -9,6 +9,7 @@ import DashboardONG from "../pages/Dashboard-ONG";
 import DashboardAdmin from "../pages/Dashboard-Admin/Dashboard-Admin";
 import PageSolicitarCadastro from "../pages/Page-SolicitarCadastro";
 import ExploreOngs from "../pages/ExploreOngs/ExploreOngs";
+import PageNotFound from "../pages/Page-NotFound";
 
 export default function AppRoutes() {
     return (
@@ -21,6 +22,7 @@ export default function AppRoutes() {
             <Route path='/explorar'         element={<ExploreOngs />} />
             <Route path='/dashboard-ong'    element={<DashboardONG />} />
             <Route path='/dashboard-admin'  element={<DashboardAdmin />} />
+            <Route path='*'                 element={<PageNotFound />} />
         </Routes>
     );
 }

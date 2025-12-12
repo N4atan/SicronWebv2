@@ -1,25 +1,30 @@
+/* --- ESTILOS GERAIS DO HEADER --- */
 .header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: clamp(0.8rem, 2vw, 1rem) clamp(1rem, 4vw, 2rem);
-  background-color: #ffffffda;
+  
+  background-color: rgba(255, 255, 255, 0.85); /* Fundo translúcido */
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  
   color: black;
+  border-bottom: 1px solid #eee;
+  
+  /* Mantém o header fixo no topo (Desktop e Mobile) */
   position: sticky;
   top: 0;
-  z-index: 100;
-  border-bottom: 1px solid #eee;
+  z-index: 1000;
   transition: all 0.3s ease;
 }
 
-/* 3 colunas no desktop */
+/* --- LOGO --- */
 .logo-container {
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  flex: 1;
-  /* ocupa a parte esquerda */
+  flex-shrink: 0; /* Impede que o logo seja esmagado */
 }
 
 .logo-img {
@@ -32,22 +37,15 @@
   font-size: clamp(0.9rem, 2vw, 1rem);
   font-weight: 600;
   color: rgb(7, 156, 7);
+  margin: 0;
 }
 
-/* O NAV vai bem no meio */
-.nav {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1.2rem;
-  flex: 2;
-  /* ocupa o espaço central */
-}
-
+/* --- LINKS DE NAVEGAÇÃO (Geral) --- */
 .nav-link {
   color: black;
   text-decoration: none;
   font-weight: 500;
+  font-size: 0.95rem;
   transition: color 0.2s ease;
 }
 
@@ -55,72 +53,154 @@
   color: darkgreen;
 }
 
-/* Tweaks à direita */
-.tweaks {
+/* =========================================
+   DESKTOP VIEW (> 768px)
+   ========================================= */
+.container-desktop-view {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  flex: 1;
-  /* ocupa a parte direita */
-  justify-content: flex-end;
+  flex: 1; /* Ocupa o espaço restante para permitir centralização */
 }
 
-.tweaks-link {
-  color: black;
-  text-decoration: none;
-  transition: color 0.2s ease;
+/* Menu Desktop */
+.nav-desktop {
+  display: flex;
+  gap: 1.5rem;
+  /* Mágica para centralizar apenas o menu */
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.menu-toggle {
+/* Esconde elementos mobile no desktop */
+.container-mobile-view {
   display: none;
-  background: none;
-  border: none;
-  font-size: 1.4rem;
 }
 
-/* ===========================
-          MOBILE
-   =========================== */
-@media (max-width: 720px) {
-  .header {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    align-items: flex-start;
-  }
+/* --- BOTÃO TOGGLE CIRCULAR (Mobile) --- */
+.menu-toggle-button {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: black;
+  position: relative;
+  z-index: 1001;
+}
 
-  .menu-toggle {
+/* Quando o menu está aberto, mostra o círculo branco */
+.menu-toggle-button.open {
+  border-color: white;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.menu-toggle-button:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.menu-toggle-button.open:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* =========================================
+   MOBILE VIEW (<= 768px)
+   ========================================= */
+@media (max-width: 768px) {
+  /* Esconde a versão desktop */
+  .container-desktop-view {
+    display: none;
+  }
+  
+  /* Mostra o container mobile */
+  .container-mobile-view {
     display: block;
   }
 
-  .nav {
-    flex: 0 0 100%;
-  }
-
-  .nav,
-  .tweaks {
+  /* --- MENU FLUTUANTE (DROPDOWN) --- */
+  .container-toggle-menu {
+    position: absolute;
+    top: 100%; /* Começa logo abaixo do header */
+    right: clamp(1rem, 4vw, 2rem); /* Alinha com o padding lateral */
+    
+    width: 250px; /* Largura do menu */
+    height: auto;
+    
+    background-color: #fff;
+    border: 2px solid rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    
+    padding: 0;
+    margin-top: 0.5rem;
+    
+    /* Layout interno */
+    display: flex;
     flex-direction: column;
-    width: 100%;
-    overflow: hidden;
-    max-height: 0;
+    align-items: stretch;
+    gap: 0;
+
+    /* --- ANIMAÇÃO DE ENTRADA --- */
     opacity: 0;
-    transition: max-height .3s ease, opacity .3s ease;
+    visibility: hidden;
+    transform: translateY(-20px); /* Começa deslocado para cima */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  .tweaks {
-    order: 2;
-    margin-top: .5rem;
-    flex-direction: row;
-    justify-content: center;
-  }
-
-  .nav {
-    order: 1;
-  }
-
-  .header.menu-open .nav,
-  .header.menu-open .tweaks {
-    max-height: 300px;
+  /* Estado Ativo (Aberto) */
+  .container-toggle-menu.active {
     opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  /* --- LISTA DE NAVEGAÇÃO MOBILE (UL/LI) --- */
+  .nav-mobile {
+    width: 100%;
+  }
+
+  .mobile-list {
+    list-style: none; /* Remove bolinhas */
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    width: 100%;
+    align-items: stretch;
+  }
+
+  .mobile-item {
+    width: 100%;
+    display: flex;
+    justify-content: stretch;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  }
+
+  .mobile-item:last-child {
+    border-bottom: none;
+  }
+
+  /* Aumenta a área de clique no mobile */
+  .mobile-item .nav-link {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+  }
+
+  .mobile-item .nav-link:hover {
+    background-color: #7dd3c0;
+    color: white;
   }
 }

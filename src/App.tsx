@@ -6,7 +6,7 @@ import ImpactSection from "./components/Sections/Impact/ImpactSection";
 import "./App.css";
 import ContactSection from "./components/Sections/Contact/ContactSection";
 import Footer from "./components/Footer/Footer";
-import OurImpact from "./components/OurImpact/OurImpact";
+import OurImpact from "./components/Sections/OurImpact/OurImpact";
 
 export default function App() {
   return (

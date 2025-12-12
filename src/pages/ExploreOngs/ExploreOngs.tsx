@@ -1,34 +1,103 @@
-import Input from "../../components/Inputs/Input/Input";
+
+
+
+
+import Header from './../../components/Header/Header';
+import './ExploreOngs.css'
+import Input from './../../components/Inputs/Input/Input';
+import OngRequestCard from './../../components/OngRequestCard/OngRequestCard';
+import { api, SimplifiedOng } from "../../services/api";
+import { useEffect, useState } from "react";
+
+import Card from './../../components/Card/Card';
 
 
 export default function ExploreOngs() {
+    const [isLoading, setIsLoading] = useState(true);
+    const [dataOngs, setDataOngs] = useState<SimplifiedOng[]>([]);
+
+    const fetchData = async () => {
+        try {
+            const response = await api.fetchOngs({});
+            if (response) setDataOngs(response);
+
+        } catch (e: unknown) {
+            console.error('Erro ao buscar dados:', e);
+        }
+    };
+
+    // Carregamento inicial (com Promise.all para esperar OS DOIS terminarem)
+    useEffect(() => {
+        const loadAllData = async () => {
+            setIsLoading(true);
+            try {
+                await fetchData()
+
+            } catch (e: unknown) {
+                alert(e);
+                console.error(e);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        loadAllData();
+
+
+    }, []);
 
 
 
 
     return (
-        <main>
-        
-        <aside className="container-filters">
-            <h2>Filtros</h2>
+        <>
+            <Header />
 
-            <p>Nome da ONG</p>
-            <input type="text" name="ong-name" id="" />
+            <div className='container-text'>
+                <h1>Encontre a causa que move o seu coração.</h1>
+                <h2>Explore nossa rede de ONGs parceiras, conheça suas histórias e descubra como a sua doação pode transformar vidas hoje mesmo.</h2>
+            </div>
 
-            <p>Foco Principal</p>
-            <select name="ong-focus" id="" >
-                <option value="" disabled selected >Selecione o Foco Principal</option>
-                <option value="all">Deixar áreas padronizadas</option>
-            </select>
 
-            <p>Localização</p>
-            <input type="text" name="ong-location" id="" />
-        </aside>
+            { isLoading && dataOngs.length == 0 && (
+                <Card>
+                    <p>Carregando ONGs ...</p>
+                </Card>
+            )}
 
-        <section className="container-results">
+            { !isLoading && (
+                <main className="container-page-explorer">
+                    <aside>
+                        <details className="group-details" open>
+                            <summary className="custom-summary">
+                                <span>Facilite a Busca</span>
+                                <span className="icon">▼</span>
+                            </summary>
 
-        </section>
-        
-        </main>
+                            <div className="content">
+                                <Input
+                                    variant="default"
+                                    label="Nome da ONG:"
+                                />
+
+                                <Input
+                                    variant="selection"
+                                    label="Qual a Causa?"
+                                    options={['Selecione a Causa', 'Animal', 'Saúde']}
+                                />
+                            </div>
+                        </details>
+                    </aside>
+
+                    <div className="container-results-ongs">
+                        { dataOngs.map((ong) => (
+                            <OngRequestCard key={ong.id} ongRequest={ong} onClickButton={() => alert('Clique!')} />
+                            ))
+                        }
+                    </div>
+                </main>
+            )}
+
+        </>
     )
 }
