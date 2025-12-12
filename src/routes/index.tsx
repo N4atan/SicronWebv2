@@ -16,13 +16,13 @@ export default function AppRoutes() {
         <Routes>
             <Route path="/"                 element={<App />} />
             <Route path="/login"            element={<PageAuthentication />} />
-            <Route path='/perfil/:id'       element={<PagePerfil />} />
-            <Route path="/cadastros"        element={<PageSolicitarCadastro />} />
+            <Route path='/perfil'       element={<PagePerfil />} />
+            {/* <Route path="/cadastros"        element={<PageSolicitarCadastro />} />
             <Route path='/perfil-ong'       element={<PageONG />} />
             <Route path='/explorar'         element={<ExploreOngs />} />
             <Route path='/dashboard-ong'    element={<DashboardONG />} />
             <Route path='/dashboard-admin'  element={<DashboardAdmin />} />
-            <Route path='*'                 element={<PageNotFound />} />
+            <Route path='*'                 element={<PageNotFound />} /> */}
         </Routes>
     );
 }

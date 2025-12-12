@@ -7,7 +7,9 @@ import './Authentication.css';
 import Input from '../../Inputs/Input/Input';
 import Button from '../../Button/Button';
 import { Dispatch, SetStateAction, useState } from 'react';
-import { api, SimplifiedUser } from "../../../services/api";
+
+import { errorUserService, loginUser, registerUser } from '../../../services/user.service';
+import { useNavigate } from 'react-router-dom';
 
 interface LoginFormProps {
     email: string;
@@ -43,7 +45,7 @@ function LoginForm(props: LoginFormProps) {
                 type="email"
                 placeholder="E-mail"
                 icon={faEnvelope}
-                onChange={(e) => props.setEmail((e.target as HTMLInputElement).value)}
+                onChange={(e) => props.setEmail((e.target as HTMLInputElement).value.trim())}
             />
 
             <Input
@@ -52,7 +54,7 @@ function LoginForm(props: LoginFormProps) {
                 type="password"
                 placeholder="Senha"
                 icon={faLock}
-                onChange={(e) => props.setPassword((e.target as HTMLInputElement).value)}
+                onChange={(e) => props.setPassword((e.target as HTMLInputElement).value.trim())}
             />
 
             <Button
@@ -85,7 +87,7 @@ function RegisterForm(props: RegisterFormProps) {
                 type="text"
                 placeholder="Nome de Usuário"
                 icon={faUser}
-                onChange={(e) => props.setUsername((e.target as HTMLInputElement).value)}
+                onChange={(e) => props.setUsername((e.target as HTMLInputElement).value.trim())}
                 value={props.username}
             />
 
@@ -96,7 +98,7 @@ function RegisterForm(props: RegisterFormProps) {
                 type="email"
                 placeholder="E-mail"
                 icon={faEnvelope}
-                onChange={(e) => props.setEmail((e.target as HTMLInputElement).value)}
+                onChange={(e) => props.setEmail((e.target as HTMLInputElement).value.trim())}
                 value={props.email}
             />
 
@@ -106,7 +108,7 @@ function RegisterForm(props: RegisterFormProps) {
                 type="password"
                 placeholder="Senha"
                 icon={faLock}
-                onChange={(e) => props.setPassword((e.target as HTMLInputElement).value)}
+                onChange={(e) => props.setPassword((e.target as HTMLInputElement).value.trim())}
                 value={props.password}
             />
 
@@ -138,49 +140,85 @@ export default function AuthenticationForm() {
     const [ email   , setEmail    ] = useState<string>('');
     const [ password, setPassword ] = useState<string>('');
 
+    const navigate = useNavigate();
+
     function clearData(){
         setUsername('');
         setEmail('');
         setPassword('');
     }
 
-    function anyIsEmpty(): boolean{
-        return username.trim().length == 0 || email.trim().length == 0 || password.trim().length == 0;
+    function anyIsEmpty(letter: string): boolean{
+        if (letter == 'r') {
+            return username.trim().length == 0 || email.trim().length == 0 || password.trim().length == 0;
+        }
+
+        if (letter == 'l') {
+            return email.trim().length == 0 || password.trim().length == 0;
+        }
+
+        else {
+            return true;
+        }
     }
     
     function handleClickChangeForm(type: 'login' | 'register') {
-        console.log(type);
         setFormType(type);
+        clearData();
     }
 
     async function handleSubmitRegister(event: React.FormEvent) {
-        event.preventDefault();
+       event.preventDefault();
 
-        try {
-            if(anyIsEmpty()) return alert('Preencha os campos corretamente!');
-            
-            const user = await api.fetchCreateUser({username, email, password});
+       try 
+       {
+            // Checa inputs vazios.
+            if ( anyIsEmpty('r') ) return alert('Preencha todos os campos!');
 
-            if (!user) {
-                console.info(api.errorResponse);
-                alert(api.errorResponse);
-                return;
-            }
+            const userCreated = await registerUser({username, email, password});
 
-            console.table(user);
-            localStorage.setItem('userSicron', JSON.stringify(user))
+            if ( !userCreated ) return alert(errorUserService);
 
-            alert('Registro com sucesso!');
+            alert('Registrado com Sucesso!');
             clearData();
 
-        } catch (error: unknown) {
-            console.error(error);
-            alert(`Erro no registro: ${error}`);
-        }
+            alert('Realize seu Login Agora!');
+            setFormType('login');
+       }
+       catch (error: unknown)
+       {
+            alert(error);
+            console.log(error);
+       }
     }
 
-    function handleSubmitLogin(event: React.FormEvent) {
+    async function handleSubmitLogin(event: React.FormEvent) {
         event.preventDefault();
+
+        try 
+       {
+            // Checa inputs vazios.
+            if ( anyIsEmpty('l') ) return alert('Preencha todos os campos!');
+
+            console.log('Dados a serem enviados:', email, password)
+
+            const isLogged = await loginUser({ email, password });
+
+            if ( !isLogged ) return alert(errorUserService);
+
+            alert('Logado com Sucesso!');
+            clearData();
+
+            
+
+            navigate(`/perfil?email=${email}`);
+
+       }
+       catch (error: unknown)
+       {
+            alert(error);
+            console.log(error);
+       }
     }
 
 

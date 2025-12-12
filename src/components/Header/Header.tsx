@@ -12,9 +12,7 @@ export default function Header() {
   // Lista de links para evitar repetição de código
   const links = [
     { to: '/', label: 'Início' },
-    { to: '/explorar', label: 'Explora ONGs' },
-    { to: '/cadastros', label: 'Cadastros' },
-
+    { to: '/explorar', label: 'Explorar ONGs' },
   ];
 
   return (

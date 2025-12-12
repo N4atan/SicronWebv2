@@ -3,15 +3,13 @@ import Header from "../components/Header/Header";
 
 import DonationReceipt from "../components/DonationReceipt/DonationReceipt";
 import { faEnvelope, faLocationDot } from '@fortawesome/free-solid-svg-icons';
-import ProfileCard from "../components/ProfileCard/ProfileCard";
 import InfoContactCard from './../components/InfoContactCard/InfoContactCard';
-import HistoryCard from "../components/HistoryCard/HistoryCard";
 import ContainerPage from "../components/ContainerPage/ContainerPage";
-import { useParams } from "react-router-dom";
-import { api, SimplifiedUser } from './../services/api';
+import { useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Card from "../components/Card/Card";
 import UserProfileCard from "../components/UserProfileCard/UserProfileCard";
+import { getAll, User } from "../services/user.service";
 
 
 const listContact = [
@@ -43,32 +41,39 @@ const historyActivities = [
 ]
 
 export default function PagePerfil() {
-    const [user, setUser] = useState<SimplifiedUser | null>(null);
+    const [searchParams] = useSearchParams();
+    const [user, setUser] = useState<Partial<User> | null>(null);
     const [isLoading, setIsLoading] = useState(true);
 
-    const { id } = useParams();
+
 
     useEffect(() => {
-
         async function fetchData() {
-            try {
-                // O isLoading já começa 'true', não precisa setar de novo
-                const response: SimplifiedUser | null = await api.fetchUser(String(id));
-                setUser(response);
-                console.table(response);
+            setIsLoading(true);
 
-            } catch (error) {
-                console.error("Erro ao buscar usuário:", error);
-                alert(`Erro ao buscar usuário: ${error}`);
+            try {
+                const filters = Object.fromEntries(searchParams.entries());
+                const result: Partial<User>[] = await getAll(filters);
+
+                if (!result[0]) {
+                    alert("Usuário não encontrado.");
+                    setUser(null);
+                    return;
+                }
+
+                setUser(result[0]);
+
+            } catch (error: unknown) {
+                alert(String(error));
+                console.error(error);
+
             } finally {
-                // AGORA SIM: Isso só roda depois do 'await' ou do 'catch'
                 setIsLoading(false);
             }
-        };
+        }
 
         fetchData();
-
-    }, [id])
+    }, [searchParams]);
 
 
     return (
@@ -97,7 +102,7 @@ export default function PagePerfil() {
                             listContact={[
                                 {
                                     icon: faEnvelope,
-                                    text: user.email,
+                                    text: user.email || 'Retirar',
                                     subtext: 'Email'
                                 }
                             ]}
