@@ -3,6 +3,11 @@
     width: 100%;
 }
 
+/* Adiciona espaçamento maior para o footer */
+.auth-page-wrapper .footer {
+    margin-top: 80px;
+}
+
 /* CONTAINER PRINCIPAL – divide IMG ↔ FORM */
 .auth-main-container {
     display: flex;
@@ -12,7 +17,8 @@
     max-width: 1200px;
     margin: 0 auto;
     padding: 40px 0;
-    gap: 60px; /* espaço entre a imagem e o formulário */
+    gap: 60px;
+    /* espaço entre a imagem e o formulário */
 }
 
 /* LADO DA IMAGEM */
@@ -40,13 +46,15 @@
 
 .auth-form-wrapper {
     width: 100%;
-    max-width: 380px; /* tamanho do form */
+    max-width: 380px;
+    /* tamanho do form */
 }
 
 /* RESPONSIVO – remove a imagem no celular e ajusta o layout */
 @media (max-width: 768px) {
     .auth-illustration-side {
-        display: none; /* some com a imagem no celular */
+        display: none;
+        /* some com a imagem no celular */
     }
 
     .auth-main-container {
