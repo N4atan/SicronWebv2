@@ -78,7 +78,6 @@ export default function PagePerfil() {
 
     return (
         <>
-            <Header />
 
             {isLoading || !user && (
                 <Card
@@ -95,7 +94,7 @@ export default function PagePerfil() {
                 >
                     <aside>
                         <UserProfileCard
-                            name={user.username}
+                            name={user.username!}
                         />
 
                         <InfoContactCard

@@ -1,52 +1,47 @@
 import axios from 'axios';
 
-
 export const api = axios.create({
-    baseURL: 'https://sicronweb-backend.onrender.com/',
+    baseURL: 'https://sicronweb-backend.onrender.com',
     withCredentials: true,
     headers: {
         'Content-Type': 'application/json',
     },
-})
-
-
+});
 
 api.interceptors.response.use(
     (response) => response,
     async (error) => {
         const originalRequest = error.config;
 
-        // Se o erro for 401 (Não autorizado) e não for uma tentativa de refresh
-        if (error.response?.status === 401 && !originalRequest._retry) {
+        // VERIFICAÇÃO CRUCIAL ADICIONADA: 
+        // && !originalRequest.url.includes('/user/auth/refresh')
+        // Isso impede que ele tente renovar o token se a falha veio da própria renovação
+        if (
+            error.response?.status === 401 &&
+            !originalRequest._retry &&
+            !originalRequest.url.includes('/user/auth/refresh')
+        ) {
             originalRequest._retry = true;
 
             try {
-                // Tenta renovar os tokens chamando o endpoint de refresh
-                // O cookie refreshToken será enviado automaticamente
+                // Tenta renovar
                 await api.post('/user/auth/refresh');
-
-                // Se der certo, refaz a requisição original
+                // Se funcionar, refaz a requisição original
                 return api(originalRequest);
             } catch (refreshError) {
-                // Se o refresh falhar (ex: token expirou mesmo), desloga o usuário
-                console.error('Sessão expirada. Faça login novamente.');
-                // window.location.href = '/login'; 
+                // Se falhar, não faz nada (o usuário será deslogado pelo fluxo normal)
+                // O catch do auth_check no service vai pegar esse erro.
                 return Promise.reject(refreshError);
             }
         }
         return Promise.reject(error);
     }
-)
-
-
+);
 
 export const AxiosHandleError = (error: unknown, defaultMessage: string): string => {
     console.error(defaultMessage, error);
-
-    if ( axios.isAxiosError(error) && error.response && error.response.data ){
+    if (axios.isAxiosError(error) && error.response?.data) {
         return error.response.data.message || defaultMessage;
     }
-
     return defaultMessage;
-    
-}
+};

@@ -10,6 +10,8 @@ import { Dispatch, SetStateAction, useState } from 'react';
 
 import { errorUserService, loginUser, registerUser } from '../../../services/user.service';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../../contexts/AuthContext';
+import { Oval } from 'react-loader-spinner';
 
 interface LoginFormProps {
     email: string;
@@ -135,20 +137,22 @@ function RegisterForm(props: RegisterFormProps) {
 
 
 export default function AuthenticationForm() {
-    const [ formType, setFormType ] = useState<'login' | 'register'>('register');
-    const [ username, setUsername ] = useState<string>('');
-    const [ email   , setEmail    ] = useState<string>('');
-    const [ password, setPassword ] = useState<string>('');
+    const [formType, setFormType] = useState<'login' | 'register'>('register');
+    const [username, setUsername] = useState<string>('');
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const { signIn, loading } = useAuth();
 
     const navigate = useNavigate();
 
-    function clearData(){
+    function clearData() {
         setUsername('');
         setEmail('');
         setPassword('');
     }
 
-    function anyIsEmpty(letter: string): boolean{
+    function anyIsEmpty(letter: string): boolean {
         if (letter == 'r') {
             return username.trim().length == 0 || email.trim().length == 0 || password.trim().length == 0;
         }
@@ -161,91 +165,109 @@ export default function AuthenticationForm() {
             return true;
         }
     }
-    
+
     function handleClickChangeForm(type: 'login' | 'register') {
         setFormType(type);
         clearData();
     }
 
     async function handleSubmitRegister(event: React.FormEvent) {
-       event.preventDefault();
+        event.preventDefault();
 
-       try 
-       {
+        try {
             // Checa inputs vazios.
-            if ( anyIsEmpty('r') ) return alert('Preencha todos os campos!');
+            if (anyIsEmpty('r')) return alert('Preencha todos os campos!');
 
-            const userCreated = await registerUser({username, email, password});
+            const userCreated = await registerUser({ username, email, password });
 
-            if ( !userCreated ) return alert(errorUserService);
+            if (!userCreated) return alert(errorUserService);
 
             alert('Registrado com Sucesso!');
             clearData();
 
             alert('Realize seu Login Agora!');
             setFormType('login');
-       }
-       catch (error: unknown)
-       {
+        }
+        catch (error: unknown) {
             alert(error);
             console.log(error);
-       }
+        }
     }
 
     async function handleSubmitLogin(event: React.FormEvent) {
         event.preventDefault();
 
-        try 
-       {
-            // Checa inputs vazios.
-            if ( anyIsEmpty('l') ) return alert('Preencha todos os campos!');
+        // Validação básica
+        if (anyIsEmpty('l')) return alert('Preencha todos os campos!');
 
-            console.log('Dados a serem enviados:', email, password)
+        setIsLoading(true); // Ativa o loading local para mostrar o Spinner
 
-            const isLogged = await loginUser({ email, password });
-
-            if ( !isLogged ) return alert(errorUserService);
+        try {
+            // O CONTEXTO FAZ TUDO:
+            // 1. Faz o POST /login
+            // 2. Valida o Cookie
+            // 3. Carrega os dados do usuário
+            await signIn({email, password});
 
             alert('Logado com Sucesso!');
+
             clearData();
 
-            
-
+            // Redireciona
             navigate(`/perfil?email=${email}`);
 
-       }
-       catch (error: unknown)
-       {
-            alert(error);
-            console.log(error);
-       }
+        } catch (error: any) {
+            // Se o signIn falhar (ex: senha errada), ele lança erro e cai aqui
+            console.error(error);
+            alert(error.message || "Erro ao realizar login.");
+        } finally {
+            setIsLoading(false); // Desativa o loading independentemente do resultado
+        }
     }
 
 
     return (
-        <form className="form-container" onSubmit={formType == 'register'? handleSubmitRegister : handleSubmitLogin}>
+        <form className="form-container" onSubmit={formType == 'register' ? handleSubmitRegister : handleSubmitLogin}>
             {/* Componente do header */}
             <div></div>
 
-            {formType == 'login' ?
-                <LoginForm
-                    email={email}
-                    setEmail={setEmail}
-                    password={password}
-                    setPassword={setPassword}
-                    eventChangeForm={() => handleClickChangeForm('register')}
+            {isLoading ? (
+                <Oval
+                    height={80}
+                    width={80}
+                    color="#4fa94d"
+                    wrapperStyle={{ alignSelf: 'center' }}
+                    wrapperClass=""
+                    visible={true}
+                    ariaLabel='oval-loading'
+                    secondaryColor="#4fa94d"
+                    strokeWidth={2}
+                    strokeWidthSecondary={2}
+
                 />
-                :
-                <RegisterForm
-                    username={username}
-                    setUsername={setUsername}
-                    email={email}
-                    setEmail={setEmail}
-                    password={password}
-                    setPassword={setPassword}
-                    eventChangeForm={() => handleClickChangeForm('login')}
-                />
-            }
+            ) : (
+                <>
+                    {formType == 'login' ?
+                        <LoginForm
+                            email={email}
+                            setEmail={setEmail}
+                            password={password}
+                            setPassword={setPassword}
+                            eventChangeForm={() => handleClickChangeForm('register')}
+                        />
+                        :
+                        <RegisterForm
+                            username={username}
+                            setUsername={setUsername}
+                            email={email}
+                            setEmail={setEmail}
+                            password={password}
+                            setPassword={setPassword}
+                            eventChangeForm={() => handleClickChangeForm('login')}
+                        />
+                    }
+                </>
+            )}
 
         </form>
     )
