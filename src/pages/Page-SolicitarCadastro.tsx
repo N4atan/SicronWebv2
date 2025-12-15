@@ -23,21 +23,26 @@ export default function PageSolicitarCadastro() {
 
     // Atualiza o campo gestor_email assim que tivermos o email (seja do state ou do user context)
     useEffect(() => {
-        // HOTFIX HMR: Verifica se o estado está preso na versão antiga (chaves em inglês)
+        // HOTFIX HMR: Verifica se o estado está preso na versão antiga (apenas uma vez, sem recursão)
         const isLegacyState = currentFields.some((f: any) => f.name === 'name' || f.name === 'trade_name');
 
         if (isLegacyState) {
-            console.warn("Estado legado detectado (chaves em inglês). Resetando para o novo esquema (Português)...");
+            console.warn("Estado legado detectado. Resetando...");
             setCurrentFields(FORM_SCHEMAS['ong']);
             return;
         }
 
         if (preFilledEmail) {
-            setCurrentFields(prev => prev.map(f =>
-                f.name === 'gestor_email' ? { ...f, value: preFilledEmail } : f
-            ));
+            // Verifica se já não está preenchido para evitar updates desnecessários
+            const currentEmailField = currentFields.find(f => f.name === 'gestor_email');
+            if (currentEmailField && currentEmailField.value !== preFilledEmail) {
+                setCurrentFields(prev => prev.map(f =>
+                    f.name === 'gestor_email' ? { ...f, value: preFilledEmail } : f
+                ));
+            }
         }
-    }, [preFilledEmail, currentFields]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [preFilledEmail]); // Removido currentFields para evitar loop
 
     const handleChange = (fieldName: string, value: any) => {
         setCurrentFields((prevFields: any) =>
