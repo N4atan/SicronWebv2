@@ -69,7 +69,7 @@ export default function PageONG() {
         {
             icon: faCalendar,
             text: ongFounded,
-            subtext: 'Fundada em'
+            subtext: 'Na Plataforma desde'
         },
         {
             icon: faLocationDot,
@@ -118,7 +118,6 @@ export default function PageONG() {
 
     return (
         <>
-            <Header />
 
             <ProfileCard name={ongName} tags={[ongArea]} />
 
