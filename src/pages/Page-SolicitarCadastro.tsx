@@ -106,12 +106,13 @@ export default function PageSolicitarCadastro() {
                             {currentFields.map((field) => (
                                 <Input
                                     key={field.name}
-                                    variant={field.type === 'textarea' ? 'text-area' : 'default'}
+                                    variant={field.variant as 'default' | 'text-area' | 'selection' || (field.type === 'textarea' ? 'text-area' : 'default')}
                                     label={field.label}
                                     placeholder={field.placeholder}
                                     type={field.type}
                                     value={field.value}
-                                    onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => handleChange(field.name, e.target.value)}
+                                    options={field.options}
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => handleChange(field.name, e.target.value)}
                                     disabled={field.name === 'gestor_email' && !!preFilledEmail}
                                 />
                             ))}

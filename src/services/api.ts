@@ -51,12 +51,31 @@ export const FORM_SCHEMAS = {
         { name: 'razao_social', label: 'Razão Social', placeholder: 'Razão Social da ONG', type: 'text', value: '' },
         { name: 'nome_fantasia', label: 'Nome Fantasia', placeholder: 'Nome Fantasia', type: 'text', value: '' },
         { name: 'cnpj', label: 'CNPJ', placeholder: '00.000.000/0000-00', type: 'text', value: '' },
-        { name: 'foco_principal', label: 'Área de Atuação (Foco Principal)', placeholder: 'Ex: Assistência Social, Saúde...', type: 'text', value: '' },
+
+        // Campo atualizado para Selection
+        {
+            name: 'foco_principal',
+            label: 'Área de Atuação (Foco Principal)',
+            type: 'text',
+            variant: 'selection',
+            options: [
+                'Selecione uma área...',
+                'Assistência Social',
+                'Cultura',
+                'Saúde',
+                'Meio Ambiente',
+                'Desenvolvimento e Defesa de Direitos',
+                'Habitação',
+                'Educação e Pesquisa',
+                'Outros'
+            ],
+            value: ''
+        },
+
         { name: 'objetivo', label: 'Objetivo / Descrição', placeholder: 'Descreva a missão e objetivos da ONG...', type: 'textarea', value: '' },
         { name: 'local', label: 'Localização', placeholder: 'Cidade - UF', type: 'text', value: '' },
         { name: 'numero_telefone', label: 'Telefone', placeholder: '(00) 00000-0000', type: 'text', value: '' },
         { name: 'email_contato', label: 'E-mail para Contato Público', placeholder: 'contato@ong.org', type: 'email', value: '' },
-        // Campo oculto ou preenchido automaticamente, mas necessário no payload
         { name: 'gestor_email', label: 'E-mail do Gestor (Seu E-mail)', placeholder: 'seu@email.com', type: 'email', value: '', disabled: true },
     ]
 };
