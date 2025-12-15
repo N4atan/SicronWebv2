@@ -1,32 +1,34 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "../components/Header/Header";
 import Card from "../components/Card/Card";
 import Input from "../components/Inputs/Input/Input";
-import { FORM_SCHEMAS, api } from "../services/api"; // FORM_SCHEMAS ainda precisa ser achado ou definido localmente se sumiu
+import { FORM_SCHEMAS, api } from "../services/api";
 import { registerOng, errorOngService } from "../services/ong.service";
 import Footer from "../components/Footer/Footer";
 import Button from "../components/Button/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBuildingNgo, faLaptopFile, faTreeCity } from "@fortawesome/free-solid-svg-icons";
+import { faBuildingNgo } from "@fortawesome/free-solid-svg-icons";
 import ContainerPage from "../components/ContainerPage/ContainerPage";
-import { on } from "events";
-
 
 
 import { useLocation } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function PageSolicitarCadastro() {
     const location = useLocation();
-    const preFilledEmail = location.state?.email;
+    const { user } = useAuth(); // Fallback seguro
+    const preFilledEmail = location.state?.email || user?.email; // Prioriza state, senão pega do auth
 
-    const [currentFields, setCurrentFields] = useState(() => {
-        const fields = FORM_SCHEMAS['ong'];
+    const [currentFields, setCurrentFields] = useState(FORM_SCHEMAS['ong']);
+
+    // Atualiza o campo gestor_email assim que tivermos o email (seja do state ou do user context)
+    useEffect(() => {
         if (preFilledEmail) {
-            // O backend exige 'gestor_email' para vincular a ONG, não 'contact_email'
-            return fields.map(f => f.name === 'gestor_email' ? { ...f, value: preFilledEmail } : f);
+            setCurrentFields(prev => prev.map(f =>
+                f.name === 'gestor_email' ? { ...f, value: preFilledEmail } : f
+            ));
         }
-        return fields;
-    });
+    }, [preFilledEmail]);
 
     const handleChange = (fieldName: string, value: any) => {
         setCurrentFields((prevFields: any) =>
@@ -45,15 +47,18 @@ export default function PageSolicitarCadastro() {
             return acc;
         }, {});
 
+        console.log("Enviando solicitação de ONG:", data); // Debug para o usuário ver no console
+
         try {
             let response = await registerOng(data);
 
             if (!response) {
-                alert(errorOngService);
+                // Se response for null, houve erro capturado no service
+                alert(errorOngService || "Erro desconhecido ao cadastrar ONG.");
                 return;
             }
 
-            alert(`Pedido Realizado!`);
+            alert(`Pedido Realizado com Sucesso!`);
         } catch (e: any) {
             console.error(e);
             alert("Erro inesperado na aplicação.");
