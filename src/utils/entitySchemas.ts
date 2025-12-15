@@ -26,7 +26,7 @@ export const ENTITY_SCHEMAS = {
             label: 'Área de Atuação',
             type: 'text',
             variant: 'selection',
-            options: ['Assistência Social', 'Cultura', 'Saúde', 'Meio Ambiente', 'Desenvolvimento e Defesa de Direitos', 'Habitação', 'Educação e Pesquisa', 'Outros'],
+            options: ['Selecione uma área...', 'Assistência Social', 'Cultura', 'Saúde', 'Meio Ambiente', 'Desenvolvimento e Defesa de Direitos', 'Habitação', 'Educação e Pesquisa', 'Outros'],
             placeholder: 'Selecione a área'
         },
         { name: 'objetivo', label: 'Descrição', type: 'text', variant: 'text-area', placeholder: 'Descreva a missão...' },
