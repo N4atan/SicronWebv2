@@ -1,7 +1,7 @@
 import './OngRequestCard.css';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck, faClock, faEnvelope, faFileLines, faLocationDot, faPhone, faXmark, faBuilding } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faClock, faEnvelope, faFileLines, faLocationDot, faPhone, faXmark, faBuilding, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { NGO } from '../../services/ong.service';
 
 
@@ -41,9 +41,12 @@ export default function OngRequestCard(props: Props) {
             <h3>{ongRequest.trade_name || ongRequest.name}</h3>
             <p style={{ fontStyle: 'italic' }}>{ongRequest.area}</p>
 
-            <div className={`badge ${getStatusClass(ongRequest.status)}`}>
-                <span>{getStatusLabel(ongRequest.status)}</span>
-            </div>
+            {/* Só exibe o status se NÃO for público (ou seja, se for admin ou visualização privada) */}
+            {variant !== 'public' && (
+                <div className={`badge ${getStatusClass(ongRequest.status)}`}>
+                    <span>{getStatusLabel(ongRequest.status)}</span>
+                </div>
+            )}
 
             <div className='container-objective'>
                 <p>Descrição</p>
@@ -82,7 +85,8 @@ export default function OngRequestCard(props: Props) {
                         style={{ width: '100%', justifyContent: 'center' }}
                         onClick={() => navigate('/perfil-ong', { state: { ong: ongRequest } })}
                     >
-                        <FontAwesomeIcon icon={faFileLines} />
+                        {/* Ícone alterado para lupa (Magnifying Glass) ou Seta direita (ArrowRight) conforme preferência */}
+                        <FontAwesomeIcon icon={faMagnifyingGlass} />
                         Ver Detalhes
                     </button>
                 )}

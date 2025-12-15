@@ -51,19 +51,25 @@
 
     .container-objective {
         margin-top: 12px;
-        height: 80px;
+        min-height: 80px; /* Use min-height para permitir expansão se necessário, ou ajuste a altura */
+        /* height: 80px; REMOVIDO para evitar corte agressivo se o texto for muito pouco maior */
+        max-height: 120px; /* Limite máximo mais generoso */
         overflow: hidden;
         text-overflow: ellipsis;
+
+        /* Adicione padding para evitar que letras como 'g' ou 'p' sejam cortadas na linha inferior */
+        padding-bottom: 2px;
 
 
         p:first-child {
             font-weight: 600;
             font-size: 14px;
-            margin-bottom: 3px;
+            margin-bottom: 6px; /* Mais espaço entre titulo e texto */
         }
         p:last-child {
             font-size: 14px;
             color: #5c5c5c;
+            line-height: 1.4; /* Melhora a leitura e evita corte de linha */
         }
 
     }

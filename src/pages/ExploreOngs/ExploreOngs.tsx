@@ -51,7 +51,7 @@ export default function ExploreOngs() {
 
     return (
         <>
-            <Header />
+
 
             <div className='container-text'>
                 <h1>Encontre a causa que move o seu coração.</h1>
@@ -78,21 +78,24 @@ export default function ExploreOngs() {
                                 <Input
                                     variant="default"
                                     label="Nome da ONG:"
+                                // Implementar filtro de nome...
                                 />
 
                                 <Input
                                     variant="selection"
                                     label="Qual a Causa?"
-                                    options={['Selecione a Causa', 'Animal', 'Saúde']}
+                                    options={['Selecione a Causa', 'Assistência Social', 'Saúde', 'Educação e Pesquisa', 'Meio Ambiente']}
                                 />
                             </div>
                         </details>
                     </aside>
 
                     <div className="container-results-ongs">
-                        {dataOngs.map((ong) => (
-                            <OngRequestCard key={ong.uuid} ongRequest={ong} variant="public" />
-                        ))
+                        {dataOngs
+                            .filter(ong => ong.status === 'approved') // Apenas aprovadas
+                            .map((ong) => (
+                                <OngRequestCard key={ong.uuid} ongRequest={ong} variant="public" />
+                            ))
                         }
                     </div>
                 </main>

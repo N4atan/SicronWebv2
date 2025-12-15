@@ -20,10 +20,10 @@ export default function AppRoutes() {
             <Route path="/login" element={<PageAuthentication />} />
             <Route path='/perfil' element={<PagePerfil />} />
             <Route path='/perfil/me' element={<PagePerfil isMe={true} />} />
+            <Route path='/explorar'         element={<ExploreOngs />} />
+            <Route path='/perfil-ong'       element={<PageONG />} />
             {/* 
             <Route path="/cadastros"        element={<PageSolicitarCadastro />} />
-            <Route path='/perfil-ong'       element={<PageONG />} />
-            <Route path='/explorar'         element={<ExploreOngs />} />
             <Route path='/dashboard-ong'    element={<DashboardONG />} />
             <Route path='/dashboard-admin'  element={<DashboardAdmin />} />
             */}
