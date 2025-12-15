@@ -2,7 +2,7 @@ import "./Header.css";
 import LogoComponent from "../../assets/icons/Logo.svg?react";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faXmark, faUser, faBuilding, faHandHoldingHeart, faRightFromBracket, faBriefcase } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faXmark, faUser, faHouse, faHandHoldingHeart, faRightFromBracket, faBriefcase, faMap } from "@fortawesome/free-solid-svg-icons";
 import { useState, useRef, useEffect } from "react";
 import Button from "../Button/Button";
 import { useAuth } from "../../contexts/AuthContext";
@@ -29,14 +29,24 @@ export default function Header() {
   }, [dropdownRef]);
 
 
-  const links = [
-    { to: '/', label: 'Início' },
-    { to: '/explorar', label: 'Explorar ONGs' },
+  // 1. Links de Navegação Principal
+  const navLinks = [
+    { to: '/', label: 'Início', icon: faHouse  },
+    { to: '/explorar', label: 'Explorar ONGs', icon: faMap  },
+  ];
+
+  // 2. Links do Usuário (Dropdown / Mobile)
+  // Definimos aqui para garantir consistência
+  const userLinks = [
+    { to: '/perfil/me', label: 'Meu Perfil', icon: faUser },
+    { to: '/minha-ong', label: 'Minha ONG', icon: faHandHoldingHeart },
+    { to: '/minha-empresa', label: 'Minha Empresa', icon: faBriefcase },
   ];
 
   const handleLogout = () => {
     signOut();
     setUserMenuOpen(false);
+    setMenuIsOpen(false);
   }
 
   return (
@@ -51,7 +61,7 @@ export default function Header() {
       {/* 2. DESKTOP VIEW */}
       <div className="container-desktop-view">
         <nav className="nav nav-desktop">
-          {links.map((link, index) => (
+          {navLinks.map((link, index) => (
             <Link key={index} to={link.to} className="nav-link">
               {link.label}
             </Link>
@@ -75,24 +85,15 @@ export default function Header() {
                 </div>
 
                 <ul className="dropdown-list">
-                  <li>
-                    <Link to="/perfil/me" onClick={() => setUserMenuOpen(false)} className="dropdown-item">
-                      <FontAwesomeIcon icon={faUser} className="icon-width" />
-                      Meu Perfil
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="/minha-ong" onClick={() => setUserMenuOpen(false)} className="dropdown-item">
-                      <FontAwesomeIcon icon={faHandHoldingHeart} className="icon-width" />
-                      Minha ONG
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="/minha-empresa" onClick={() => setUserMenuOpen(false)} className="dropdown-item">
-                      <FontAwesomeIcon icon={faBriefcase} className="icon-width" />
-                      Minha Empresa
-                    </Link>
-                  </li>
+                  {userLinks.map((link, i) => (
+                    <li key={i}>
+                      <Link to={link.to} onClick={() => setUserMenuOpen(false)} className="dropdown-item">
+                        <FontAwesomeIcon icon={link.icon} className="icon-width" />
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+
                   <hr className="dropdown-divider" />
                   <li>
                     <button onClick={handleLogout} className="dropdown-item logout-item">
@@ -111,56 +112,61 @@ export default function Header() {
         )}
       </div>
 
-      {/* 3. MOBILE VIEW (Simplificado para manter consistência ou usar lógica própria) */}
+      {/* 3. MOBILE VIEW (Agora usando os mesmos arrays) */}
       <div className="container-mobile-view">
-        <div
+        <button
           className={`menu-toggle-button ${menuIsOpen ? 'open' : ''}`}
           onClick={() => setMenuIsOpen(!menuIsOpen)}
+          aria-label="Menu Mobile"
         >
           <FontAwesomeIcon icon={menuIsOpen ? faXmark : faBars} size="lg" />
-        </div>
+        </button>
 
         <div className={`container-toggle-menu ${menuIsOpen ? "active" : ""}`}>
           <nav className="nav-mobile">
             <ul className="mobile-list">
-              {links.map((link, index) => (
-                <li key={index} className="mobile-item">
+              {/* NAVEGAÇÃO PRINCIPAL */}
+              {navLinks.map((link, index) => (
+                <li key={`nav-${index}`} className="mobile-item">
                   <Link
                     to={link.to}
                     className="nav-link"
                     onClick={() => setMenuIsOpen(false)}
                   >
+                    <>
+                    <FontAwesomeIcon icon={link.icon} style={{ marginRight: '10px', width: '20px', textAlign: 'center' }} />
                     {link.label}
+                    </>
                   </Link>
                 </li>
               ))}
 
+              {/* OPÇÕES DO USUÁRIO (SE LOGADO) */}
               {user ? (
                 <>
+                  {userLinks.map((link, i) => (
+                    <li key={`user-${i}`} className="mobile-item">
+                      <Link to={link.to} className="nav-link" onClick={() => setMenuIsOpen(false)}>
+                        <FontAwesomeIcon icon={link.icon} style={{ marginRight: '10px', width: '20px', textAlign: 'center' }} />
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+
                   <li className="mobile-item">
-                    <Link to="/perfil/me" className="nav-link" onClick={() => setMenuIsOpen(false)}>
-                      <FontAwesomeIcon icon={faUser} style={{ marginRight: '8px' }} /> Meu Perfil
-                    </Link>
-                  </li>
-                  <li className="mobile-item">
-                    <Link to="/minha-ong" className="nav-link" onClick={() => setMenuIsOpen(false)}>
-                      <FontAwesomeIcon icon={faHandHoldingHeart} style={{ marginRight: '8px' }} /> Minha ONG
-                    </Link>
-                  </li>
-                  <li className="mobile-item">
-                    <Link to="/minha-empresa" className="nav-link" onClick={() => setMenuIsOpen(false)}>
-                      <FontAwesomeIcon icon={faBriefcase} style={{ marginRight: '8px' }} /> Minha Empresa
-                    </Link>
-                  </li>
-                  <li className="mobile-item">
-                    <div className="nav-link" onClick={() => { signOut(); setMenuIsOpen(false); }} style={{ cursor: 'pointer', color: '#dc3545' }}>
-                      <FontAwesomeIcon icon={faRightFromBracket} style={{ marginRight: '8px' }} /> Sair
+                    <div
+                      className="nav-link"
+                      onClick={handleLogout}
+                      style={{ cursor: 'pointer', color: '#dc3545' }}
+                    >
+                      <FontAwesomeIcon icon={faRightFromBracket} style={{ marginRight: '10px', width: '20px', textAlign: 'center' }} />
+                      Sair
                     </div>
                   </li>
                 </>
               ) : (
                 <li className="mobile-item">
-                  <Link to="/login" className="nav-link" onClick={() => setMenuIsOpen(false)}>
+                  <Link to="/login" className="nav-link" onClick={() => setMenuIsOpen(false)} style={{ justifyContent: 'center', fontWeight: 'bold' }}>
                     ENTRAR
                   </Link>
                 </li>
