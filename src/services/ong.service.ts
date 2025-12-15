@@ -44,6 +44,19 @@ export const getAllOngs = async (filters?: Partial<NGO>): Promise<NGO[]> => {
     }
 }
 
+export const getOngByUuid = async (uuid: string): Promise<NGO | null> => {
+    try {
+        // Assume que o backend suporta filtragem por UUID no GET /ngo?uuid=...
+        // Se não suportar, teremos que buscar *todas* e filtrar no front (menos performático)
+        // ou criar uma rota GET /ngo/:uuid no backend.
+        // Dado o contexto, vamos tentar filtrar.
+        const ongs = await getAllOngs({ uuid });
+        return ongs.length > 0 ? ongs[0] : null;
+    } catch {
+        return null;
+    }
+}
+
 
 // POST /ngo
 // POST /ngo

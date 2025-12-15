@@ -62,7 +62,7 @@ export default function ExploreOngs() {
 
     return (
         <>
-            <Header />
+
 
             <div className='container-text'>
                 <h1>Encontre a causa que move o seu coração.</h1>

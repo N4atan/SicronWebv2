@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import ContainerPage from "../components/ContainerPage/ContainerPage";
 import Header from "../components/Header/Header";
 import ProfileCard from "../components/ProfileCard/ProfileCard";
@@ -9,8 +9,9 @@ import { faCalendar } from "@fortawesome/free-regular-svg-icons";
 import ContatoForm from "../components/Forms/Contato/Contato";
 import Cart from "../components/Cart/Cart";
 import ListaItens from "../components/ListaItens/ListaItens";
-import { useLocation } from "react-router-dom";
-import { NGO } from "../services/ong.service";
+import { useLocation, useSearchParams } from "react-router-dom";
+import { NGO, getOngByUuid } from "../services/ong.service";
+import { Oval } from "react-loader-spinner";
 
 type Product = {
     tag: string;
@@ -22,10 +23,31 @@ type Product = {
 
 export default function PageONG() {
     const location = useLocation();
+    const [searchParams] = useSearchParams();
+    const uuidParam = searchParams.get('uuid');
 
-    // Tenta obter a ONG do location state (vindo do Explorar/Card)
-    // Se não tiver, pode-se implementar um fetch pelo ID da URL (TODO futuro)
-    const ongData = location.state?.ong as NGO | undefined;
+    // Estado inicial: Tenta pegar do state, senão undefined
+    const [ongData, setOngData] = useState<NGO | undefined>(location.state?.ong as NGO | undefined);
+
+    // Loading inicial: Só é true se NÃO tivermos dados E tivermos um UUID para buscar
+    const [isLoading, setIsLoading] = useState<boolean>(!ongData && !!uuidParam);
+
+    useEffect(() => {
+        // Se já temos dados carregados via state, não faz nada
+        if (ongData) return;
+
+        // Se tem UUID na URL, busca os dados
+        if (uuidParam) {
+            setIsLoading(true);
+            getOngByUuid(uuidParam)
+                .then(data => {
+                    if (data) setOngData(data);
+                })
+                .catch(err => console.error("Erro ao buscar ONG:", err))
+                .finally(() => setIsLoading(false));
+        }
+    }, [uuidParam]); // Executa quando o UUID muda (ou na montagem)
+
 
     const [tab, setTab] = useState('sobre'); // sobre | doar | contato
     const [productsList] = useState(Array<Product>(
@@ -114,6 +136,23 @@ export default function PageONG() {
 
     const handleClearCart = () => {
         setCartList([]);
+    }
+
+    if (isLoading) {
+        return (
+            <Card style={{ width: '300px', margin: '2rem auto', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
+                <Oval
+                    height={60}
+                    width={60}
+                    color="#2BB673"
+                    visible={true}
+                    ariaLabel='oval-loading'
+                    secondaryColor="#e0e0e0"
+                    strokeWidth={4}
+                />
+                <p>Carregando perfil...</p>
+            </Card>
+        );
     }
 
     if (!ongData) {
