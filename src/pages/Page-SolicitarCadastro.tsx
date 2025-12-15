@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import Header from "../components/Header/Header";
 import Card from "../components/Card/Card";
 import Input from "../components/Inputs/Input/Input";
-import { FORM_SCHEMAS, api } from "../services/api";
+import { api } from "../services/api";
+import { ENTITY_SCHEMAS } from "../utils/entitySchemas";
 import { registerOng, errorOngService } from "../services/ong.service";
 import Footer from "../components/Footer/Footer";
 import Button from "../components/Button/Button";
@@ -19,19 +20,12 @@ export default function PageSolicitarCadastro() {
     const { user } = useAuth(); // Fallback seguro
     const preFilledEmail = location.state?.email || user?.email; // Prioriza state, senão pega do auth
 
-    const [currentFields, setCurrentFields] = useState(FORM_SCHEMAS['ong']);
+    const [currentFields, setCurrentFields] = useState(() => {
+        return ENTITY_SCHEMAS['ong'].map(field => ({ ...field, value: '' }));
+    });
 
     // Atualiza o campo gestor_email assim que tivermos o email (seja do state ou do user context)
     useEffect(() => {
-        // HOTFIX HMR: Verifica se o estado está preso na versão antiga (apenas uma vez, sem recursão)
-        const isLegacyState = currentFields.some((f: any) => f.name === 'name' || f.name === 'trade_name');
-
-        if (isLegacyState) {
-            console.warn("Estado legado detectado. Resetando...");
-            setCurrentFields(FORM_SCHEMAS['ong']);
-            return;
-        }
-
         if (preFilledEmail) {
             // Verifica se já não está preenchido para evitar updates desnecessários
             const currentEmailField = currentFields.find(f => f.name === 'gestor_email');

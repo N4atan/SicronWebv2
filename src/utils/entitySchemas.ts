@@ -32,6 +32,8 @@ export const ENTITY_SCHEMAS = {
         { name: 'objetivo', label: 'Descrição', type: 'text', variant: 'text-area', placeholder: 'Descreva a missão...' },
         { name: 'local', label: 'Localização', type: 'text', placeholder: 'Cidade - UF' },
         { name: 'numero_telefone', label: 'Telefone', type: 'text', placeholder: '(00) 0000-0000' },
-        { name: 'email_contato', label: 'E-mail para Contato Público', type: 'email', placeholder: 'contato@ong.org' }
+        { name: 'email_contato', label: 'E-mail para Contato Público', type: 'email', placeholder: 'contato@ong.org' },
+        // Campo necessário para vínculo no backend
+        { name: 'gestor_email', label: 'E-mail do Gestor', type: 'email', placeholder: 'Seu E-mail', disabled: true }
     ]
 };
