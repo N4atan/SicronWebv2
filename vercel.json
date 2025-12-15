@@ -1,8 +1,8 @@
 {
   "rewrites": [
     {
-      "source": "/api/(.*)",
-      "destination": "https://sicronweb-backend.onrender.com/:match"
+      "source": "/api/:match*",
+      "destination": "https://sicronweb-backend.onrender.com/:match*"
     },
     {
       "source": "/(.*)",
