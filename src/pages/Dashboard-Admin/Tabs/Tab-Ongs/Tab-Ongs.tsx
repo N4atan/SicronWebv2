@@ -30,13 +30,10 @@ export default function TabOngs(props: Props) {
 
 
     const handleClickButton = async (uuid: string, status: 'approved' | 'rejected') => {
-        console.log(`[DEBUG] handleClickButton chamado. UUID: '${uuid}', Status: '${status}'`);
-
         if (!uuid) {
             alert("Erro: UUID da ONG não encontrado.");
             return;
         }
-
         try {
             // No backend o status é lowercase: 'pending' | 'approved' | 'rejected'
             const response = await updateOng(uuid, { status: status });

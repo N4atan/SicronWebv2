@@ -59,9 +59,9 @@ export const registerOng = async (newOng: NGO): Promise<boolean> => {
 }
 
 // PATCH /ngo/:uuid
-export const updateOng = async (uuid: string, data: Partial<NGO>): Promise<boolean> => {
+export const updateOng = async (uuid: string, ngo: Partial<NGO>): Promise<boolean> => {
     try {
-        await api.patch(`/ngo/${uuid}`, data);
+        await api.patch(`/ngo/${uuid}`, ngo);
         return true;
     } catch (error: unknown) {
         errorOngService = AxiosHandleError(error, 'Erro ao atualizar ONG');
