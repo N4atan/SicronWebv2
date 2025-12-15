@@ -2,7 +2,8 @@ import { useState } from "react";
 import Header from "../components/Header/Header";
 import Card from "../components/Card/Card";
 import Input from "../components/Inputs/Input/Input";
-import { FORM_SCHEMAS, api } from "../services/api";
+import { FORM_SCHEMAS, api } from "../services/api"; // FORM_SCHEMAS ainda precisa ser achado ou definido localmente se sumiu
+import { registerOng, errorOngService } from "../services/ong.service";
 import Footer from "../components/Footer/Footer";
 import Button from "../components/Button/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -12,8 +13,8 @@ import { on } from "events";
 
 
 
-export default function PageSolicitarCadastro(){
-    const [ currentFields, setCurrentFields ] = useState(FORM_SCHEMAS['ong']);
+export default function PageSolicitarCadastro() {
+    const [currentFields, setCurrentFields] = useState(FORM_SCHEMAS['ong']);
 
     const handleChange = (fieldName: string, value: any) => {
         setCurrentFields((prevFields: any) =>
@@ -33,10 +34,10 @@ export default function PageSolicitarCadastro(){
         }, {});
 
         try {
-            let response = await api.fetchCreateOng(data);
+            let response = await registerOng(data);
 
             if (!response) {
-                alert(api.errorResponse); 
+                alert(errorOngService);
                 return;
             }
 
@@ -50,72 +51,72 @@ export default function PageSolicitarCadastro(){
 
     return (
         <>
-        <Header />
+            <Header />
 
-        <Card
-        style={{maxWidth: '800px', margin: '2rem auto 1rem', display: 'flex', justifyContent: 'center', alignItems: 'center' , gap: '10px', flexWrap: 'wrap'}}
-        >
-            <div
-            style={{backgroundColor: '#eee', padding: '10px', borderRadius: '5px'}}
+            <Card
+                style={{ maxWidth: '800px', margin: '2rem auto 1rem', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}
             >
-                <FontAwesomeIcon icon={faBuildingNgo} size="2x" color=""/>
-            </div>
+                <div
+                    style={{ backgroundColor: '#eee', padding: '10px', borderRadius: '5px' }}
+                >
+                    <FontAwesomeIcon icon={faBuildingNgo} size="2x" color="" />
+                </div>
 
-            <p
-            style={{fontSize: '28px', fontWeight: '500'}}
+                <p
+                    style={{ fontSize: '28px', fontWeight: '500' }}
+                >
+                    Solicitar Cadastro de ONG
+                </p>
+            </Card>
+
+            <ContainerPage
+                variant='a-left'
             >
-                Solicitar Cadastro de ONG
-            </p>
-        </Card>
-        
-        <ContainerPage
-        variant='a-left'
-        >
 
-            <aside>
-                <Card
-                titleSection="Orientações"
-                >
-                    <p>Após o envio, nossa equipe irá revisar as informações e entrar em contato para validar o cadastro da sua ONG. Este processo pode levar até 5 dias úteis</p>
-                </Card>
-            </aside>
+                <aside>
+                    <Card
+                        titleSection="Orientações"
+                    >
+                        <p>Após o envio, nossa equipe irá revisar as informações e entrar em contato para validar o cadastro da sua ONG. Este processo pode levar até 5 dias úteis</p>
+                    </Card>
+                </aside>
 
-            <main>
-                <Card
-                titleSection="Informações da Organização"
-                subtitleSection="Todos os campos são obrigatórios."
-                >
-
-                    <form
-                    style={{display: 'flex', flexDirection: 'column', gap: '30px'}}
+                <main>
+                    <Card
+                        titleSection="Informações da Organização"
+                        subtitleSection="Todos os campos são obrigatórios."
                     >
 
-                        {currentFields.map((field) => (
-                            <Input
-                            key         = {field.name} 
-                            variant     = {field.type === 'textarea' ? 'text-area' : 'default'}
-                            label       = {field.label}
-                            placeholder = {field.placeholder}
-                            type        = {field.type}
-                            value       = {field.value}
-                            onChange    = {(e) => handleChange(field.name, e.target.value)}
+                        <form
+                            style={{ display: 'flex', flexDirection: 'column', gap: '30px' }}
+                        >
+
+                            {currentFields.map((field) => (
+                                <Input
+                                    key={field.name}
+                                    variant={field.type === 'textarea' ? 'text-area' : 'default'}
+                                    label={field.label}
+                                    placeholder={field.placeholder}
+                                    type={field.type}
+                                    value={field.value}
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => handleChange(field.name, e.target.value)}
+                                />
+                            ))}
+
+                            <Button
+                                variant={"primary"}
+                                text="Enviar Solicitação"
+                                type="button"
+                                onClick={() => handleSave()}
                             />
-                        ))}
+                        </form>
 
-                        <Button 
-                        variant={"primary"}
-                        text="Enviar Solicitação"
-                        type="button"
-                        onClick={() => handleSave()}
-                        />
-                    </form>
-                    
-                </Card>
-            </main>
+                    </Card>
+                </main>
 
-        </ContainerPage>
-        
-        <Footer />
+            </ContainerPage>
+
+            <Footer />
         </>
     )
 }

@@ -45,3 +45,17 @@ export const AxiosHandleError = (error: unknown, defaultMessage: string): string
     }
     return defaultMessage;
 };
+
+export const FORM_SCHEMAS = {
+    ong: [
+        { name: 'name', label: 'Nome da ONG', placeholder: 'Digite o nome da ONG', type: 'text', value: '' },
+        { name: 'trade_name', label: 'Nome Fantasia', placeholder: 'Digite o nome fantasia', type: 'text', value: '' },
+        { name: 'cnpj', label: 'CNPJ', placeholder: '00.000.000/0000-00', type: 'text', value: '' },
+        { name: 'email', label: 'E-mail', placeholder: 'email@ong.org', type: 'email', value: '' },
+        { name: 'area', label: 'Área de Atuação', placeholder: 'Ex: Saúde, Educação, Meio Ambiente', type: 'text', value: '' },
+        { name: 'description', label: 'Descrição', placeholder: 'Descreva a ONG...', type: 'textarea', value: '' },
+        { name: 'local', label: 'Localização', placeholder: 'Cidade - UF', type: 'text', value: '' },
+        { name: 'phone_number', label: 'Telefone', placeholder: '(00) 00000-0000', type: 'text', value: '' },
+        { name: 'contact_email', label: 'E-mail de Contato', placeholder: 'contato@ong.org', type: 'email', value: '' },
+    ]
+};

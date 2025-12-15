@@ -6,7 +6,7 @@ import Header from './../../components/Header/Header';
 import './ExploreOngs.css'
 import Input from './../../components/Inputs/Input/Input';
 import OngRequestCard from './../../components/OngRequestCard/OngRequestCard';
-import { api, SimplifiedOng } from "../../services/api";
+import { getAllOngs, NGO } from "../../services/ong.service";
 import { useEffect, useState } from "react";
 
 import Card from './../../components/Card/Card';
@@ -14,11 +14,11 @@ import Card from './../../components/Card/Card';
 
 export default function ExploreOngs() {
     const [isLoading, setIsLoading] = useState(true);
-    const [dataOngs, setDataOngs] = useState<SimplifiedOng[]>([]);
+    const [dataOngs, setDataOngs] = useState<NGO[]>([]);
 
     const fetchData = async () => {
         try {
-            const response = await api.fetchOngs({});
+            const response = await getAllOngs({});
             if (response) setDataOngs(response);
 
         } catch (e: unknown) {
@@ -59,13 +59,13 @@ export default function ExploreOngs() {
             </div>
 
 
-            { isLoading && dataOngs.length == 0 && (
+            {isLoading && dataOngs.length == 0 && (
                 <Card>
                     <p>Carregando ONGs ...</p>
                 </Card>
             )}
 
-            { !isLoading && (
+            {!isLoading && (
                 <main className="container-page-explorer">
                     <aside>
                         <details className="group-details" open>
@@ -90,9 +90,9 @@ export default function ExploreOngs() {
                     </aside>
 
                     <div className="container-results-ongs">
-                        { dataOngs.map((ong) => (
-                            <OngRequestCard key={ong.id} ongRequest={ong} onClickButton={() => alert('Clique!')} />
-                            ))
+                        {dataOngs.map((ong) => (
+                            <OngRequestCard key={ong.uuid} ongRequest={ong} onClickButton={() => alert('Clique!')} />
+                        ))
                         }
                     </div>
                 </main>
