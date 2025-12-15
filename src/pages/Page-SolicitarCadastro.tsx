@@ -44,10 +44,10 @@ export default function PageSolicitarCadastro() {
         console.log("Enviando solicitação de ONG:", data); // Debug para o usuário ver no console
 
         try {
-            let response = await registerOng(data);
+            const success = await registerOng(data);
 
-            if (!response) {
-                // Se response for null, houve erro capturado no service
+            if (!success) {
+                // Se success for false, houve erro capturado no service
                 alert(errorOngService || "Erro desconhecido ao cadastrar ONG.");
                 return;
             }

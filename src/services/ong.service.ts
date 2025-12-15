@@ -46,13 +46,15 @@ export const getAllOngs = async (filters?: Partial<NGO>): Promise<NGO[]> => {
 
 
 // POST /ngo
-export const registerOng = async (newOng: NGO): Promise<NGO | null> => {
+// POST /ngo
+export const registerOng = async (newOng: NGO): Promise<boolean> => {
     try {
-        const response = await api.post('/ngo', newOng);
-        return response.data;
+        await api.post('/ngo', newOng);
+        // Se não der erro (cair no catch), assumimos sucesso (201 Created)
+        return true;
     } catch (error: unknown) {
         errorOngService = AxiosHandleError(error, 'Erro ao criar ONG');
-        return null;
+        return false;
     }
 }
 
