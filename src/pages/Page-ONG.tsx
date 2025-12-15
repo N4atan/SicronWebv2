@@ -25,28 +25,50 @@ export default function PageONG() {
     const location = useLocation();
     const [searchParams] = useSearchParams();
     const uuidParam = searchParams.get('uuid');
+    const nameParam = searchParams.get('nome'); // Novo parâmetro
 
     // Estado inicial: Tenta pegar do state, senão undefined
     const [ongData, setOngData] = useState<NGO | undefined>(location.state?.ong as NGO | undefined);
 
-    // Loading inicial: Só é true se NÃO tivermos dados E tivermos um UUID para buscar
-    const [isLoading, setIsLoading] = useState<boolean>(!ongData && !!uuidParam);
+    // Loading inicial: Só é true se NÃO tivermos dados E tivermos algo para buscar (uuid ou nome)
+    const [isLoading, setIsLoading] = useState<boolean>(!ongData && (!!uuidParam || !!nameParam));
 
     useEffect(() => {
         // Se já temos dados carregados via state, não faz nada
         if (ongData) return;
 
-        // Se tem UUID na URL, busca os dados
-        if (uuidParam) {
+        const fetchData = async () => {
             setIsLoading(true);
-            getOngByUuid(uuidParam)
-                .then(data => {
+            try {
+                if (uuidParam) {
+                    // Prioridade 1: Busca por UUID (Único e Rápido)
+                    const data = await getOngByUuid(uuidParam);
                     if (data) setOngData(data);
-                })
-                .catch(err => console.error("Erro ao buscar ONG:", err))
-                .finally(() => setIsLoading(false));
+
+                } else if (nameParam) {
+                    // Prioridade 2: Busca por Nome Fantasia
+                    // Importamos dinamicamente services/ong.service para pegar getAllOngs
+                    const { getAllOngs } = await import("../services/ong.service");
+                    // O backend deve suportar filter[trade_name]=...
+                    const result = await getAllOngs({ trade_name: nameParam });
+
+                    if (result && result.length > 0) {
+                        // Pega o primeiro match.
+                        setOngData(result[0]);
+                    }
+                }
+            } catch (err) {
+                console.error("Erro ao buscar ONG:", err);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        if (uuidParam || nameParam) {
+            fetchData();
         }
-    }, [uuidParam]); // Executa quando o UUID muda (ou na montagem)
+
+    }, [uuidParam, nameParam]); // Executa quando uuid ou nome mudam
 
 
     const [tab, setTab] = useState('sobre'); // sobre | doar | contato

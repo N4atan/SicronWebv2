@@ -83,7 +83,10 @@ export default function OngRequestCard(props: Props) {
                     <button
                         className='btn-documents'
                         style={{ width: '100%', justifyContent: 'center' }}
-                        onClick={() => navigate(`/perfil-ong?uuid=${ongRequest.uuid}`)}
+                        onClick={() => {
+                            const nameParam = encodeURIComponent(ongRequest.trade_name || ongRequest.name);
+                            navigate(`/perfil-ong?nome=${nameParam}`);
+                        }}
                     >
                         {/* Ícone alterado para lupa (Magnifying Glass) ou Seta direita (ArrowRight) conforme preferência */}
                         <FontAwesomeIcon icon={faMagnifyingGlass} />
