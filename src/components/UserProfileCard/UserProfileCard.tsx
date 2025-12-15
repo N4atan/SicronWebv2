@@ -65,14 +65,7 @@ export default function UserProfileCard({ name, src_img, onLogout, isMe, onEdit 
                         />
                     )}
 
-                    {onLogout && (
-                        <Button
-                            variant="secondary"
-                            text="Sair da Conta"
-                            onClick={onLogout}
-                            style={{ width: '100%' }}
-                        />
-                    )}
+                    
                 </div>
 
             </div>
