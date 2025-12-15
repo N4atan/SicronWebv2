@@ -20,6 +20,11 @@ export default function TabOngs(props: Props) {
 
     const [ongs, setOngs] = useState<NGO[]>(props.dataOngs);
 
+    // Helper: remove acentos e lower case
+    const normalizeText = (text: string) => {
+        return text.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase();
+    };
+
     // Debounce para o nome
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -35,23 +40,22 @@ export default function TabOngs(props: Props) {
         // 1. Filtro de Status
         if (filterStatus !== 'todas') {
             const statusKeyMap: { [key: string]: string } = {
-                // mapeia user friendly -> backend value
                 'aprovada': 'approved',
                 'pendente': 'pending',
                 'rejeitada': 'rejected'
             };
             const targetStatus = statusKeyMap[filterStatus] || filterStatus;
-
             filtered = filtered.filter(ong => ong.status === targetStatus);
         }
 
-        // 2. Filtro de Nome (Debounced)
+        // 2. Filtro de Nome (Debounced & Normalized)
         if (debouncedName) {
-            const lowerName = debouncedName.toLowerCase();
-            filtered = filtered.filter(ong =>
-                (ong.trade_name && ong.trade_name.toLowerCase().includes(lowerName)) ||
-                (ong.name && ong.name.toLowerCase().includes(lowerName))
-            );
+            const normalizedSearch = normalizeText(debouncedName);
+            filtered = filtered.filter(ong => {
+                const name = ong.name ? normalizeText(ong.name) : '';
+                const tradeName = ong.trade_name ? normalizeText(ong.trade_name) : '';
+                return name.includes(normalizedSearch) || tradeName.includes(normalizedSearch);
+            });
         }
 
         // 3. Filtro de Área
