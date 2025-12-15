@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {
+      "source": "/api/(.*)",
+      "destination": "https://sicronweb-backend.onrender.com/:match"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }

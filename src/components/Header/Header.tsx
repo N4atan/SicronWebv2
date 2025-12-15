@@ -1,19 +1,19 @@
 import "./Header.css";
 import LogoComponent from "../../assets/icons/Logo.svg?react"; // Ajuste o caminho se necessário
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faRightFromBracket, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faRightFromBracket, faXmark, faUser } from "@fortawesome/free-solid-svg-icons";
 import { useContext, useState } from "react";
 import Button from "../Button/Button"; // Ajuste o caminho se necessário
 import { useAuth } from "../../contexts/AuthContext";
 
 export default function Header() {
+  const navigate = useNavigate();
   const [menuIsOpen, setMenuIsOpen] = useState(false);
 
 
   const { user, signOut } = useAuth();
 
-  console.log('HEADERUSER:', user);
 
   // Lista de links para evitar repetição de código
   const links = [
@@ -44,8 +44,26 @@ export default function Header() {
         {/* Botão na Direita */}
         {user ? (
           <>
-            <p>{user?.email}</p>
-            <FontAwesomeIcon icon={faRightFromBracket} onClick={signOut} /></>
+            {/* Nome do Usuário Estilizado (Estilo Button Secondary) */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '8px 16px',
+              border: '2px solid rgb(0, 0, 0, 0.2w)',
+              borderRadius: '8px',
+              color: '#2c2c2c',
+              fontWeight: 600,
+              cursor: 'default'
+            }}
+              onClick={() => {
+                navigate('/perfil/me');
+              }}
+            >
+              <FontAwesomeIcon icon={faUser} />
+              <span>{user?.username || user?.email || "Usuário"}</span>
+            </div>
+          </>
         ) : (
           <Link to="/login" className="nav-link" onClick={() => setMenuIsOpen(false)}>
             <Button variant="primary" text={"Entrar"} />
@@ -84,11 +102,27 @@ export default function Header() {
                 </li>
               ))}
 
-              <li className="mobile-item">
-                <Link to="/login" className="nav-link" onClick={() => setMenuIsOpen(false)}>
-                  ENTRAR
-                </Link>
-              </li>
+              {user ? (
+                <li className="mobile-item">
+                  <div
+                    className="nav-link"
+                    style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}
+                    onClick={() => {
+                      setMenuIsOpen(false);
+                      navigate('/perfil/me');
+                    }}
+                  >
+                    <FontAwesomeIcon icon={faUser} />
+                    <span>Meu Perfil</span>
+                  </div>
+                </li>
+              ) : (
+                <li className="mobile-item">
+                  <Link to="/login" className="nav-link" onClick={() => setMenuIsOpen(false)}>
+                    ENTRAR
+                  </Link>
+                </li>
+              )}
             </ul>
           </nav>
         </div>

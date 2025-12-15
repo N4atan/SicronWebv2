@@ -1,23 +1,23 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { SimplifiedUser, api } from '../../../services/api';
-import Button from '../../Button/Button';
-import Card from "../../Card/Card";
+import './EntityUpdate.css'
 import Input from "../../Inputs/Input/Input";
-import { Overlay } from "../../Overlay/Overlay";
-import './EntityUpdate.css' // Certifique-se que o arquivo existe
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import Modal from "../../Modal/Modal";
+import { ENTITY_SCHEMAS } from "../../../utils/entitySchemas";
+import { updateUser, errorUserService } from "../../../services/user.service";
+import { updateOng, errorOngService } from "../../../services/ong.service";
 
 type Props = {
-    entity: any;
-    typeEntity: string;
+    entity: any; // User or NGO
+    typeEntity: 'user' | 'ong' | 'user_profile';
     onClose: () => void;
     onRefresh: () => void;
 }
 
 export default function EntityUpdate(props: Props) {
     const [formData, setFormData] = useState(props.entity);
+
+    // @ts-ignore
+    const fields = ENTITY_SCHEMAS[props.typeEntity] || [];
 
     const handleChange = (field: string, value: any) => {
         setFormData((prevData: any) => ({
@@ -26,49 +26,89 @@ export default function EntityUpdate(props: Props) {
         }))
     }
 
-    const handleSave = async () => {
-        
-        console.log('Dados para salvar:', formData);
-        const response = await api.fetchUpdateUser(formData);
+    const [isLoading, setIsLoading] = useState(false);
 
-        if (!response) {
-            alert(api.errorResponse);
+    // ... (handleChange)
+
+    const handleSave = async () => {
+        // Backend usa UUID ou ID Legacy
+        const identifier = formData.id || formData.uuid;
+
+        console.log("EntityUpdate - handleSave - Identifier:", identifier);
+        console.log("EntityUpdate - handleSave - FormData:", formData);
+
+        if (!identifier) {
+            alert("ID não encontrado para atualização");
             return;
         }
-        alert('Salvo com Sucesso!');
-        props.onClose();
-        props.onRefresh();
-    }
 
-    const keys: Array<string> = Object.keys(props.entity);
-    const filteredKeys = keys.filter(k => k != 'id');
+        setIsLoading(true);
+
+        try {
+            let success = false;
+            let errorMessage = "";
+
+            // Filtra apenas os dados que estão no Schema para enviar (evita enviar dados readonly ou lixo)
+            const cleanData: any = {};
+            fields.forEach((f: any) => {
+                if (formData[f.name] !== undefined) {
+                    cleanData[f.name] = formData[f.name];
+                }
+            });
+
+            if (props.typeEntity === 'user' || props.typeEntity === 'user_profile') {
+                success = await updateUser(identifier, cleanData);
+                errorMessage = errorUserService;
+            } else if (props.typeEntity === 'ong') {
+                success = await updateOng(identifier, cleanData);
+                errorMessage = errorOngService;
+            }
+
+            if (!success) {
+                alert(errorMessage || 'Erro ao atualizar.');
+                setIsLoading(false);
+                return;
+            }
+
+            alert('Salvo com Sucesso!');
+            props.onRefresh();
+            props.onClose();
+
+        } catch (error) {
+            console.error(error);
+            alert("Erro inesperado ao salvar.");
+            setIsLoading(false);
+        }
+    }
 
     return (
         <Modal
-            title={`Editando ${props.typeEntity}`}
+            title={`Editando ${props.typeEntity === 'user' ? 'Usuário' : 'ONG'}`}
             pText="Salvar"
             sText="Cancelar"
-            pEvent={() => handleSave}
+            pEvent={handleSave}
             sEvent={props.onClose}
             xEvent={props.onClose}
+            isLoading={isLoading}
         >
-            <form
-                className="form-editEntity"
-            >
-                
+            <form className="form-editEntity">
+
                 <div className="container-body">
-                    {filteredKeys.map((key, idKey) => (
+                    {/* Renderiza campos baseado no Schema, mas preenche com dados da entidade */}
+                    {fields.map((fieldConfig: any) => (
                         <Input
-                            key={idKey}
-                            variant="default"
-                            label={key}
-                            value={(formData as any)[key]}
-                            onChange={(e) => handleChange(key, e.target.value)}
+                            key={fieldConfig.name}
+                            variant={fieldConfig.variant || "default"}
+                            label={fieldConfig.label}
+                            type={fieldConfig.type}
+                            options={fieldConfig.options}
+                            placeholder={fieldConfig.placeholder}
+                            value={formData[fieldConfig.name] || ''}
+                            onChange={(e) => handleChange(fieldConfig.name, e.target.value)}
                         />
                     ))}
                 </div>
 
-                
             </form>
         </Modal>
     )

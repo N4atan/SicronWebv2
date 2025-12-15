@@ -8,7 +8,7 @@ import Input from '../../Inputs/Input/Input';
 import Button from '../../Button/Button';
 import { Dispatch, SetStateAction, useState } from 'react';
 
-import { errorUserService, loginUser, registerUser } from '../../../services/user.service';
+import { errorUserService, registerUser } from '../../../services/user.service';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../contexts/AuthContext';
 import { Oval } from 'react-loader-spinner';
@@ -207,14 +207,14 @@ export default function AuthenticationForm() {
             // 1. Faz o POST /login
             // 2. Valida o Cookie
             // 3. Carrega os dados do usuário
-            await signIn({email, password});
+            await signIn({ email, password });
 
             alert('Logado com Sucesso!');
 
             clearData();
 
             // Redireciona
-            navigate(`/perfil?email=${email}`);
+            navigate(`/perfil/me`);
 
         } catch (error: any) {
             // Se o signIn falhar (ex: senha errada), ele lança erro e cai aqui
