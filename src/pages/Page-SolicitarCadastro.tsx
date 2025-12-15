@@ -24,20 +24,6 @@ export default function PageSolicitarCadastro() {
         return ENTITY_SCHEMAS['ong'].map(field => ({ ...field, value: '' }));
     });
 
-    // Atualiza o campo gestor_email assim que tivermos o email (seja do state ou do user context)
-    useEffect(() => {
-        if (preFilledEmail) {
-            // Verifica se já não está preenchido para evitar updates desnecessários
-            const currentEmailField = currentFields.find(f => f.name === 'gestor_email');
-            if (currentEmailField && currentEmailField.value !== preFilledEmail) {
-                setCurrentFields(prev => prev.map(f =>
-                    f.name === 'gestor_email' ? { ...f, value: preFilledEmail } : f
-                ));
-            }
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [preFilledEmail]); // Removido currentFields para evitar loop
-
     const handleChange = (fieldName: string, value: any) => {
         setCurrentFields((prevFields: any) =>
             prevFields.map((f: any) =>

@@ -35,8 +35,8 @@ export default function OngRequestCard(props: Props) {
 
     return (
         <div className='card-ongRequest'>
-            <h3>{ongRequest.nome_fantasia || ongRequest.razao_social || ongRequest.trade_name || ongRequest.name}</h3>
-            <p style={{ fontStyle: 'italic' }}>{ongRequest.foco_principal || ongRequest.area}</p>
+            <h3>{ongRequest.trade_name || ongRequest.name}</h3>
+            <p style={{ fontStyle: 'italic' }}>{ongRequest.area}</p>
 
             <div className={`badge ${getStatusClass(ongRequest.status)}`}>
                 <span>{getStatusLabel(ongRequest.status)}</span>
@@ -44,7 +44,7 @@ export default function OngRequestCard(props: Props) {
 
             <div className='container-objective'>
                 <p>Descrição</p>
-                <p>{ongRequest.objetivo || ongRequest.description}</p>
+                <p>{ongRequest.description}</p>
             </div>
 
             <div className='container-infos'>
@@ -61,12 +61,12 @@ export default function OngRequestCard(props: Props) {
 
                 <div className='row-info'>
                     <FontAwesomeIcon icon={faPhone} />
-                    <span>{ongRequest.numero_telefone || ongRequest.phone_number || 'Sem telefone'}</span>
+                    <span>{ongRequest.phone_number || 'Sem telefone'}</span>
                 </div>
 
                 <div className='row-info'>
                     <FontAwesomeIcon icon={faEnvelope} />
-                    <span>{ongRequest.email_contato || ongRequest.contact_email || 'Sem email'}</span>
+                    <span>{ongRequest.contact_email || 'Sem email'}</span>
                 </div>
 
                 <div className='row-info'>

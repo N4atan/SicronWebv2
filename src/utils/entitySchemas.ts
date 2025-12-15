@@ -17,23 +17,22 @@ export const ENTITY_SCHEMAS = {
         { name: 'email', label: 'E-mail', type: 'email', placeholder: 'seu@email.com' },
         { name: 'password', label: 'Nova Senha', type: 'password', placeholder: 'Preencha apenas se quiser alterar' }
     ],
-    ong: [
-        { name: 'razao_social', label: 'Razão Social', type: 'text', placeholder: 'Razão Social Ltda' },
-        { name: 'nome_fantasia', label: 'Nome Fantasia', type: 'text', placeholder: 'ONG do Amor' },
+        ong: [
+        { name: 'name', label: 'Razão Social', type: 'text', placeholder: 'Razão Social Ltda' },
+        { name: 'trade_name', label: 'Nome Fantasia', type: 'text', placeholder: 'ONG do Amor' },
         { name: 'cnpj', label: 'CNPJ', type: 'text', placeholder: '00.000.000/0001-00' },
         {
-            name: 'foco_principal',
+            name: 'area', // Backend espera 'area', não 'foco_principal'
             label: 'Área de Atuação',
             type: 'text',
             variant: 'selection',
             options: ['Selecione uma área...', 'Assistência Social', 'Cultura', 'Saúde', 'Meio Ambiente', 'Desenvolvimento e Defesa de Direitos', 'Habitação', 'Educação e Pesquisa', 'Outros'],
             placeholder: 'Selecione a área'
         },
-        { name: 'objetivo', label: 'Descrição', type: 'text', variant: 'text-area', placeholder: 'Descreva a missão...' },
+        { name: 'description', label: 'Descrição / Objetivo', type: 'text', variant: 'text-area', placeholder: 'Descreva a missão...' },
         { name: 'local', label: 'Localização', type: 'text', placeholder: 'Cidade - UF' },
-        { name: 'numero_telefone', label: 'Telefone', type: 'text', placeholder: '(00) 0000-0000' },
-        { name: 'email_contato', label: 'E-mail para Contato Público', type: 'email', placeholder: 'contato@ong.org' },
-        // Campo necessário para vínculo no backend
-        { name: 'gestor_email', label: 'E-mail do Gestor', type: 'email', placeholder: 'Seu E-mail', disabled: true }
+        { name: 'phone_number', label: 'Telefone', type: 'text', placeholder: '(00) 0000-0000' },
+        { name: 'contact_email', label: 'E-mail para Contato Público', type: 'email', placeholder: 'contato@ong.org' }
+        // Remova o gestor_email, pois o backend vincula automaticamente pelo seu Token de Login!
     ]
 };

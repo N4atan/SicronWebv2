@@ -4,25 +4,20 @@ import { api, AxiosHandleError } from "./api";
 export interface NGO {
     uuid?: string;
     id?: number; // Backend usa ID numérico em algumas rotas, UUID em outras? Confirmar. O controller usa Number(id).
-    gestor_email: string;
-    razao_social: string;
-    nome_fantasia: string;
+    // Campos do Backend (Strict Match)
+    name: string;
+    trade_name: string;
     cnpj: string;
-    foco_principal: string; // antigo 'area'
-    objetivo: string;       // antigo 'description'
-    status?: 'pending' | 'approved' | 'rejected';
-    local?: string;
-    numero_telefone?: string; // antigo 'phone_number'
-    email_contato?: string;   // antigo 'contact_email'
-    created_at?: string;
+    area: string;
+    description: string;
+    local: string;
+    phone_number: string;
+    contact_email: string;
 
-    // Campos legados para compatibilidade temporária (frontend)
-    name?: string;       // Mapear para razao_social ou nome_fantasia
-    trade_name?: string; // Mapear para nome_fantasia
-    area?: string;       // Mapear para foco_principal
-    description?: string;// Mapear para objetivo
-    phone_number?: string;
-    contact_email?: string;
+    // Metadados
+    status?: 'pending' | 'approved' | 'rejected' | 'PENDING' | 'APPROVED' | 'REJECTED';
+    created_at?: string;
+    wallet?: number;
 }
 
 export let errorOngService: string;
@@ -51,7 +46,7 @@ export const getAllOngs = async (filters?: Partial<NGO>): Promise<NGO[]> => {
 
 
 // POST /ngo
-export const registerOng = async (newOng: Partial<NGO>): Promise<NGO | null> => {
+export const registerOng = async (newOng: NGO): Promise<NGO | null> => {
     try {
         const response = await api.post('/ngo', newOng);
         return response.data;
