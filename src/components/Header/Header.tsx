@@ -1,38 +1,55 @@
 import "./Header.css";
-import LogoComponent from "../../assets/icons/Logo.svg?react"; // Ajuste o caminho se necessário
+import LogoComponent from "../../assets/icons/Logo.svg?react";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faRightFromBracket, faXmark, faUser } from "@fortawesome/free-solid-svg-icons";
-import { useContext, useState } from "react";
-import Button from "../Button/Button"; // Ajuste o caminho se necessário
+import { faBars, faXmark, faUser, faBuilding, faHandHoldingHeart, faRightFromBracket, faBriefcase } from "@fortawesome/free-solid-svg-icons";
+import { useState, useRef, useEffect } from "react";
+import Button from "../Button/Button";
 import { useAuth } from "../../contexts/AuthContext";
 
 export default function Header() {
   const navigate = useNavigate();
-  const [menuIsOpen, setMenuIsOpen] = useState(false);
-
+  const [menuIsOpen, setMenuIsOpen] = useState(false); // Mobile menu
+  const [userMenuOpen, setUserMenuOpen] = useState(false); // User dropdown (Desktop/Logged)
 
   const { user, signOut } = useAuth();
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Fecha o dropdown se clicar fora
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setUserMenuOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [dropdownRef]);
 
 
-  // Lista de links para evitar repetição de código
   const links = [
     { to: '/', label: 'Início' },
     { to: '/explorar', label: 'Explorar ONGs' },
   ];
 
+  const handleLogout = () => {
+    signOut();
+    setUserMenuOpen(false);
+  }
+
   return (
     <header className={`header ${menuIsOpen ? "menu-open" : ""}`}>
 
-      {/* 1. LOGO (Sempre Visível) */}
+      {/* 1. LOGO */}
       <div className="logo-container">
         <LogoComponent className="logo-img" />
         <h1 className="logo">SICRON</h1>
       </div>
 
-      {/* 2. DESKTOP VIEW (Visível apenas em telas grandes) */}
+      {/* 2. DESKTOP VIEW */}
       <div className="container-desktop-view">
-        {/* Nav Centralizada */}
         <nav className="nav nav-desktop">
           {links.map((link, index) => (
             <Link key={index} to={link.to} className="nav-link">
@@ -41,53 +58,69 @@ export default function Header() {
           ))}
         </nav>
 
-        {/* Botão na Direita */}
         {user ? (
-          <>
-            {/* Nome do Usuário Estilizado (Estilo Button Secondary) */}
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              padding: '8px 16px',
-              border: '2px solid rgb(0, 0, 0, 0.2w)',
-              borderRadius: '8px',
-              color: '#2c2c2c',
-              fontWeight: 600,
-              cursor: 'default'
-            }}
-              onClick={() => {
-                navigate('/perfil/me');
-              }}
+          <div className="user-menu-wrapper" ref={dropdownRef}>
+            <button
+              className={`user-hamburger-btn ${userMenuOpen ? 'active' : ''}`}
+              onClick={() => setUserMenuOpen(!userMenuOpen)}
+              aria-label="Menu do Usuário"
             >
-              <FontAwesomeIcon icon={faUser} />
-              <span>{user?.username || user?.email || "Usuário"}</span>
-            </div>
-          </>
+              <FontAwesomeIcon icon={userMenuOpen ? faXmark : faBars} />
+            </button>
+
+            {userMenuOpen && (
+              <div className="user-dropdown-menu">
+                <div className="dropdown-header">
+                  <span className="user-name">Olá, <strong>{user.username || 'Usuário'}</strong></span>
+                </div>
+
+                <ul className="dropdown-list">
+                  <li>
+                    <Link to="/perfil/me" onClick={() => setUserMenuOpen(false)} className="dropdown-item">
+                      <FontAwesomeIcon icon={faUser} className="icon-width" />
+                      Meu Perfil
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/minha-ong" onClick={() => setUserMenuOpen(false)} className="dropdown-item">
+                      <FontAwesomeIcon icon={faHandHoldingHeart} className="icon-width" />
+                      Minha ONG
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/minha-empresa" onClick={() => setUserMenuOpen(false)} className="dropdown-item">
+                      <FontAwesomeIcon icon={faBriefcase} className="icon-width" />
+                      Minha Empresa
+                    </Link>
+                  </li>
+                  <hr className="dropdown-divider" />
+                  <li>
+                    <button onClick={handleLogout} className="dropdown-item logout-item">
+                      <FontAwesomeIcon icon={faRightFromBracket} className="icon-width" />
+                      Sair
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            )}
+          </div>
         ) : (
-          <Link to="/login" className="nav-link" onClick={() => setMenuIsOpen(false)}>
+          <Link to="/login" className="nav-link">
             <Button variant="primary" text={"Entrar"} />
           </Link>
         )}
       </div>
 
-      {/* 3. MOBILE VIEW (Visível apenas em telas pequenas) */}
+      {/* 3. MOBILE VIEW (Simplificado para manter consistência ou usar lógica própria) */}
       <div className="container-mobile-view">
-
-        {/* Ícone Hambúrguer / X com círculo */}
         <div
           className={`menu-toggle-button ${menuIsOpen ? 'open' : ''}`}
           onClick={() => setMenuIsOpen(!menuIsOpen)}
         >
-          <FontAwesomeIcon
-            icon={menuIsOpen ? faXmark : faBars}
-            size="lg"
-          />
+          <FontAwesomeIcon icon={menuIsOpen ? faXmark : faBars} size="lg" />
         </div>
 
-        {/* Menu Dropdown Flutuante */}
         <div className={`container-toggle-menu ${menuIsOpen ? "active" : ""}`}>
-
           <nav className="nav-mobile">
             <ul className="mobile-list">
               {links.map((link, index) => (
@@ -95,7 +128,7 @@ export default function Header() {
                   <Link
                     to={link.to}
                     className="nav-link"
-                    onClick={() => setMenuIsOpen(false)} // Fecha o menu ao clicar
+                    onClick={() => setMenuIsOpen(false)}
                   >
                     {link.label}
                   </Link>
@@ -103,19 +136,28 @@ export default function Header() {
               ))}
 
               {user ? (
-                <li className="mobile-item">
-                  <div
-                    className="nav-link"
-                    style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}
-                    onClick={() => {
-                      setMenuIsOpen(false);
-                      navigate('/perfil/me');
-                    }}
-                  >
-                    <FontAwesomeIcon icon={faUser} />
-                    <span>Meu Perfil</span>
-                  </div>
-                </li>
+                <>
+                  <li className="mobile-item">
+                    <Link to="/perfil/me" className="nav-link" onClick={() => setMenuIsOpen(false)}>
+                      <FontAwesomeIcon icon={faUser} style={{ marginRight: '8px' }} /> Meu Perfil
+                    </Link>
+                  </li>
+                  <li className="mobile-item">
+                    <Link to="/minha-ong" className="nav-link" onClick={() => setMenuIsOpen(false)}>
+                      <FontAwesomeIcon icon={faHandHoldingHeart} style={{ marginRight: '8px' }} /> Minha ONG
+                    </Link>
+                  </li>
+                  <li className="mobile-item">
+                    <Link to="/minha-empresa" className="nav-link" onClick={() => setMenuIsOpen(false)}>
+                      <FontAwesomeIcon icon={faBriefcase} style={{ marginRight: '8px' }} /> Minha Empresa
+                    </Link>
+                  </li>
+                  <li className="mobile-item">
+                    <div className="nav-link" onClick={() => { signOut(); setMenuIsOpen(false); }} style={{ cursor: 'pointer', color: '#dc3545' }}>
+                      <FontAwesomeIcon icon={faRightFromBracket} style={{ marginRight: '8px' }} /> Sair
+                    </div>
+                  </li>
+                </>
               ) : (
                 <li className="mobile-item">
                   <Link to="/login" className="nav-link" onClick={() => setMenuIsOpen(false)}>
