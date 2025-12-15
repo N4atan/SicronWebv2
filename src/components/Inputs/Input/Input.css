@@ -1,5 +1,7 @@
-
-input, textarea, select, option {
+input,
+textarea,
+select,
+option {
     border: none;
     outline: none;
     text-overflow: ellipsis;
@@ -70,6 +72,24 @@ input, textarea, select, option {
 
     option {
         color: #666666;
-        
+
     }
+}
+
+
+/* --- Focus Styles --- */
+
+/* Para Inputs normais (que estão dentro de um container) */
+.input-icon-container:focus-within {
+    border-color: #333;
+    /* Pretinho */
+    box-shadow: 0 0 0 1px #333;
+    /* Simula borda mais grossa sem layout shift */
+}
+
+/* Para TextAreas e Selects (que são o próprio elemento com borda) */
+.text-area-field:focus,
+.select-field:focus {
+    border-color: #333;
+    box-shadow: 0 0 0 1px #333;
 }
