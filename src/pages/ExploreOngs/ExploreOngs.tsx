@@ -10,6 +10,7 @@ import { getAllOngs, NGO } from "../../services/ong.service";
 import { useEffect, useState } from "react";
 
 import Card from '../../components/Card/Card';
+import { Oval } from 'react-loader-spinner';
 
 
 export default function ExploreOngs() {
@@ -58,6 +59,7 @@ export default function ExploreOngs() {
     }, [debouncedName, searchArea]);
 
 
+
     return (
         <>
             <Header />
@@ -66,14 +68,6 @@ export default function ExploreOngs() {
                 <h1>Encontre a causa que move o seu coração.</h1>
                 <h2>Explore nossa rede de ONGs parceiras, conheça suas histórias e descubra como a sua doação pode transformar vidas hoje mesmo.</h2>
             </div>
-
-
-            {isLoading && dataOngs.length === 0 && (
-                <Card>
-                    <p>Carregando ONGs ...</p>
-                </Card>
-            )}
-
 
             <main className="container-page-explorer">
                 <aside>
@@ -103,23 +97,43 @@ export default function ExploreOngs() {
                     </details>
                 </aside>
 
-                <div className="container-results-ongs">
+                <div className="container-results-ongs" style={{ position: 'relative', minHeight: '200px' }}>
+
+                    {/* Loading Overlay Sutil para Buscas Subsequentes */}
+                    {isLoading && (
+                        <div style={{
+                            position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+                            backgroundColor: 'rgba(255,255,255,0.7)', zIndex: 10,
+                            display: 'flex', alignItems: 'center', justifyContent: 'center'
+                        }}>
+                            <Oval
+                                height={50}
+                                width={50}
+                                color="#2BB673"
+                                visible={true}
+                                ariaLabel='oval-loading'
+                                secondaryColor="#e0e0e0"
+                                strokeWidth={4}
+                            />
+                        </div>
+                    )}
+
+                    {/* Mensagem de Vazio */}
                     {!isLoading && dataOngs.length === 0 && (
-                        <div style={{ padding: '20px', textAlign: 'center', width: '100%', color: '#666' }}>
+                        <div style={{ padding: '40px', textAlign: 'center', width: '100%', color: '#666', gridColumn: '1 / -1' }}>
                             <p>Nenhuma ONG encontrada com esses filtros.</p>
                         </div>
                     )}
 
+                    {/* Lista de Resultados */}
                     {dataOngs
-                        .filter(ong => ong.status === 'approved') // Front-end garante que só mostra aprovadas, mesmo se backend mandar tudo
+                        .filter(ong => ong.status === 'approved')
                         .map((ong) => (
                             <OngRequestCard key={ong.uuid} ongRequest={ong} variant="public" />
                         ))
                     }
                 </div>
             </main>
-
-
         </>
     )
 }
