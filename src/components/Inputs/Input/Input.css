@@ -79,15 +79,21 @@ option {
 
 /* --- Focus Styles --- */
 
-/* Para Inputs normais (que estão dentro de um container) */
-.input-icon-container:focus-within {
+/* 1. Para inputs com borda completa (padrão) */
+.input-icon-container.borders:focus-within {
     border-color: #333;
-    /* Pretinho */
     box-shadow: 0 0 0 1px #333;
-    /* Simula borda mais grossa sem layout shift */
+    /* Contorno completo */
 }
 
-/* Para TextAreas e Selects (que são o próprio elemento com borda) */
+/* 2. Para inputs com apenas borda inferior (outline-border) */
+.input-icon-container.outline-border:focus-within {
+    border-bottom-color: #333;
+    /* Box shadow apenas embaixo para simular espessura */
+    box-shadow: 0 1px 0 0 #333;
+}
+
+/* Para TextAreas e Selects (que são sempre borders por enquanto) */
 .text-area-field:focus,
 .select-field:focus {
     border-color: #333;
