@@ -116,9 +116,19 @@ export default function PageONG() {
         setCartList([]);
     }
 
+    if (!ongData) {
+        return (
+            <Card style={{ width: '300px', margin: '2rem auto', textAlign: 'center' }}>
+                <p>ONG não encontrada ou não especificada.</p>
+                <p style={{ fontSize: '0.9rem', color: '#666', marginTop: '1rem' }}>
+                    Por favor, selecione uma ONG na página Explorar.
+                </p>
+            </Card>
+        );
+    }
+
     return (
         <>
-
             <ProfileCard name={ongName} tags={[ongArea]} />
 
             <ContainerPage variant={tab == 'doar' ? "a-right" : 'a-left'} >
