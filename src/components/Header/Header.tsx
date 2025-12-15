@@ -42,7 +42,7 @@ export default function Header() {
   const userLinks = [
     { to: '/perfil/me', label: 'Meu Perfil', icon: faUser, state: undefined },
     {
-      to: isOngManager ? '/dashboard-ong' : '/solicitar-cadastro',
+      to: isOngManager ? '/dashboard-ong' : '/solicitar/ong',
       label: 'Minha ONG',
       icon: faHandHoldingHeart,
       state: !isOngManager ? { email: user?.email } : undefined

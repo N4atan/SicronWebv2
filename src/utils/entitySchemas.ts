@@ -1,7 +1,7 @@
 export const ENTITY_SCHEMAS = {
     user: [
-        { name: 'username', label: 'Nome de Usuário', type: 'text', placeholder: 'Ex: UsuarioAdmin' },
-        { name: 'email', label: 'E-mail', type: 'email', placeholder: 'admin@email.com' },
+        { name: 'username', label: 'Nome de Usuário', type: 'text', placeholder: 'Seu Nome Completo' },
+        { name: 'email', label: 'E-mail', type: 'email', placeholder: 'seu@email.com' },
         { name: 'password', label: 'Senha', type: 'password', placeholder: '******' },
         {
             name: 'role',
@@ -32,6 +32,6 @@ export const ENTITY_SCHEMAS = {
         { name: 'description', label: 'Descrição', type: 'text', variant: 'text-area', placeholder: 'Descreva a missão...' },
         { name: 'local', label: 'Localização', type: 'text', placeholder: 'Cidade - UF' },
         { name: 'phone_number', label: 'Telefone', type: 'text', placeholder: '(00) 0000-0000' },
-        { name: 'contact_email', label: 'E-mail de Contato', type: 'email', placeholder: 'contato@ong.org' }
+        { name: 'contact_email', label: 'E-mail do Administrador', type: 'email', placeholder: 'seu@Email.com' }
     ]
 };

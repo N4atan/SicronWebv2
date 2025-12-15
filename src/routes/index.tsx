@@ -33,8 +33,17 @@ export default function AppRoutes() {
             <Route
                 path='/dashboard-admin'
                 element={
-                    <ProtectedRoute allowedRoles={[UserRole.USER, UserRole.ADMIN]}>
+                    <ProtectedRoute allowedRoles={[UserRole.ADMIN]}>
                         <DashboardAdmin />
+                    </ProtectedRoute>
+                }
+            />
+
+            <Route
+                path='/solicitar/ong'
+                element={
+                    <ProtectedRoute allowedRoles={[UserRole.USER, UserRole.ADMIN, UserRole.PROVIDER_MANAGER, UserRole.PROVIDER_MANAGER]}>
+                        <PageSolicitarCadastro />
                     </ProtectedRoute>
                 }
             />

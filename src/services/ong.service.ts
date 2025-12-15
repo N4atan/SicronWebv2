@@ -1,19 +1,28 @@
 import { api, AxiosHandleError } from "./api";
 
-// Interface baseada no manual
+// Interface atualizada baseada no Backend (OngController / Entity)
 export interface NGO {
-    uuid: string;
-    manager_uuid?: string; // UUID do usuário dono
-    name: string;
-    trade_name: string;
+    uuid?: string;
+    id?: number; // Backend usa ID numérico em algumas rotas, UUID em outras? Confirmar. O controller usa Number(id).
+    gestor_email: string;
+    razao_social: string;
+    nome_fantasia: string;
     cnpj: string;
-    area: string;
-    description: string;
-    status: 'pending' | 'approved' | 'rejected';
+    foco_principal: string; // antigo 'area'
+    objetivo: string;       // antigo 'description'
+    status?: 'pending' | 'approved' | 'rejected';
     local?: string;
+    numero_telefone?: string; // antigo 'phone_number'
+    email_contato?: string;   // antigo 'contact_email'
+    created_at?: string;
+
+    // Campos legados para compatibilidade temporária (frontend)
+    name?: string;       // Mapear para razao_social ou nome_fantasia
+    trade_name?: string; // Mapear para nome_fantasia
+    area?: string;       // Mapear para foco_principal
+    description?: string;// Mapear para objetivo
     phone_number?: string;
     contact_email?: string;
-    created_at?: string;
 }
 
 export let errorOngService: string;

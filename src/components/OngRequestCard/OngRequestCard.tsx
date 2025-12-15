@@ -13,7 +13,8 @@ export default function OngRequestCard(props: Props) {
     const { ongRequest } = props;
 
     // Helper para traduzir status
-    const getStatusLabel = (status: string) => {
+    const getStatusLabel = (status: string | undefined) => {
+        if (!status) return 'Pendente';
         switch (status) {
             case 'approved': return 'Aprovada';
             case 'rejected': return 'Rejeitada';
@@ -23,7 +24,8 @@ export default function OngRequestCard(props: Props) {
     };
 
     // Helper para classe CSS do badge
-    const getStatusClass = (status: string) => {
+    const getStatusClass = (status: string | undefined) => {
+        if (!status) return 'badge-pendente';
         switch (status) {
             case 'approved': return 'badge-aprovada';
             case 'rejected': return 'badge-rejeitada';
@@ -33,8 +35,8 @@ export default function OngRequestCard(props: Props) {
 
     return (
         <div className='card-ongRequest'>
-            <h3>{ongRequest.trade_name || ongRequest.name}</h3>
-            <p style={{ fontStyle: 'italic' }}>{ongRequest.area}</p>
+            <h3>{ongRequest.nome_fantasia || ongRequest.razao_social || ongRequest.trade_name || ongRequest.name}</h3>
+            <p style={{ fontStyle: 'italic' }}>{ongRequest.foco_principal || ongRequest.area}</p>
 
             <div className={`badge ${getStatusClass(ongRequest.status)}`}>
                 <span>{getStatusLabel(ongRequest.status)}</span>
@@ -42,7 +44,7 @@ export default function OngRequestCard(props: Props) {
 
             <div className='container-objective'>
                 <p>Descrição</p>
-                <p>{ongRequest.description}</p>
+                <p>{ongRequest.objetivo || ongRequest.description}</p>
             </div>
 
             <div className='container-infos'>
@@ -59,12 +61,12 @@ export default function OngRequestCard(props: Props) {
 
                 <div className='row-info'>
                     <FontAwesomeIcon icon={faPhone} />
-                    <span>{ongRequest.phone_number || 'Sem telefone'}</span>
+                    <span>{ongRequest.numero_telefone || ongRequest.phone_number || 'Sem telefone'}</span>
                 </div>
 
                 <div className='row-info'>
                     <FontAwesomeIcon icon={faEnvelope} />
-                    <span>{ongRequest.contact_email || 'Sem email'}</span>
+                    <span>{ongRequest.email_contato || ongRequest.contact_email || 'Sem email'}</span>
                 </div>
 
                 <div className='row-info'>
@@ -79,18 +81,13 @@ export default function OngRequestCard(props: Props) {
                     Ver Documentação
                 </button>
 
-                {/* Botões de Ação (Apenas se não estiver rejeitada, ou sempre? Depende da regra. 
-                    Geralmente admin pode mudar de ideia. Vou deixar sempre visíveis por enquanto ou 
-                    ocultar se já tiver status final? O original ocultava se != pendente mas o código estava bugado no original.
-                    Vou deixar visível para permitir correção de status.
-                */}
                 <div style={{ display: 'flex', gap: '8px' }}>
-                    <button className='btn-reject' onClick={() => props.onClickButton(ongRequest.uuid, 'rejected')} >
+                    <button className='btn-reject' onClick={() => props.onClickButton(ongRequest.uuid || '', 'rejected')} >
                         <FontAwesomeIcon icon={faXmark} />
                         Rejeitar
                     </button>
 
-                    <button className='btn-approve' onClick={() => props.onClickButton(ongRequest.uuid, 'approved')} >
+                    <button className='btn-approve' onClick={() => props.onClickButton(ongRequest.uuid || '', 'approved')} >
                         <FontAwesomeIcon icon={faCheck} />
                         Aprovar
                     </button>

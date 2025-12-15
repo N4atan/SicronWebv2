@@ -48,14 +48,15 @@ export const AxiosHandleError = (error: unknown, defaultMessage: string): string
 
 export const FORM_SCHEMAS = {
     ong: [
-        { name: 'name', label: 'Nome da ONG', placeholder: 'Digite o nome da ONG', type: 'text', value: '' },
-        { name: 'trade_name', label: 'Nome Fantasia', placeholder: 'Digite o nome fantasia', type: 'text', value: '' },
+        { name: 'razao_social', label: 'Razão Social', placeholder: 'Razão Social da ONG', type: 'text', value: '' },
+        { name: 'nome_fantasia', label: 'Nome Fantasia', placeholder: 'Nome Fantasia', type: 'text', value: '' },
         { name: 'cnpj', label: 'CNPJ', placeholder: '00.000.000/0000-00', type: 'text', value: '' },
-        { name: 'email', label: 'E-mail', placeholder: 'email@ong.org', type: 'email', value: '' },
-        { name: 'area', label: 'Área de Atuação', placeholder: 'Ex: Saúde, Educação, Meio Ambiente', type: 'text', value: '' },
-        { name: 'description', label: 'Descrição', placeholder: 'Descreva a ONG...', type: 'textarea', value: '' },
+        { name: 'foco_principal', label: 'Área de Atuação (Foco Principal)', placeholder: 'Ex: Assistência Social, Saúde...', type: 'text', value: '' },
+        { name: 'objetivo', label: 'Objetivo / Descrição', placeholder: 'Descreva a missão e objetivos da ONG...', type: 'textarea', value: '' },
         { name: 'local', label: 'Localização', placeholder: 'Cidade - UF', type: 'text', value: '' },
-        { name: 'phone_number', label: 'Telefone', placeholder: '(00) 00000-0000', type: 'text', value: '' },
-        { name: 'contact_email', label: 'E-mail de Contato', placeholder: 'contato@ong.org', type: 'email', value: '' },
+        { name: 'numero_telefone', label: 'Telefone', placeholder: '(00) 00000-0000', type: 'text', value: '' },
+        { name: 'email_contato', label: 'E-mail para Contato Público', placeholder: 'contato@ong.org', type: 'email', value: '' },
+        // Campo oculto ou preenchido automaticamente, mas necessário no payload
+        { name: 'gestor_email', label: 'E-mail do Gestor (Seu E-mail)', placeholder: 'seu@email.com', type: 'email', value: '', disabled: true },
     ]
 };

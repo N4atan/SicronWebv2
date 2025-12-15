@@ -20,9 +20,10 @@ export default function PageSolicitarCadastro() {
     const preFilledEmail = location.state?.email;
 
     const [currentFields, setCurrentFields] = useState(() => {
-        const fields = FORM_SCHEMAS['ong']; // Clona para evitar mutação direta se necessário, mas map resolve
+        const fields = FORM_SCHEMAS['ong'];
         if (preFilledEmail) {
-            return fields.map(f => f.name === 'contact_email' ? { ...f, value: preFilledEmail } : f);
+            // O backend exige 'gestor_email' para vincular a ONG, não 'contact_email'
+            return fields.map(f => f.name === 'gestor_email' ? { ...f, value: preFilledEmail } : f);
         }
         return fields;
     });
@@ -62,7 +63,7 @@ export default function PageSolicitarCadastro() {
 
     return (
         <>
-            <Header />
+
 
             <Card
                 style={{ maxWidth: '800px', margin: '2rem auto 1rem', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}
@@ -111,6 +112,7 @@ export default function PageSolicitarCadastro() {
                                     type={field.type}
                                     value={field.value}
                                     onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => handleChange(field.name, e.target.value)}
+                                    disabled={field.name === 'gestor_email' && !!preFilledEmail}
                                 />
                             ))}
 
