@@ -13,18 +13,17 @@ type Props = {
 }
 
 export default function TabOngs(props: Props) {
-    const [filterStatus, setFilterStaus] = useState<string>('todas   ');
+    const [filterStatus, setFilterStaus] = useState<string>('todas');
     const [filterNickname, setFilterNickname] = useState();
 
     const [ongs, setOngs] = useState<NGO[]>(props.dataOngs);
 
     useEffect(() => {
 
-        if (filterStatus == 'todas') {
+        if (filterStatus === 'todas') {
             setOngs(props.dataOngs)
         } else {
-            // @ts-ignore - status pode ser uppercase/lowercase, melhor padronizar depois
-            setOngs(props.dataOngs.filter(ong => ong.status == filterStatus))
+            setOngs(props.dataOngs.filter(ong => ong.status?.toLowerCase() === filterStatus.toLowerCase()))
         }
 
     }, [filterStatus, props.dataOngs])
@@ -55,8 +54,6 @@ export default function TabOngs(props: Props) {
 
 
             <div className="container-cards">
-                <Card></Card>
-
             </div>
 
 
