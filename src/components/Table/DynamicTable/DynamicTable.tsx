@@ -15,16 +15,18 @@ type Props = {
 export default function DynamicTable(props: Props) {
     const data = Array.isArray(props.listData) ? props.listData : [];
 
-    const listKeys = data.length > 0 ? Object.keys(data[0]) : [];
+    let listKeys = data.length > 0 ? Object.keys(data[0]) : [];
 
-    // Remove keys indesejadas da visualização
-    if (listKeys.includes('uuid')) listKeys.splice(listKeys.indexOf('uuid'), 1);
-    if (listKeys.includes('id')) listKeys.splice(listKeys.indexOf('id'), 1);
-    if (listKeys.includes('password')) listKeys.splice(listKeys.indexOf('password'), 1);
-    if (listKeys.includes('manager_uuid')) listKeys.splice(listKeys.indexOf('manager_uuid'), 1);
+    // Remove keys indesejadas da visualização (Senha, IDs internos, Campos longos)
+    const hiddenKeys = ['uuid', 'id', 'password', 'previousPassword', 'previous_password', 'manager_uuid'];
 
+    // Filtra chaves globais
+    listKeys = listKeys.filter(key => !hiddenKeys.includes(key));
+
+    // Filtros específicos por tipo
     if (props.typeData === 'ong') {
-        if (listKeys.includes('objetivo')) listKeys.splice(listKeys.indexOf('objetivo'), 1);
+        // Remove descrição longa que quebra o layout
+        listKeys = listKeys.filter(key => !['description', 'objetivo'].includes(key));
     }
 
 
@@ -46,7 +48,7 @@ export default function DynamicTable(props: Props) {
                 {data.map((obj: any, rowIdx: number) => (
                     <tr key={rowIdx} style={{ borderBottom: '1px solid #eee' }} >
                         {listKeys.map((key: string) => (
-                            <td key={key} style={{ padding: '10px' }}>{obj[key]}</td>
+                            <td key={key} style={{ padding: '10px', maxWidth: '300px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} title={String(obj[key])}>{obj[key]}</td>
                         ))}
 
                         <td style={{ textAlign: 'center' }}>
