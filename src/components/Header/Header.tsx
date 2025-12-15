@@ -6,6 +6,7 @@ import { faBars, faXmark, faUser, faHouse, faHandHoldingHeart, faRightFromBracke
 import { useState, useRef, useEffect } from "react";
 import Button from "../Button/Button";
 import { useAuth } from "../../contexts/AuthContext";
+import { UserRole } from "../../services/user.service";
 
 export default function Header() {
   const navigate = useNavigate();
@@ -31,16 +32,22 @@ export default function Header() {
 
   // 1. Links de Navegação Principal
   const navLinks = [
-    { to: '/', label: 'Início', icon: faHouse  },
-    { to: '/explorar', label: 'Explorar ONGs', icon: faMap  },
+    { to: '/', label: 'Início', icon: faHouse },
+    { to: '/explorar', label: 'Explorar ONGs', icon: faMap },
   ];
 
   // 2. Links do Usuário (Dropdown / Mobile)
-  // Definimos aqui para garantir consistência
+  const isOngManager = user?.role === UserRole.ONG_MANAGER;
+
   const userLinks = [
-    { to: '/perfil/me', label: 'Meu Perfil', icon: faUser },
-    { to: '/minha-ong', label: 'Minha ONG', icon: faHandHoldingHeart },
-    { to: '/minha-empresa', label: 'Minha Empresa', icon: faBriefcase },
+    { to: '/perfil/me', label: 'Meu Perfil', icon: faUser, state: undefined },
+    {
+      to: isOngManager ? '/dashboard-ong' : '/solicitar-cadastro',
+      label: 'Minha ONG',
+      icon: faHandHoldingHeart,
+      state: !isOngManager ? { email: user?.email } : undefined
+    },
+    { to: '/minha-empresa', label: 'Minha Empresa', icon: faBriefcase, state: undefined },
   ];
 
   const handleLogout = () => {
@@ -87,7 +94,7 @@ export default function Header() {
                 <ul className="dropdown-list">
                   {userLinks.map((link, i) => (
                     <li key={i}>
-                      <Link to={link.to} onClick={() => setUserMenuOpen(false)} className="dropdown-item">
+                      <Link to={link.to} state={link.state} onClick={() => setUserMenuOpen(false)} className="dropdown-item">
                         <FontAwesomeIcon icon={link.icon} className="icon-width" />
                         {link.label}
                       </Link>
@@ -134,8 +141,8 @@ export default function Header() {
                     onClick={() => setMenuIsOpen(false)}
                   >
                     <>
-                    <FontAwesomeIcon icon={link.icon} style={{ marginRight: '10px', width: '20px', textAlign: 'center' }} />
-                    {link.label}
+                      <FontAwesomeIcon icon={link.icon} style={{ marginRight: '10px', width: '20px', textAlign: 'center' }} />
+                      {link.label}
                     </>
                   </Link>
                 </li>
@@ -146,7 +153,7 @@ export default function Header() {
                 <>
                   {userLinks.map((link, i) => (
                     <li key={`user-${i}`} className="mobile-item">
-                      <Link to={link.to} className="nav-link" onClick={() => setMenuIsOpen(false)}>
+                      <Link to={link.to} state={link.state} className="nav-link" onClick={() => setMenuIsOpen(false)}>
                         <FontAwesomeIcon icon={link.icon} style={{ marginRight: '10px', width: '20px', textAlign: 'center' }} />
                         {link.label}
                       </Link>

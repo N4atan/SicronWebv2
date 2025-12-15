@@ -13,8 +13,19 @@ import { on } from "events";
 
 
 
+import { useLocation } from "react-router-dom";
+
 export default function PageSolicitarCadastro() {
-    const [currentFields, setCurrentFields] = useState(FORM_SCHEMAS['ong']);
+    const location = useLocation();
+    const preFilledEmail = location.state?.email;
+
+    const [currentFields, setCurrentFields] = useState(() => {
+        const fields = FORM_SCHEMAS['ong']; // Clona para evitar mutação direta se necessário, mas map resolve
+        if (preFilledEmail) {
+            return fields.map(f => f.name === 'contact_email' ? { ...f, value: preFilledEmail } : f);
+        }
+        return fields;
+    });
 
     const handleChange = (fieldName: string, value: any) => {
         setCurrentFields((prevFields: any) =>
