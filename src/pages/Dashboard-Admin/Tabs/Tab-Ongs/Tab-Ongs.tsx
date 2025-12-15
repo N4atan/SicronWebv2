@@ -85,7 +85,7 @@ export default function TabOngs(props: Props) {
                 <div className="container-ongs">
                     {
                         ongs.map((ong) => (
-                            <OngRequestCard key={ong.uuid} ongRequest={ong} onClickButton={handleClickButton} />
+                            <OngRequestCard key={ong.uuid} ongRequest={ong} onClickButton={handleClickButton} variant="admin" />
                         ))
                     }
                 </div>

@@ -91,7 +91,7 @@ export default function ExploreOngs() {
 
                     <div className="container-results-ongs">
                         {dataOngs.map((ong) => (
-                            <OngRequestCard key={ong.uuid} ongRequest={ong} onClickButton={() => alert('Clique!')} />
+                            <OngRequestCard key={ong.uuid} ongRequest={ong} variant="public" />
                         ))
                         }
                     </div>

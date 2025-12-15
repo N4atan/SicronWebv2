@@ -1,4 +1,5 @@
 import './OngRequestCard.css';
+import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faClock, faEnvelope, faFileLines, faLocationDot, faPhone, faXmark, faBuilding } from '@fortawesome/free-solid-svg-icons';
 import { NGO } from '../../services/ong.service';
@@ -6,11 +7,13 @@ import { NGO } from '../../services/ong.service';
 
 type Props = {
     ongRequest: NGO;
-    onClickButton: (uuid: string, status: 'approved' | 'rejected') => void;
+    onClickButton?: (uuid: string, status: 'approved' | 'rejected') => void;
+    variant?: 'admin' | 'public';
 }
 
 export default function OngRequestCard(props: Props) {
-    const { ongRequest } = props;
+    const { ongRequest, variant = 'public' } = props;
+    const navigate = useNavigate();
 
     // Helper para traduzir status
     const getStatusLabel = (status: string | undefined) => {
@@ -73,22 +76,37 @@ export default function OngRequestCard(props: Props) {
             </div>
 
             <div className='container-actions'>
-                <button className='btn-documents' onClick={() => alert('Em Desenvolvimento... (Visualizar Docs)')} >
-                    <FontAwesomeIcon icon={faFileLines} />
-                    Ver Documentação
-                </button>
-
-                <div style={{ width: '100%', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
-                    <button className='btn-reject' onClick={() => props.onClickButton(ongRequest.uuid || '', 'rejected')} >
-                        <FontAwesomeIcon icon={faXmark} />
-                        Rejeitar
+                {variant === 'public' && (
+                    <button
+                        className='btn-documents'
+                        style={{ width: '100%', justifyContent: 'center' }}
+                        onClick={() => navigate('/perfil-ong', { state: { ong: ongRequest } })}
+                    >
+                        <FontAwesomeIcon icon={faFileLines} />
+                        Ver Detalhes
                     </button>
+                )}
 
-                    <button className='btn-approve' onClick={() => props.onClickButton(ongRequest.uuid || '', 'approved')} >
-                        <FontAwesomeIcon icon={faCheck} />
-                        Aprovar
-                    </button>
-                </div>
+                {variant === 'admin' && (
+                    <>
+                        <button className='btn-documents' onClick={() => alert('Em Desenvolvimento... (Visualizar Docs)')} >
+                            <FontAwesomeIcon icon={faFileLines} />
+                            Ver Documentação
+                        </button>
+
+                        <div style={{ width: '100%', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                            <button className='btn-reject' onClick={() => props.onClickButton?.(ongRequest.uuid || '', 'rejected')} >
+                                <FontAwesomeIcon icon={faXmark} />
+                                Rejeitar
+                            </button>
+
+                            <button className='btn-approve' onClick={() => props.onClickButton?.(ongRequest.uuid || '', 'approved')} >
+                                <FontAwesomeIcon icon={faCheck} />
+                                Aprovar
+                            </button>
+                        </div>
+                    </>
+                )}
             </div>
 
         </div>
