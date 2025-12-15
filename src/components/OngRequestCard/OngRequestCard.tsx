@@ -69,10 +69,7 @@ export default function OngRequestCard(props: Props) {
                     <span>{ongRequest.contact_email || 'Sem email'}</span>
                 </div>
 
-                <div className='row-info'>
-                    <FontAwesomeIcon icon={faClock} />
-                    <span>{ongRequest.created_at || 'Data desconhecida'}</span>
-                </div>
+
             </div>
 
             <div className='container-actions'>
@@ -81,7 +78,7 @@ export default function OngRequestCard(props: Props) {
                     Ver Documentação
                 </button>
 
-                <div style={{ display: 'flex', gap: '8px' }}>
+                <div style={{ width: '100%', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
                     <button className='btn-reject' onClick={() => props.onClickButton(ongRequest.uuid || '', 'rejected')} >
                         <FontAwesomeIcon icon={faXmark} />
                         Rejeitar
