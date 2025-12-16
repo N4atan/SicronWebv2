@@ -14,8 +14,17 @@ body,
 }
 
 body {
-  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  font-family: 'Poppins', Inter, system-ui, -apple-system, sans-serif;
+  /* Poppins como primária, conforme @import */
   background: #fafafa;
   color: #222;
   scroll-behavior: smooth;
+}
+
+/* Garante que inputs e textareas herdem a fonte */
+input,
+textarea,
+select,
+button {
+  font-family: inherit;
 }

@@ -7,7 +7,6 @@ import Footer from "../components/Footer/Footer";
 export default function PageAuthentication() {
     return (
         <div className="auth-page-wrapper">
-            <Header />
 
             <div className="auth-main-container">
                 <div className="auth-illustration-side">

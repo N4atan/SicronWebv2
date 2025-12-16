@@ -3,15 +3,14 @@ import Header from "../components/Header/Header";
 
 import DonationReceipt from "../components/DonationReceipt/DonationReceipt";
 import { faEnvelope, faLocationDot } from '@fortawesome/free-solid-svg-icons';
-import ProfileCard from "../components/ProfileCard/ProfileCard";
 import InfoContactCard from './../components/InfoContactCard/InfoContactCard';
-import HistoryCard from "../components/HistoryCard/HistoryCard";
 import ContainerPage from "../components/ContainerPage/ContainerPage";
-import { useParams } from "react-router-dom";
-import { api, SimplifiedUser } from './../services/api';
+import { useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Card from "../components/Card/Card";
 import UserProfileCard from "../components/UserProfileCard/UserProfileCard";
+import { getAll, User } from "../services/user.service";
+import { useAuth } from "../contexts/AuthContext";
 
 
 const listContact = [
@@ -42,44 +41,94 @@ const historyActivities = [
     },
 ]
 
-export default function PagePerfil() {
-    const [user, setUser] = useState<SimplifiedUser | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
+interface PagePerfilProps {
+    isMe?: boolean;
+}
 
-    const { id } = useParams();
+import Button from "../components/Button/Button";
+import EntityUpdate from "../components/Forms/EntityUpdate/EntityUpdate";
+
+export default function PagePerfil({ isMe = false }: PagePerfilProps) {
+    const { user: authUser, loading: authLoading, signOut } = useAuth();
+    const [searchParams] = useSearchParams();
+    const [user, setUser] = useState<Partial<User> | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [isEditing, setIsEditing] = useState(false);
+
+    // ... useEffect ...
+
+    const handleRefresh = () => {
+        // Como o contexto não atualiza automaticamente sem refresh e mudamos dados com API rest,
+        // o ideal seria recarregar.
+        window.location.reload();
+    }
 
     useEffect(() => {
-
-        async function fetchData() {
-            try {
-                // O isLoading já começa 'true', não precisa setar de novo
-                const response: SimplifiedUser | null = await api.fetchUser(String(id));
-                setUser(response);
-                console.table(response);
-
-            } catch (error) {
-                console.error("Erro ao buscar usuário:", error);
-                alert(`Erro ao buscar usuário: ${error}`);
-            } finally {
-                // AGORA SIM: Isso só roda depois do 'await' ou do 'catch'
+        // Modo "Meu Perfil": Usa dados do contexto
+        if (isMe) {
+            if (!authLoading) {
+                if (!authUser) {
+                    // Se não estiver logado e tentar acessar /perfil/me, alerta e redireciona.
+                    alert("Você precisa fazer login para acessar seu perfil.");
+                    window.location.href = '/login';
+                    return;
+                } else {
+                    setUser(authUser);
+                }
                 setIsLoading(false);
             }
-        };
+            return;
+        }
+
+        // Modo "Perfil Público": Busca via URL params
+        async function fetchData() {
+            setIsLoading(true);
+
+            try {
+                const filters = Object.fromEntries(searchParams.entries());
+
+                // CORREÇÃO: Se não tiver filtros, não busca nada!
+                // Evita carregar o primeiro usuário do banco (ex: Natan) aleatoriamente.
+                if (Object.keys(filters).length === 0) {
+                    setIsLoading(false);
+                    return;
+                }
+
+                const result: Partial<User>[] = await getAll(filters);
+
+                if (!result[0]) {
+                    setUser(null);
+                    return;
+                }
+
+                setUser(result[0]);
+
+            } catch (error: unknown) {
+                console.error(error);
+            } finally {
+                setIsLoading(false);
+            }
+        }
 
         fetchData();
-
-    }, [id])
+    }, [searchParams, isMe, authUser, authLoading]);
 
 
     return (
         <>
-            <Header />
+            {/* Caso Especial: Sem parâmetros de busca na URL (e não é "me") */}
+            {!isMe && searchParams.size === 0 && (
+                <Card style={{ width: '300px', margin: '1rem auto' }}>
+                    <p>Por favor, informe um parâmetro de busca para visualizar um perfil.</p>
+                </Card>
+            )}
 
-            {isLoading || !user && (
+            {/* Loading ou Usuário não encontrado (Só exibe se tiver parâmetros ou for "me") */}
+            {(isMe || searchParams.size > 0) && (isLoading || !user) && (
                 <Card
                     style={{ width: '300px', margin: '1rem auto' }}
                 >
-                    <p>{!user ? 'Usuário não encontrado' : 'Buscando usuário...'}</p>
+                    <p>{isLoading ? 'Buscando usuário...' : 'Usuário não encontrado'}</p>
                 </Card>
             )}
 
@@ -90,14 +139,22 @@ export default function PagePerfil() {
                 >
                     <aside>
                         <UserProfileCard
-                            name={user.username}
+                            name={user.username!}
+                            onLogout={isMe ? () => {
+                                alert("Você será redirecionado para a página de login.");
+                                signOut();
+                            } : undefined}
+                            isMe={isMe}
+                            onEdit={() => setIsEditing(true)}
                         />
+
+
 
                         <InfoContactCard
                             listContact={[
                                 {
                                     icon: faEnvelope,
-                                    text: user.email,
+                                    text: user.email || 'Retirar',
                                     subtext: 'Email'
                                 }
                             ]}
@@ -118,6 +175,14 @@ export default function PagePerfil() {
                         />
                     </main>
                 </ContainerPage>
+            )}
+            {isEditing && user && (
+                <EntityUpdate
+                    entity={user}
+                    typeEntity="user_profile" // Usa o schema restrito que criamos
+                    onClose={() => setIsEditing(false)}
+                    onRefresh={handleRefresh}
+                />
             )}
         </>
     )

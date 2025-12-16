@@ -11,7 +11,6 @@ import OurImpact from "./components/Sections/OurImpact/OurImpact";
 export default function App() {
   return (
     <div className="App">
-      <Header />
       <HeroSection />
       <ImpactSection />
       <OurImpact />

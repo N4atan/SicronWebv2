@@ -1,18 +1,23 @@
 import Card from "../Card/Card";
-
+import Button from "../Button/Button";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 
 type Props = {
     name: string;
     src_img?: string;
+    onLogout?: () => void;
+    isMe?: boolean;
+    onEdit?: () => void;
 }
 
 
-export default function UserProfileCard({ name, src_img }: Props) {
+export default function UserProfileCard({ name, src_img, onLogout, isMe, onEdit }: Props) {
     return (
         <Card
-            style={{height: '300px', display: 'flex', flexDirection: 'column', alignItems: 'center'}}
+            style={{ height: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '2rem' }}
         >
-            <div 
+            <div
                 className="container-avatar"
                 style={{
                     backgroundColor: '#eee',
@@ -26,7 +31,7 @@ export default function UserProfileCard({ name, src_img }: Props) {
                     overflow: 'hidden'        // 3. Adicionado para cortar a imagem
                 }}
             >
-                <img 
+                <img
                     src={src_img || 'https://placehold.co/200'}
                     alt={`Foto de perfil de ${name}`}
                     style={{
@@ -37,17 +42,32 @@ export default function UserProfileCard({ name, src_img }: Props) {
                 />
             </div>
 
-            <div className="container-about">
+            <div className="container-about" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
                 <h2
                     style={{
                         fontSize: 'clamp(1rem, 1.5rem, 2.5rem)',
                         fontWeight: 700,
+                        margin: 0
                     }}
                 >
                     {name}
                 </h2>
 
-                {/* Adicionar lógica para botão de edição */}
+                <div 
+                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem'}}
+                >
+                    {isMe && (
+                        <Button
+                            text="Editar Perfil"
+                            variant="secondary"
+                            onClick={onEdit}
+                            style={{ width: '100%' }}
+                        />
+                    )}
+
+                    
+                </div>
+
             </div>
         </Card>
     )

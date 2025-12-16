@@ -18,52 +18,70 @@
     line-height: 1.8;
     color: #555;
   }
+
+  @media (max-width: 768px) {
+    padding: 0 16px;
+    margin: 1.5rem auto;
+
+    h1 {
+      font-size: 1.8rem;
+    }
+
+    h2 {
+      font-size: 1rem;
+    }
+  }
 }
 
 
 
 
 .container-page-explorer {
-    display: grid;
-    /* 1. Mobile (Padrão): Uma coluna única ocupando tudo */
-    grid-template-columns: 1fr;
+  display: grid;
+  /* 1. Mobile (Padrão): Uma coluna única ocupando tudo */
+  grid-template-columns: 1fr;
 
-    gap: 24px; /* Gap um pouco menor no mobile fica mais harmônico */
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
+  gap: 24px;
+  /* Gap um pouco menor no mobile fica mais harmônico */
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
 
-    /* Importante: Adicionar um respiro nas laterais para telas pequenas */
-    padding: 0 16px;
+  /* Importante: Adicionar um respiro nas laterais para telas pequenas */
+  padding: 0 16px;
 }
 
 /* 2. Breakpoint: Quando a tela for maior que 768px (Tablets/Desktops) */
 @media (min-width: 768px) {
-    .container-page-explorer {
-        /* Volta para o layout de duas colunas: Sidebar fixa e Conteúdo fluido */
-        grid-template-columns: 300px 1fr;
-        gap: 32px;
-        padding: 0; /* Remove o padding lateral se o container pai já tiver, ou ajuste conforme necessário */
-    }
+  .container-page-explorer {
+    /* Volta para o layout de duas colunas: Sidebar fixa e Conteúdo fluido */
+    grid-template-columns: 300px 1fr;
+    gap: 32px;
+    padding: 0;
+    /* Remove o padding lateral se o container pai já tiver, ou ajuste conforme necessário */
+  }
 
 }
 
 
 /* 1. Estilização da caixa */
 .custom-summary {
-  display: flex;             /* Permite alinhar texto e ícone */
+  display: flex;
+  /* Permite alinhar texto e ícone */
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
-  background-color: #fff; /* Cinza claro */
+  background-color: #fff;
+  /* Cinza claro */
   border-radius: 8px;
   cursor: pointer;
   font-weight: 600;
   transition: all 0.2s ease;
-  list-style: none;          /* Remove seta padrão */
+  list-style: none;
+  /* Remove seta padrão */
   border: 1px solid rgb(0, 0, 0, 0.1);
 
-  
+
 }
 
 /* Remove seta padrão em Webkit */
@@ -82,37 +100,38 @@
 details[open] .custom-summary {
   border-bottom: 0;
 
-  border-bottom-left-radius: 0; 
+  border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
-  
+
 }
 
 /* 4. Animação da setinha customizada */
 .icon {
-    color: #686868;
-    transition: transform 0.3s ease;
+  color: #686868;
+  transition: transform 0.3s ease;
 }
 
 details[open] .icon {
-  transform: rotate(180deg); /* Gira a seta */
+  transform: rotate(180deg);
+  /* Gira a seta */
 }
 
 .content {
-    width: 100%;
+  width: 100%;
 
-    padding: 1rem;
+  padding: 1rem;
 
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 
-    background-color: #fff; 
+  background-color: #fff;
 
-    border: 1px solid rgb(0, 0, 0, 0.1);
+  border: 1px solid rgb(0, 0, 0, 0.1);
 
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-    
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+
 }
 
 

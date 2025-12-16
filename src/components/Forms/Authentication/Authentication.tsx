@@ -7,7 +7,11 @@ import './Authentication.css';
 import Input from '../../Inputs/Input/Input';
 import Button from '../../Button/Button';
 import { Dispatch, SetStateAction, useState } from 'react';
-import { api, SimplifiedUser } from "../../../services/api";
+
+import { errorUserService, registerUser } from '../../../services/user.service';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../../contexts/AuthContext';
+import { Oval } from 'react-loader-spinner';
 
 interface LoginFormProps {
     email: string;
@@ -43,7 +47,7 @@ function LoginForm(props: LoginFormProps) {
                 type="email"
                 placeholder="E-mail"
                 icon={faEnvelope}
-                onChange={(e) => props.setEmail((e.target as HTMLInputElement).value)}
+                onChange={(e) => props.setEmail((e.target as HTMLInputElement).value.trim())}
             />
 
             <Input
@@ -52,7 +56,7 @@ function LoginForm(props: LoginFormProps) {
                 type="password"
                 placeholder="Senha"
                 icon={faLock}
-                onChange={(e) => props.setPassword((e.target as HTMLInputElement).value)}
+                onChange={(e) => props.setPassword((e.target as HTMLInputElement).value.trim())}
             />
 
             <Button
@@ -85,7 +89,7 @@ function RegisterForm(props: RegisterFormProps) {
                 type="text"
                 placeholder="Nome de Usuário"
                 icon={faUser}
-                onChange={(e) => props.setUsername((e.target as HTMLInputElement).value)}
+                onChange={(e) => props.setUsername((e.target as HTMLInputElement).value.trim())}
                 value={props.username}
             />
 
@@ -96,7 +100,7 @@ function RegisterForm(props: RegisterFormProps) {
                 type="email"
                 placeholder="E-mail"
                 icon={faEnvelope}
-                onChange={(e) => props.setEmail((e.target as HTMLInputElement).value)}
+                onChange={(e) => props.setEmail((e.target as HTMLInputElement).value.trim())}
                 value={props.email}
             />
 
@@ -106,7 +110,7 @@ function RegisterForm(props: RegisterFormProps) {
                 type="password"
                 placeholder="Senha"
                 icon={faLock}
-                onChange={(e) => props.setPassword((e.target as HTMLInputElement).value)}
+                onChange={(e) => props.setPassword((e.target as HTMLInputElement).value.trim())}
                 value={props.password}
             />
 
@@ -133,81 +137,137 @@ function RegisterForm(props: RegisterFormProps) {
 
 
 export default function AuthenticationForm() {
-    const [ formType, setFormType ] = useState<'login' | 'register'>('register');
-    const [ username, setUsername ] = useState<string>('');
-    const [ email   , setEmail    ] = useState<string>('');
-    const [ password, setPassword ] = useState<string>('');
+    const [formType, setFormType] = useState<'login' | 'register'>('register');
+    const [username, setUsername] = useState<string>('');
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const { signIn, loading } = useAuth();
 
-    function clearData(){
+    const navigate = useNavigate();
+
+    function clearData() {
         setUsername('');
         setEmail('');
         setPassword('');
     }
 
-    function anyIsEmpty(): boolean{
-        return username.trim().length == 0 || email.trim().length == 0 || password.trim().length == 0;
+    function anyIsEmpty(letter: string): boolean {
+        if (letter == 'r') {
+            return username.trim().length == 0 || email.trim().length == 0 || password.trim().length == 0;
+        }
+
+        if (letter == 'l') {
+            return email.trim().length == 0 || password.trim().length == 0;
+        }
+
+        else {
+            return true;
+        }
     }
-    
+
     function handleClickChangeForm(type: 'login' | 'register') {
-        console.log(type);
         setFormType(type);
+        clearData();
     }
 
     async function handleSubmitRegister(event: React.FormEvent) {
         event.preventDefault();
 
         try {
-            if(anyIsEmpty()) return alert('Preencha os campos corretamente!');
-            
-            const user = await api.fetchCreateUser({username, email, password});
+            // Checa inputs vazios.
+            if (anyIsEmpty('r')) return alert('Preencha todos os campos!');
 
-            if (!user) {
-                console.info(api.errorResponse);
-                alert(api.errorResponse);
-                return;
-            }
+            const userCreated = await registerUser({ username, email, password });
 
-            console.table(user);
-            localStorage.setItem('userSicron', JSON.stringify(user))
+            if (!userCreated) return alert(errorUserService);
 
-            alert('Registro com sucesso!');
+            alert('Registrado com Sucesso!');
             clearData();
 
-        } catch (error: unknown) {
-            console.error(error);
-            alert(`Erro no registro: ${error}`);
+            alert('Realize seu Login Agora!');
+            setFormType('login');
+        }
+        catch (error: unknown) {
+            alert(error);
+            console.log(error);
         }
     }
 
-    function handleSubmitLogin(event: React.FormEvent) {
+    async function handleSubmitLogin(event: React.FormEvent) {
         event.preventDefault();
+
+        // Validação básica
+        if (anyIsEmpty('l')) return alert('Preencha todos os campos!');
+
+        setIsLoading(true); // Ativa o loading local para mostrar o Spinner
+
+        try {
+            // O CONTEXTO FAZ TUDO:
+            // 1. Faz o POST /login
+            // 2. Valida o Cookie
+            // 3. Carrega os dados do usuário
+            await signIn({ email, password });
+
+            alert('Logado com Sucesso!');
+
+            clearData();
+
+            // Redireciona
+            navigate(`/perfil/me`);
+
+        } catch (error: any) {
+            // Se o signIn falhar (ex: senha errada), ele lança erro e cai aqui
+            console.error(error);
+            alert(error.message || "Erro ao realizar login.");
+        } finally {
+            setIsLoading(false); // Desativa o loading independentemente do resultado
+        }
     }
 
 
     return (
-        <form className="form-container" onSubmit={formType == 'register'? handleSubmitRegister : handleSubmitLogin}>
+        <form className="form-container" onSubmit={formType == 'register' ? handleSubmitRegister : handleSubmitLogin}>
             {/* Componente do header */}
             <div></div>
 
-            {formType == 'login' ?
-                <LoginForm
-                    email={email}
-                    setEmail={setEmail}
-                    password={password}
-                    setPassword={setPassword}
-                    eventChangeForm={() => handleClickChangeForm('register')}
+            {isLoading ? (
+                <Oval
+                    height={80}
+                    width={80}
+                    color="#4fa94d"
+                    wrapperStyle={{ alignSelf: 'center' }}
+                    wrapperClass=""
+                    visible={true}
+                    ariaLabel='oval-loading'
+                    secondaryColor="#4fa94d"
+                    strokeWidth={2}
+                    strokeWidthSecondary={2}
+
                 />
-                :
-                <RegisterForm
-                    username={username}
-                    setUsername={setUsername}
-                    email={email}
-                    setEmail={setEmail}
-                    password={password}
-                    setPassword={setPassword}
-                    eventChangeForm={() => handleClickChangeForm('login')}
-                />
-            }
+            ) : (
+                <>
+                    {formType == 'login' ?
+                        <LoginForm
+                            email={email}
+                            setEmail={setEmail}
+                            password={password}
+                            setPassword={setPassword}
+                            eventChangeForm={() => handleClickChangeForm('register')}
+                        />
+                        :
+                        <RegisterForm
+                            username={username}
+                            setUsername={setUsername}
+                            email={email}
+                            setEmail={setEmail}
+                            password={password}
+                            setPassword={setPassword}
+                            eventChangeForm={() => handleClickChangeForm('login')}
+                        />
+                    }
+                </>
+            )}
 
         </form>
     )

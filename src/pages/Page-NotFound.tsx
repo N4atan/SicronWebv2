@@ -6,7 +6,7 @@ export default function PageNotFound() {
     return (
         <>
 
-            <Header />
+            
 
             <main style={{
                 maxWidth: '1200px', // Limite maior para desktops

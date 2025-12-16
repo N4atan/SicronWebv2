@@ -1,21 +1,22 @@
 import { useEffect, useState } from "react";
-import Card from "../../Card/Card";
 import { Overlay } from "../../Overlay/Overlay";
 import Input from "../../Inputs/Input/Input";
-import { api, FORM_SCHEMAS } from "../../../services/api"; 
 import Button from "../../Button/Button";
 import './EntityCreate.css';
 import Modal from "../../Modal/Modal";
+import { ENTITY_SCHEMAS } from "../../../utils/entitySchemas";
+import { registerUser, errorUserService } from "../../../services/user.service";
+import { registerOng, errorOngService } from "../../../services/ong.service";
 
 type Props = {
     onClose: () => void;
-    // Adicionei onRefresh opcional, caso queira atualizar a tabela ao fechar
-    onRefresh?: () => void; 
+    onRefresh?: () => void;
 };
 
 export default function EntityCreate(props: Props) {
-    const [tab, setTab] = useState<'user' | 'ong'>('user');
-    const [currentFields, setCurrentFields] = useState(FORM_SCHEMAS[tab]);
+    const [tab, setTab] = useState<'user' | 'ong'>('ong');
+    // @ts-ignore
+    const [currentFields, setCurrentFields] = useState(ENTITY_SCHEMAS[tab]);
 
     const handleChange = (fieldName: string, value: any) => {
         setCurrentFields((prevFields: any) =>
@@ -25,47 +26,55 @@ export default function EntityCreate(props: Props) {
         );
     };
 
-    // --- LÓGICA RESTAURADA AQUI ---
+    const [isLoading, setIsLoading] = useState(false);
+
     const handleSave = async () => {
         // Transforma array de inputs em objeto JSON
         const data = currentFields.reduce((acc: any, field: any) => {
-            // Se o input for do tipo number, garante que o JSON envie um número, não string "10"
             acc[field.name] = field.type === 'number' ? Number(field.value) : field.value;
             return acc;
         }, {});
 
+        setIsLoading(true);
+
         try {
             let response;
+            let errorMessage = "";
 
             if (tab === 'user') {
-                response = await api.fetchCreateUser(data);
+                response = await registerUser(data);
+                errorMessage = errorUserService;
             }
 
             if (tab === 'ong') {
-                response = await api.fetchCreateOng(data);
+                response = await registerOng(data);
+                errorMessage = errorOngService;
             }
 
 
             if (!response) {
-                alert(api.errorResponse); 
+                alert(errorMessage || "Erro ao criar entidade.");
+                setIsLoading(false);
                 return;
             }
 
             alert(`${tab === 'user' ? 'Usuário' : 'ONG'} criado(a) com Sucesso!`);
-            
-            if (props.onRefresh) props.onRefresh(); // Atualiza a tabela pai, se existir
+
+            if (props.onRefresh) props.onRefresh();
             props.onClose();
+            // Nao precisa false aqui pq vai desmontar
 
         } catch (e: any) {
             console.error(e);
             alert("Erro inesperado na aplicação.");
+            setIsLoading(false);
         }
     }
-    // ------------------------------
 
     useEffect(() => {
-        // Reseta os campos quando troca a aba, para não misturar dados de User com ONG
-        setCurrentFields(FORM_SCHEMAS[tab]);
+        // Reseta os campos quando troca a aba
+        // @ts-ignore
+        setCurrentFields(ENTITY_SCHEMAS[tab]);
     }, [tab]);
 
     return (
@@ -76,10 +85,16 @@ export default function EntityCreate(props: Props) {
             sText="Cancelar"
             sEvent={props.onClose}
             xEvent={props.onClose}
+            isLoading={isLoading}
         >
 
             <form className="form-createEntity">
 
+                {/* 
+                    NOTE: User creation via Admin is currently blocked by the backend (register endpoint requires unauthenticated state).
+                    For now, we only allow creating ONGs.
+                */}
+                {/* 
                 <div className="container-tabs">
                     <label className="radio-group" htmlFor="tab-user">
                         <input
@@ -105,15 +120,19 @@ export default function EntityCreate(props: Props) {
                         ONG
                     </label>
                 </div>
+                */}
+
+                <h3 style={{ marginBottom: '16px', color: '#555' }}>Cadastrar Nova ONG</h3>
 
                 <div className="container-body">
                     {currentFields.map((fieldConfigs: any) => (
                         <Input
-                            variant="default"
+                            variant={fieldConfigs.variant || "default"}
                             key={fieldConfigs.name}
                             type={fieldConfigs.type}
                             label={fieldConfigs.label}
                             value={fieldConfigs.value || ''}
+                            options={fieldConfigs.options}
                             placeholder={fieldConfigs.placeholder}
                             onChange={(e: any) => handleChange(fieldConfigs.name, e.target.value)}
                         />

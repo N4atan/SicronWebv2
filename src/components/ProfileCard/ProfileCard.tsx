@@ -9,9 +9,9 @@ type Props = React.HTMLAttributes<HTMLElement> & {
     tags?: string[];
 }
 
-export default function ProfileCard(props: Props){
+export default function ProfileCard(props: Props) {
     return (
-        <Card style={{ maxWidth: '800px', display: "flex", flexDirection: "row", flexWrap: 'wrap', gap: '20px', margin: '2rem auto' }} >
+        <Card className="card-section profile-card-container" >
 
             {/*  foto */}
             <div className='container-img-profile'>
@@ -23,14 +23,14 @@ export default function ProfileCard(props: Props){
 
                 {/* nome */}
                 <h1>
-                    { props.name }
+                    {props.name}
                 </h1>
 
                 {/* tags */}
                 <div>
-                    { props.tags?.map(tag => (
+                    {props.tags?.map(tag => (
                         <span className='tags-profile' key={tag}>{tag}</span>
-                    )) }
+                    ))}
                 </div>
 
             </div>

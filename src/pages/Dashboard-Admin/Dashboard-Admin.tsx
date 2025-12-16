@@ -2,7 +2,8 @@
 import Card from "../../components/Card/Card";
 import Header from "../../components/Header/Header";
 import { useEffect, useState } from "react";
-import { api, SimplifiedUser, SimplifiedOng } from "../../services/api";
+import { getAll as getAllUsers, User } from "../../services/user.service";
+import { getAllOngs, NGO } from "../../services/ong.service";
 import EntityUpdate from "../../components/Forms/EntityUpdate/EntityUpdate";
 import DynamicTable from "../../components/Table/DynamicTable/DynamicTable";
 import EntityCreate from "../../components/Forms/EntityCreate/EntityCreate";
@@ -21,12 +22,12 @@ import Modal from "../../components/Modal/Modal";
 export type EntityType = 'user' | 'ong';
 
 const opçõesAside = [
-    { 
+    {
         label: 'Cadastros',
         icon: faAddressCard,
         value: 'cadastros'
     },
-    { 
+    {
         label: 'ONGs',
         icon: faBuildingNgo,
         value: 'ongs'
@@ -35,8 +36,8 @@ const opçõesAside = [
 
 export default function DashboardAdmin() {
     const [isLoading, setIsLoading] = useState(true);
-    const [dataUsers, setDataUsers] = useState<SimplifiedUser[]>([]);
-    const [dataOngs, setDataOngs] = useState<SimplifiedOng[]>([]);
+    const [dataUsers, setDataUsers] = useState<User[]>([]);
+    const [dataOngs, setDataOngs] = useState<NGO[]>([]);
 
     const [tabActive, setTabActive] = useState<'cadastros' | 'ongs'>('cadastros');
 
@@ -45,12 +46,12 @@ export default function DashboardAdmin() {
         try {
             // Não setamos isLoading false aqui dentro para não conflitar
             if (entity === 'user') {
-                const response = await api.fetchUsers();
+                const response = await getAllUsers();
                 if (response) setDataUsers(response);
             }
 
             if (entity === 'ong') {
-                const response = await api.fetchOngs({});
+                const response = await getAllOngs();
                 if (response) setDataOngs(response);
             }
         } catch (e: any) {
@@ -81,48 +82,47 @@ export default function DashboardAdmin() {
 
 
     return (
-        <main style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
-            <Header />
+        <main style={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 100px)', overflow: 'hidden' }}>
 
             <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
 
-                <aside style={{ width: '200px', backgroundColor: '#ffff', overflowY: 'auto', borderRight: '1px solid rgb(0, 0, 0, 0.1)'}}>
-                        
+                <aside style={{ width: '200px', backgroundColor: '#ffff', overflowY: 'auto', borderRight: '1px solid rgb(0, 0, 0, 0.1)' }}>
+
                     <ul className="ul-tabs" >
                         <li onClick={() => alert('Em Desenvolvimento...')}>
-                            <input type="radio" name="tab" id="tab-geral"  />
+                            <input type="radio" name="tab" id="tab-geral" />
                             <label htmlFor="tab-geral">
                                 <FontAwesomeIcon icon={faCubes} />
-                                Visão Geral  
+                                Visão Geral
                             </label>
                         </li>
 
-                        { opçõesAside.map((opção) => (
-                            <li 
-                                key={opção.value} 
+                        {opçõesAside.map((opção) => (
+                            <li
+                                key={opção.value}
                                 onClick={() => setTabActive(opção.value as 'cadastros' | 'ongs')}
                                 className={tabActive === opção.value ? 'active' : ''}
                             >
-                                <input 
-                                    type="radio" 
-                                    name="tab" 
-                                    id={`tab-${opção.value}`}  
+                                <input
+                                    type="radio"
+                                    name="tab"
+                                    id={`tab-${opção.value}`}
                                     checked={tabActive === opção.value}
                                     readOnly
                                 />
                                 <label htmlFor={`tab-${opção.value}`}>
                                     <FontAwesomeIcon icon={opção.icon} />
-                                    {opção.label}  
+                                    {opção.label}
                                 </label>
 
                             </li>
-                                        ))}
+                        ))}
 
                         <li onClick={() => alert('Em Desenvolvimento...')}>
-                            <input type="radio" name="tab" id="tab-produtos"  />
+                            <input type="radio" name="tab" id="tab-produtos" />
                             <label htmlFor="tab-produtos">
                                 <FontAwesomeIcon icon={faSeedling} />
-                                Produtos  
+                                Produtos
                             </label>
                         </li>
                     </ul>
@@ -132,7 +132,7 @@ export default function DashboardAdmin() {
 
                 <section style={{ flex: 1, padding: '20px', overflowY: 'auto' }}>
 
-                    { tabActive === 'cadastros' && (
+                    {tabActive === 'cadastros' && (
                         <TabRegistro
                             onfreshData={fetchData}
                             isLoading={isLoading}
@@ -140,17 +140,17 @@ export default function DashboardAdmin() {
                             dataOngs={dataOngs}
                         />
                     )}
-                    { tabActive === 'ongs' && (
-                        <TabOngs 
+                    {tabActive === 'ongs' && (
+                        <TabOngs
                             dataOngs={dataOngs}
                             isLoading={isLoading}
                             onRefreshData={fetchData}
                         />
-                        
+
                     )}
 
                 </section>
-                
+
 
 
             </div>

@@ -8,4 +8,14 @@ export default defineConfig({
     react(),
     svgr()
   ],
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://sicronweb-backend.onrender.com', 
+        //target: 'http://localhost:3000',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '')
+      }
+    }
+  }
 })
