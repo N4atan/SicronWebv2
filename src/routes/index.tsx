@@ -6,6 +6,7 @@ import PageAuthentication from "../pages/Page-Authentication";
 import PagePerfil from "../pages/Page-Perfil";
 import PageONG from "../pages/Page-ONG";
 import DashboardONG from "../pages/Dashboard-ONG";
+import DashboardSupplier from "../pages/Dashboard-Supplier";
 import DashboardAdmin from "../pages/Dashboard-Admin/Dashboard-Admin";
 import PageSolicitarCadastro from "../pages/Page-SolicitarCadastro";
 import ExploreOngs from "../pages/ExploreOngs/ExploreOngs";
@@ -20,8 +21,8 @@ export default function AppRoutes() {
             <Route path="/login" element={<PageAuthentication />} />
             <Route path='/perfil' element={<PagePerfil />} />
             <Route path='/perfil/me' element={<PagePerfil isMe={true} />} />
-            <Route path='/explorar'         element={<ExploreOngs />} />
-            <Route path='/perfil-ong'       element={<PageONG />} />
+            <Route path='/explorar' element={<ExploreOngs />} />
+            <Route path='/perfil-ong' element={<PageONG />} />
             {/* 
             <Route path="/cadastros"        element={<PageSolicitarCadastro />} />
             <Route path='/dashboard-ong'    element={<DashboardONG />} />
@@ -40,9 +41,27 @@ export default function AppRoutes() {
             />
 
             <Route
+                path='/dashboard-ong'
+                element={
+                    <ProtectedRoute allowedRoles={[UserRole.NGO_MANAGER, UserRole.ADMIN]}>
+                        <DashboardONG />
+                    </ProtectedRoute>
+                }
+            />
+
+            <Route
+                path='/dashboard-supplier'
+                element={
+                    <ProtectedRoute allowedRoles={[UserRole.SUPPLIER_MANAGER, UserRole.ADMIN]}>
+                        <DashboardSupplier />
+                    </ProtectedRoute>
+                }
+            />
+
+            <Route
                 path='/solicitar/ong'
                 element={
-                    <ProtectedRoute allowedRoles={[UserRole.USER, UserRole.ADMIN, UserRole.PROVIDER_MANAGER, UserRole.PROVIDER_MANAGER]}>
+                    <ProtectedRoute allowedRoles={[UserRole.USER, UserRole.ADMIN, UserRole.SUPPLIER_MANAGER, UserRole.NGO_MANAGER]}>
                         <PageSolicitarCadastro />
                     </ProtectedRoute>
                 }

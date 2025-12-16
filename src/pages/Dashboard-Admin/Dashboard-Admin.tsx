@@ -4,6 +4,7 @@ import Header from "../../components/Header/Header";
 import { useEffect, useState } from "react";
 import { getAll as getAllUsers, User } from "../../services/user.service";
 import { getAllOngs, NGO } from "../../services/ong.service";
+import { getAllSuppliers, Supplier } from "../../services/supplier.service";
 import EntityUpdate from "../../components/Forms/EntityUpdate/EntityUpdate";
 import DynamicTable from "../../components/Table/DynamicTable/DynamicTable";
 import EntityCreate from "../../components/Forms/EntityCreate/EntityCreate";
@@ -12,14 +13,16 @@ import OngRequestCard from "../../components/OngRequestCard/OngRequestCard";
 import './Dashboard-Admin.css';
 import TabCadastro from "./Tabs/Tab-Registros/Tab-Registros";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAddressCard, faBorderAll, faBuildingNgo, faCubes, faSeedling, faTableCellsLarge } from "@fortawesome/free-solid-svg-icons";
+import { faAddressCard, faBorderAll, faBuildingNgo, faCubes, faSeedling, faTableCellsLarge, faTruckFast } from "@fortawesome/free-solid-svg-icons";
 import TabRegistro from "./Tabs/Tab-Registros/Tab-Registros";
 import TabOngs from "./Tabs/Tab-Ongs/Tab-Ongs";
+import TabFornecedores from "./Tabs/Tab-Fornecedores/Tab-Fornecedores";
+import TabProdutos from "./Tabs/Tab-Produtos/Tab-Produtos";
 import { faMicrosoft } from "@fortawesome/free-brands-svg-icons";
 import Modal from "../../components/Modal/Modal";
 
 // Defino um tipo para evitar erros de string solta
-export type EntityType = 'user' | 'ong';
+export type EntityType = 'user' | 'ong' | 'supplier';
 
 const opçõesAside = [
     {
@@ -31,6 +34,16 @@ const opçõesAside = [
         label: 'ONGs',
         icon: faBuildingNgo,
         value: 'ongs'
+    },
+    {
+        label: 'Fornecedores',
+        icon: faTruckFast,
+        value: 'fornecedores'
+    },
+    {
+        label: 'Produtos',
+        icon: faSeedling,
+        value: 'produtos'
     }
 ]
 
@@ -38,8 +51,9 @@ export default function DashboardAdmin() {
     const [isLoading, setIsLoading] = useState(true);
     const [dataUsers, setDataUsers] = useState<User[]>([]);
     const [dataOngs, setDataOngs] = useState<NGO[]>([]);
+    const [dataSuppliers, setDataSuppliers] = useState<Supplier[]>([]);
 
-    const [tabActive, setTabActive] = useState<'cadastros' | 'ongs'>('cadastros');
+    const [tabActive, setTabActive] = useState<'cadastros' | 'ongs' | 'fornecedores' | 'produtos'>('cadastros');
 
     // Função genérica para buscar dados
     const fetchData = async (entity: EntityType) => {
@@ -54,19 +68,25 @@ export default function DashboardAdmin() {
                 const response = await getAllOngs();
                 if (response) setDataOngs(response);
             }
+
+            if (entity === 'supplier') {
+                const response = await getAllSuppliers();
+                if (response) setDataSuppliers(response);
+            }
         } catch (e: any) {
             console.error('Erro ao buscar dados:', e);
         }
     };
 
-    // Carregamento inicial (com Promise.all para esperar OS DOIS terminarem)
+    // Carregamento inicial (com Promise.all para esperar TODOS terminarem)
     useEffect(() => {
         const loadAllData = async () => {
             setIsLoading(true);
             try {
                 await Promise.all([
                     fetchData('user'),
-                    fetchData('ong')
+                    fetchData('ong'),
+                    fetchData('supplier')
                 ]);
             } catch (e) {
                 alert("Erro ao carregar painel");
@@ -100,7 +120,7 @@ export default function DashboardAdmin() {
                         {opçõesAside.map((opção) => (
                             <li
                                 key={opção.value}
-                                onClick={() => setTabActive(opção.value as 'cadastros' | 'ongs')}
+                                onClick={() => setTabActive(opção.value as any)}
                                 className={tabActive === opção.value ? 'active' : ''}
                             >
                                 <input
@@ -117,14 +137,6 @@ export default function DashboardAdmin() {
 
                             </li>
                         ))}
-
-                        <li onClick={() => alert('Em Desenvolvimento...')}>
-                            <input type="radio" name="tab" id="tab-produtos" />
-                            <label htmlFor="tab-produtos">
-                                <FontAwesomeIcon icon={faSeedling} />
-                                Produtos
-                            </label>
-                        </li>
                     </ul>
 
 
@@ -147,6 +159,16 @@ export default function DashboardAdmin() {
                             onRefreshData={fetchData}
                         />
 
+                    )}
+                    {tabActive === 'fornecedores' && (
+                        <TabFornecedores
+                            dataSuppliers={dataSuppliers}
+                            isLoading={isLoading}
+                            onRefreshData={fetchData}
+                        />
+                    )}
+                    {tabActive === 'produtos' && (
+                        <TabProdutos />
                     )}
 
                 </section>

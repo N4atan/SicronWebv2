@@ -5,7 +5,7 @@ import { User } from "./user.service";
 // Faz o login (backend define os cookies)
 export const loginRequest = async (data: User): Promise<void> => {
     try {
-        await api.post('/user/auth/login', data);
+        await api.post('/users/auth/login', data);
     } catch (error) {
         throw new Error(AxiosHandleError(error, 'Erro ao realizar login'));
     }
@@ -14,7 +14,7 @@ export const loginRequest = async (data: User): Promise<void> => {
 // Faz o logout (limpa cookies)
 export const logoutRequest = async (): Promise<void> => {
     try {
-        await api.post('/user/auth/logout');
+        await api.post('/users/auth/logout');
     } catch (error) {
         console.error("Erro ao deslogar", error);
     }
@@ -26,7 +26,7 @@ export const checkAuthRequest = async (): Promise<boolean> => {
         // Se der 401, o interceptor tenta renovar. 
         // Se renovar, aqui retorna 200 (true). 
         // Se falhar mesmo, cai no catch (false).
-        await api.post('/user/auth/check');
+        await api.post('/users/auth/check');
         return true;
     } catch (error) {
         return false;

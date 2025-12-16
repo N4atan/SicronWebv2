@@ -1,128 +1,257 @@
-import Card from "../components/Card/Card";
+import { useEffect, useState } from "react";
 import Header from "../components/Header/Header";
-import { useState } from "react";
+import Card from "../components/Card/Card";
+import Button from "../components/Button/Button";
+import Modal from "../components/Modal/Modal";
+import { useAuth } from "../contexts/AuthContext";
+import { getOngByUuid, NGO } from "../services/ong.service";
+import { addProductToNGO, getAllProducts, NGOProduct, Product, removeProductFromNGO } from "../services/product.service";
+import { Oval } from "react-loader-spinner";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus, faTrash, faHandHoldingHeart, faCoins } from "@fortawesome/free-solid-svg-icons";
+import { api } from "../services/api";
+import '../pages/Dashboard-Admin/Dashboard-Admin.css'; // Reuse style
 
 export default function DashboardONG() {
-    const [itens] = useState([
-        {
-            nome: "Cesta Básica Completa",
-            descricao: "Cesta com alimentos essenciais para uma família de 4 pessoas por 1 mês",
-            categoria: "Alimentação",
-            valor: "R$ 120,00",
-            progresso: "45 / 100",
-            porcentagem: 45,
-            prioridade: "Urgente"
-        },
-        {
-            nome: "Kit Material Escolar",
-            descricao: "Cadernos, canetas, lápis, borracha, apontador e mochila",
-            categoria: "Educação",
-            valor: "R$ 80,00",
-            progresso: "30 / 80",
-            porcentagem: 38,
-            prioridade: "Urgente"
+    const { user } = useAuth();
+    const [isLoading, setIsLoading] = useState(true);
+    const [ngo, setNgo] = useState<NGO | null>(null);
+    const [ngoProducts, setNgoProducts] = useState<NGOProduct[]>([]);
+
+    // Modal
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [allProducts, setAllProducts] = useState<Product[]>([]);
+    const [selectedProductUuid, setSelectedProductUuid] = useState("");
+    const [quantity, setQuantity] = useState(1);
+    const [isSaving, setIsSaving] = useState(false);
+
+    const loadData = async () => {
+        setIsLoading(true);
+        try {
+            if (!user?.uuid) return;
+            // Busca ONG do usuário (agora com filtro funcionando)
+            const { getAllOngs } = await import("../services/ong.service");
+            // @ts-ignore
+            const myOngs = await getAllOngs({ manager_uuid: user.uuid });
+
+            if (myOngs && myOngs.length > 0) {
+                const myNgo = myOngs[0];
+                setNgo(myNgo);
+
+                // Busca detalhes completos (incluindo supplierProducts para preço)
+                const detailedNgo = await getOngByUuid(myNgo.uuid!);
+                if (detailedNgo) {
+                    setNgo(detailedNgo);
+                    // @ts-ignore
+                    if (detailedNgo.products) setNgoProducts(detailedNgo.products);
+                }
+            } else {
+                setNgo(null);
+            }
+        } catch (e) {
+            console.error("Erro ao carregar dashboard:", e);
+        } finally {
+            setIsLoading(false);
         }
-    ]);
+    }
+
+    const loadAllProducts = async () => {
+        const p = await getAllProducts();
+        setAllProducts(p);
+    }
+
+    useEffect(() => {
+        if (user) loadData();
+    }, [user]);
+
+    const handleOpenModal = () => {
+        loadAllProducts();
+        setIsModalOpen(true);
+        setQuantity(1);
+        setSelectedProductUuid("");
+    }
+
+    const handleAddItem = async () => {
+        if (!ngo?.uuid || !selectedProductUuid) return;
+        setIsSaving(true);
+        try {
+            const prod = allProducts.find(p => p.uuid === selectedProductUuid);
+            if (!prod) return;
+
+            const result = await addProductToNGO(ngo.uuid, {
+                name: prod.name,
+                quantity,
+                notes: ""
+            });
+
+            if (result) {
+                alert("Necessidade adicionada com sucesso!");
+                setIsModalOpen(false);
+                loadData();
+            } else {
+                alert("Erro ao adicionar.");
+            }
+        } catch (e) {
+            alert("Erro inesperado.");
+        } finally {
+            setIsSaving(false);
+        }
+    }
+
+    const handleRemoveItem = async (itemId: number) => {
+        if (!confirm("Remover esta necessidade da lista?")) return;
+        try {
+            // O service removeProductFromNGO espera ID numérico ou string? Verificando imports...
+            // service expects numeric ID usually for deletion relation.
+            // O Dashboard antigo passava uuid ou id. 
+            // O backend espera ID da relação NGOProduct.
+            // Vamos passar any para garantir
+            // @ts-ignore
+            await removeProductFromNGO(itemId);
+            // O service se chama removeProductFromNGO(id: number).
+            loadData();
+        } catch (e) {
+            alert("Erro ao remover.");
+        }
+    }
+
+    // Lógica de Preço
+    const getEstimatedPrice = (item: any) => {
+        // item é NGOProduct
+        // item.product.supplierProducts é array de SupplierProduct (com price)
+        const supplierProducts = item.product?.supplierProducts;
+        if (!supplierProducts || supplierProducts.length === 0) return null;
+
+        const prices = supplierProducts.map((sp: any) => Number(sp.price));
+        if (prices.length === 0) return null;
+
+        const sum = prices.reduce((a: number, b: number) => a + b, 0);
+        const avg = sum / prices.length;
+
+        // Retorna média e menor preço
+        const min = Math.min(...prices);
+
+        return { avg, min, count: prices.length };
+    }
+
+    if (isLoading) return <div style={{ display: 'flex', justifyContent: 'center', marginTop: 50 }}><Oval color="#2BB673" height={60} width={60} /></div>;
+
+    if (!ngo) return (
+        <>
+            <Header />
+            <div style={{ padding: 50, textAlign: 'center' }}>
+                <h2>Você ainda não tem uma ONG cadastrada.</h2>
+                <p>Clique em "Minha ONG" no menu para cadastrar.</p>
+            </div>
+        </>
+    );
 
     return (
         <>
             <Header />
+            <div style={{ padding: '40px', maxWidth: '1200px', margin: '0 auto' }}>
 
+                <div style={{ marginBottom: '40px' }}>
+                    <h1 style={{ fontSize: '28px', color: '#333' }}>Painel da ONG - {ngo.trade_name || ngo.name}</h1>
+                    <p style={{ color: '#666' }}>Gerencie as necessidades de doação da sua organização.</p>
+                    <div style={{ marginTop: '10px', fontSize: '14px', color: '#888' }}>
+                        <span style={{ marginRight: '20px' }}>Status: <strong>{ngo.status === 'approved' ? 'Aprovada' : ngo.status}</strong></span>
+                        <span>CNPJ: {ngo.cnpj}</span>
+                    </div>
+                </div>
 
-            <div style={{ textAlign: "initial", margin: "50px", fontSize: "13px" }}>
+                <div className="dashboard-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px', marginBottom: '40px' }}>
+                    <Card titleSection="Itens Necessários">
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                            <FontAwesomeIcon icon={faHandHoldingHeart} size="2x" color="#E63946" />
+                            <div style={{ fontSize: '24px', fontWeight: 'bold' }}>{ngoProducts.length} Itens</div>
+                        </div>
+                    </Card>
+                    <Card titleSection="Acesso Rápido">
+                        <Button text="+ Adicionar Necessidade" onClick={handleOpenModal} variant="primary" style={{ width: '100%' }} />
+                    </Card>
+                </div>
 
-                <h1>Painel Administrativo - ONG</h1>
-                <p>Gerencie os itens de doação da sua organização</p>
-
-
-            </div>
-
-            {/* Cards de resumo */}
-            <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', height: '150px' }}>
-                <Card titleSection="Total de Itens" style={{ width: '300px' }}>
-                    <p>2</p>
-                </Card>
-
-                <Card titleSection="Valor Total Necessário" style={{ width: '300px' }}>
-                    <p>R$ 18.400,00</p>
-                </Card>
-
-                <Card titleSection="Valor Total Recebido" style={{ width: '300px' }}>
-                    <p>R$ 7.800,00</p>
-                </Card>
-            </div>
-
-            {/* Seção de Itens de Doação */}
-            <div style={{ margin: '50px auto', maxWidth: '1000px' }}>
-                <Card
-                    titleSection="Itens de Doação"
-                    subtitleSection="Gerencie os itens necessários para sua ONG"
-                >
-                    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }}>
-                        <thead>
-                            <tr style={{ borderBottom: '1px solid #eee', textAlign: 'left' }}>
-                                <th style={{ padding: '10px' }}>Item</th>
-                                <th style={{ padding: '10px' }}>Categoria</th>
-                                <th style={{ padding: '10px' }}>Valor</th>
-                                <th style={{ padding: '10px' }}>Progresso</th>
-                                <th style={{ padding: '10px' }}>Prioridade</th>
-                                <th style={{ padding: '10px' }}>Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {itens.map((item, i) => (
-                                <tr key={i} style={{ borderBottom: '1px solid #eee' }}>
-                                    <td style={{ padding: '10px' }}>
-                                        <strong>{item.nome}</strong><br />
-                                        <span style={{ fontSize: '12px', color: '#777' }}>{item.descricao}</span>
-                                    </td>
-                                    <td style={{ padding: '10px' }}>{item.categoria}</td>
-                                    <td style={{ padding: '10px' }}>{item.valor}</td>
-                                    <td style={{ padding: '10px' }}>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                                            <span>{item.progresso}</span>
-                                            <div style={{ flex: 1, height: '6px', background: '#ddd', borderRadius: '4px', overflow: 'hidden' }}>
-                                                <div style={{ width: `${item.porcentagem}%`, height: '6px', background: '#111' }}></div>
-                                            </div>
-                                            <span>{item.porcentagem}%</span>
-                                        </div>
-                                    </td>
-                                    <td style={{ padding: '10px' }}>
-                                        <span style={{
-                                            background: '#e23',
-                                            color: '#fff',
-                                            padding: '4px 8px',
-                                            borderRadius: '6px',
-                                            fontSize: '12px'
-                                        }}>
-                                            {item.prioridade}
-                                        </span>
-                                    </td>
-                                    <td style={{ padding: '10px' }}>
-                                        <button style={{ border: 'none', background: 'none', cursor: 'pointer', fontSize: '16px', marginRight: '5px' }}>🖋️</button>
-                                        <button style={{ border: 'none', background: 'none', cursor: 'pointer', fontSize: '16px' }}>🗑️</button>
-                                    </td>
+                <Card titleSection="Necessidades de Doação" subtitleSection="Estes itens ficarão visíveis para doadores e fornecedores.">
+                    {ngoProducts.length === 0 ? <p style={{ padding: 20, textAlign: 'center', color: '#999' }}>Nenhuma necessidade cadastrada.</p> : (
+                        <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: 10 }}>
+                            <thead>
+                                <tr style={{ background: '#f9f9f9', textAlign: 'left' }}>
+                                    <th style={{ padding: 12, borderBottom: '1px solid #eee' }}>Item</th>
+                                    <th style={{ padding: 12, borderBottom: '1px solid #eee' }}>Categoria</th>
+                                    <th style={{ padding: 12, borderBottom: '1px solid #eee' }}>Qtd. Necessária</th>
+                                    <th style={{ padding: 12, borderBottom: '1px solid #eee' }}>Valor de Mercado (Estimado)</th>
+                                    <th style={{ padding: 12, borderBottom: '1px solid #eee' }}>Ação</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
-
-                    <button
-                        style={{
-                            background: '#000',
-                            color: '#fff',
-                            border: 'none',
-                            borderRadius: '8px',
-                            padding: '8px 14px',
-                            cursor: 'pointer',
-                            marginTop: '15px'
-                        }}
-                    >
-                        + Adicionar Item
-                    </button>
+                            </thead>
+                            <tbody>
+                                {ngoProducts.map((item: any) => {
+                                    const priceInfo = getEstimatedPrice(item);
+                                    return (
+                                        <tr key={item.id} style={{ borderBottom: '1px solid #eee' }}>
+                                            <td style={{ padding: 12 }}>
+                                                <div style={{ fontWeight: 'bold' }}>{item.product?.name}</div>
+                                                <div style={{ fontSize: '12px', color: '#777' }}>{item.product?.description}</div>
+                                            </td>
+                                            <td style={{ padding: 12 }}>{item.product?.category || '-'}</td>
+                                            <td style={{ padding: 12 }}>{item.quantity}</td>
+                                            <td style={{ padding: 12 }}>
+                                                {priceInfo ? (
+                                                    <div>
+                                                        <div style={{ fontWeight: 'bold', color: '#2BB673' }}>
+                                                            ~ R$ {priceInfo.avg.toFixed(2)}
+                                                        </div>
+                                                        <small style={{ color: '#666', fontSize: '11px' }}>
+                                                            Mín: R$ {priceInfo.min.toFixed(2)} ({priceInfo.count} ofertas)
+                                                        </small>
+                                                    </div>
+                                                ) : (
+                                                    <span style={{ color: '#999', fontStyle: 'italic' }}>Sem ofertas disponíveis</span>
+                                                )}
+                                            </td>
+                                            <td style={{ padding: 12 }}>
+                                                <button
+                                                    onClick={() => handleRemoveItem(item.id)}
+                                                    title="Remover Necessidade"
+                                                    style={{ color: '#d33', border: 'none', background: '#fff', cursor: 'pointer', padding: 5 }}
+                                                >
+                                                    <FontAwesomeIcon icon={faTrash} />
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    );
+                                })}
+                            </tbody>
+                        </table>
+                    )}
                 </Card>
             </div>
+
+            {isModalOpen && (
+                <Modal
+                    title="Adicionar Necessidade"
+                    pText="Adicionar"
+                    sText="Cancelar"
+                    pEvent={handleAddItem}
+                    sEvent={() => setIsModalOpen(false)}
+                    xEvent={() => setIsModalOpen(false)}
+                    isLoading={isSaving}
+                >
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 15 }}>
+                        <div>
+                            <label style={{ display: 'block', marginBottom: 5, fontWeight: 500 }}>Produto</label>
+                            <select style={{ width: '100%', padding: 10, borderRadius: 5, border: '1px solid #ccc' }} value={selectedProductUuid} onChange={e => setSelectedProductUuid(e.target.value)}>
+                                <option value="">Selecione um produto...</option>
+                                {allProducts.map(p => <option key={p.uuid} value={p.uuid}>{p.name} ({p.category})</option>)}
+                            </select>
+                        </div>
+                        <div>
+                            <label style={{ display: 'block', marginBottom: 5, fontWeight: 500 }}>Quantidade</label>
+                            <input type="number" min="1" style={{ width: '100%', padding: 10, borderRadius: 5, border: '1px solid #ccc' }} value={quantity} onChange={e => setQuantity(Number(e.target.value))} />
+                        </div>
+                    </div>
+                </Modal>
+            )}
         </>
-        
-    );
+    )
 }

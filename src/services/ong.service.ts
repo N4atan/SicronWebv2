@@ -22,10 +22,10 @@ export interface NGO {
 
 export let errorOngService: string;
 
-// GET /ngo
+// GET /ngos
 export const getAllOngs = async (filters?: Partial<NGO>): Promise<NGO[]> => {
     try {
-        const response = await api.get('/ngo', {
+        const response = await api.get('/ngos', {
             params: filters
         });
 
@@ -46,23 +46,18 @@ export const getAllOngs = async (filters?: Partial<NGO>): Promise<NGO[]> => {
 
 export const getOngByUuid = async (uuid: string): Promise<NGO | null> => {
     try {
-        // Assume que o backend suporta filtragem por UUID no GET /ngo?uuid=...
-        // Se não suportar, teremos que buscar *todas* e filtrar no front (menos performático)
-        // ou criar uma rota GET /ngo/:uuid no backend.
-        // Dado o contexto, vamos tentar filtrar.
-        const ongs = await getAllOngs({ uuid });
-        return ongs.length > 0 ? ongs[0] : null;
+        const response = await api.get(`/ngos/${uuid}`);
+        return response.data;
     } catch {
         return null;
     }
 }
 
 
-// POST /ngo
-// POST /ngo
+// POST /ngos
 export const registerOng = async (newOng: NGO): Promise<boolean> => {
     try {
-        await api.post('/ngo', newOng);
+        await api.post('/ngos', newOng);
         // Se não der erro (cair no catch), assumimos sucesso (201 Created)
         return true;
     } catch (error: unknown) {
@@ -71,10 +66,10 @@ export const registerOng = async (newOng: NGO): Promise<boolean> => {
     }
 }
 
-// PATCH /ngo/:uuid
+// PATCH /ngos/:uuid
 export const updateOng = async (uuid: string, ngo: Partial<NGO>): Promise<boolean> => {
     try {
-        await api.patch(`/ngo/${uuid}`, ngo);
+        await api.patch(`/ngos/${uuid}`, ngo);
         return true;
     } catch (error: unknown) {
         errorOngService = AxiosHandleError(error, 'Erro ao atualizar ONG');
@@ -82,10 +77,10 @@ export const updateOng = async (uuid: string, ngo: Partial<NGO>): Promise<boolea
     }
 }
 
-// DELETE /ngo/:uuid
+// DELETE /ngos/:uuid
 export const deleteOng = async (uuid: string): Promise<boolean> => {
     try {
-        await api.delete(`/ngo/${uuid}`);
+        await api.delete(`/ngos/${uuid}`);
         return true;
     } catch (error: unknown) {
         errorOngService = AxiosHandleError(error, 'Erro ao deletar ONG');

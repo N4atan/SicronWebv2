@@ -37,7 +37,7 @@ export default function Header() {
   ];
 
   // 2. Links do Usuário (Dropdown / Mobile)
-  const isOngManager = user?.role === UserRole.ONG_MANAGER;
+  const isOngManager = user?.role === UserRole.NGO_MANAGER;
 
   const userLinks = [
     { to: '/perfil/me', label: 'Meu Perfil', icon: faUser, state: undefined },
@@ -45,9 +45,14 @@ export default function Header() {
       to: isOngManager ? '/dashboard-ong' : '/solicitar/ong',
       label: 'Minha ONG',
       icon: faHandHoldingHeart,
-      state: !isOngManager ? { email: user?.email } : undefined
+      state: !isOngManager ? { email: user?.email, type: 'ong' } : undefined
     },
-    { to: '/minha-empresa', label: 'Minha Empresa', icon: faBriefcase, state: undefined },
+    {
+      to: user?.role === UserRole.SUPPLIER_MANAGER ? '/dashboard-supplier' : '/solicitar/ong',
+      label: 'Minha Empresa',
+      icon: faBriefcase,
+      state: user?.role !== UserRole.SUPPLIER_MANAGER ? { email: user?.email, type: 'supplier' } : undefined
+    },
   ];
 
   const handleLogout = () => {

@@ -30,12 +30,19 @@ export default function PageONG() {
     // Estado inicial: Tenta pegar do state, senão undefined
     const [ongData, setOngData] = useState<NGO | undefined>(location.state?.ong as NGO | undefined);
 
+    // Lista de produtos reais da ONG
+    // Inicializa vazio, será populado se vier no objeto da ONG ou precisar de fetch extra
+    const [productsList, setProductsList] = useState<Product[]>([]);
+
     // Loading inicial: Só é true se NÃO tivermos dados E tivermos algo para buscar (uuid ou nome)
     const [isLoading, setIsLoading] = useState<boolean>(!ongData && (!!uuidParam || !!nameParam));
 
     useEffect(() => {
-        // Se já temos dados carregados via state, não faz nada
-        if (ongData) return;
+        // Se já temos dados carregados via state, verificamos se tem produtos
+        if (ongData) {
+            updateProductsFromOng(ongData);
+            return;
+        }
 
         const fetchData = async () => {
             setIsLoading(true);
@@ -43,7 +50,10 @@ export default function PageONG() {
                 if (uuidParam) {
                     // Prioridade 1: Busca por UUID (Único e Rápido)
                     const data = await getOngByUuid(uuidParam);
-                    if (data) setOngData(data);
+                    if (data) {
+                        setOngData(data);
+                        updateProductsFromOng(data);
+                    }
 
                 } else if (nameParam) {
                     // Prioridade 2: Busca por Nome Fantasia
@@ -55,6 +65,17 @@ export default function PageONG() {
                     if (result && result.length > 0) {
                         // Pega o primeiro match.
                         setOngData(result[0]);
+                        // Se não tiver products depth, talvez precise de busca detalhada
+                        // Mas por enquanto assumimos que vem ou que getOngByUuid do click resolveria
+                        if (result[0].uuid) {
+                            const detailed = await getOngByUuid(result[0].uuid);
+                            if (detailed) {
+                                setOngData(detailed);
+                                updateProductsFromOng(detailed);
+                            } else {
+                                updateProductsFromOng(result[0]);
+                            }
+                        }
                     }
                 }
             } catch (err) {
@@ -70,24 +91,37 @@ export default function PageONG() {
 
     }, [uuidParam, nameParam]); // Executa quando uuid ou nome mudam
 
+    // Função helper para transformar dados do backend no formato do componente Product
+    const updateProductsFromOng = (ong: NGO) => {
+        // @ts-ignore - Products pode vir da relation backend
+        if (ong.products && Array.isArray(ong.products)) {
+            // @ts-ignore
+            // @ts-ignore
+            const mappedProducts = ong.products.map((ngoProduct: any) => {
+                // Lógica de Preço Estimado (Igual ao Dashboard)
+                let avgPrice = 0;
+                const sp = ngoProduct.product?.supplierProducts;
+                if (sp && Array.isArray(sp) && sp.length > 0) {
+                    const prices = sp.map((s: any) => Number(s.price));
+                    const sum = prices.reduce((a: number, b: number) => a + b, 0);
+                    avgPrice = sum / prices.length;
+                }
+
+                return {
+                    name: ngoProduct.product?.name || "Item",
+                    description: ngoProduct.product?.description || "Ajude com a doação deste item.",
+                    tag: ngoProduct.product?.category || "Geral",
+                    price: avgPrice, // Agora reflete a média do mercado
+                    qtd: ngoProduct.quantity || 1
+                };
+            });
+            setProductsList(mappedProducts);
+        } else {
+            console.warn("ONG carregada sem lista de produtos:", ong);
+        }
+    }
 
     const [tab, setTab] = useState('sobre'); // sobre | doar | contato
-    const [productsList] = useState(Array<Product>(
-        {
-            name: 'Kit Material Escolar',
-            description: 'Caneta, Cadernos, Estojo, Lápis, Borracha, Apontador, Mochila',
-            tag: 'Educação',
-            price: 120.00,
-            qtd: 1
-        },
-        {
-            name: 'Kit Primeiros Socorros',
-            description: 'Kit completo com medicamentos básicos e materiais de primeiros socorros',
-            tag: 'Saúde',
-            price: 80.00,
-            qtd: 1
-        },
-    ))
 
     const [cartlist, setCartList] = useState(Array<Product>());
 
@@ -100,12 +134,7 @@ export default function PageONG() {
     const ongPhone = ongData?.phone_number || "Telefone não informado";
 
     // Formata data de criação
-    const ongFounded = useMemo(() => {
-        if (!ongData?.created_at) return "Data desconhecida";
-        try {
-            return new Date(ongData.created_at).toLocaleDateString('pt-BR');
-        } catch { return "Data inválida"; }
-    }, [ongData?.created_at]);
+    const ongFounded = ongData?.created_at?.split('T')[0].split('-').reverse().join('/') || "Data desconhecida";
 
 
     // Listas de contato dinâmicas
@@ -190,6 +219,8 @@ export default function PageONG() {
 
     return (
         <>
+
+
             <ProfileCard name={ongName} tags={[ongArea]} />
 
             <ContainerPage variant={tab == 'doar' ? "a-right" : 'a-left'} >
@@ -250,7 +281,11 @@ export default function PageONG() {
 
                         <main>
                             <Card titleSection="Itens Necessários" subtitleSection="Ajude-nos a fazer a diferença.">
-                                <ListaItens datalist={productsList} onAddCart={handleAddToCart} />
+                                {productsList.length > 0 ? (
+                                    <ListaItens datalist={productsList} onAddCart={handleAddToCart} />
+                                ) : (
+                                    <p style={{ padding: '20px', color: '#777' }}>Esta ONG ainda não cadastrou itens necessários.</p>
+                                )}
                             </Card>
                         </main>
                     </>

@@ -32,7 +32,7 @@ export default function EntityUpdate(props: Props) {
 
     const handleSave = async () => {
         // Backend usa UUID ou ID Legacy
-        const identifier = formData.id || formData.uuid;
+        const identifier = formData.uuid || formData.id;
 
         console.log("EntityUpdate - handleSave - Identifier:", identifier);
         console.log("EntityUpdate - handleSave - FormData:", formData);
