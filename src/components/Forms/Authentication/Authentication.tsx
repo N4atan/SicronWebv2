@@ -113,11 +113,7 @@ function RegisterForm(props: RegisterFormProps) {
                 onChange={(e) => props.setPassword((e.target as HTMLInputElement).value.trim())}
                 value={props.password}
             />
-
-            <Checkbox
-                id='terms'
-                text='Concordo que minha alma seja processada e consumida para os devidos fins que constamnos termos e condições de usuários'
-            />
+           
 
             <Button
                 variant='primary'

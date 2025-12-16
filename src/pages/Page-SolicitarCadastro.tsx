@@ -70,7 +70,7 @@ export default function PageSolicitarCadastro() {
 
             alert(`Pedido de Cadastro Realizado com Sucesso!`);
             // Redireciona para evitar reenvio ou para dashboard se aprovado auto (mas aqui é solicitação)
-            navigate('/perfil-me');
+            navigate('/');
         } catch (e: any) {
             console.error(e);
             alert("Erro inesperado na aplicação.");

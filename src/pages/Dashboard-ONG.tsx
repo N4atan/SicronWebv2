@@ -101,11 +101,7 @@ export default function DashboardONG() {
     const handleRemoveItem = async (itemId: number) => {
         if (!confirm("Remover esta necessidade da lista?")) return;
         try {
-            // O service removeProductFromNGO espera ID numérico ou string? Verificando imports...
-            // service expects numeric ID usually for deletion relation.
-            // O Dashboard antigo passava uuid ou id. 
-            // O backend espera ID da relação NGOProduct.
-            // Vamos passar any para garantir
+
             // @ts-ignore
             await removeProductFromNGO(itemId);
             // O service se chama removeProductFromNGO(id: number).
@@ -148,7 +144,6 @@ export default function DashboardONG() {
 
     return (
         <>
-            <Header />
             <div style={{ padding: '40px', maxWidth: '1200px', margin: '0 auto' }}>
 
                 <div style={{ marginBottom: '40px' }}>
@@ -163,7 +158,7 @@ export default function DashboardONG() {
                 <div className="dashboard-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px', marginBottom: '40px' }}>
                     <Card titleSection="Itens Necessários">
                         <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                            <FontAwesomeIcon icon={faHandHoldingHeart} size="2x" color="#E63946" />
+                            <FontAwesomeIcon icon={faHandHoldingHeart} size="2x" color="#2bb673" />
                             <div style={{ fontSize: '24px', fontWeight: 'bold' }}>{ngoProducts.length} Itens</div>
                         </div>
                     </Card>

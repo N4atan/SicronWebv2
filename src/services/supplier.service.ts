@@ -18,6 +18,7 @@ export interface Supplier {
     // Metadados backend
     created_at?: string;
     updated_at?: string;
+    manager_uuid?: string;
 }
 
 export let errorSupplierService: string;

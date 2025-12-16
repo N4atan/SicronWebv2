@@ -8,7 +8,7 @@ import { updateOng, errorOngService } from "../../../services/ong.service";
 
 type Props = {
     entity: any; // User or NGO
-    typeEntity: 'user' | 'ong' | 'user_profile';
+    typeEntity: 'user' | 'ong' | 'user_profile' | 'supplier';
     onClose: () => void;
     onRefresh: () => void;
 }

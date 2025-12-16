@@ -66,7 +66,7 @@ export default function DynamicTable(props: Props) {
                         <tr key={rowIdx} style={{ borderBottom: '1px solid #eee' }} >
                             {listKeys.map((key: string) => (
                                 <td key={key} style={{ padding: '10px', maxWidth: '250px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} title={String(obj[key])}>
-                                    {obj[key]}
+                                    {typeof obj[key] === 'object' && obj[key] !== null ? (obj[key].name || obj[key].username || JSON.stringify(obj[key])) : obj[key]}
                                 </td>
                             ))}
 

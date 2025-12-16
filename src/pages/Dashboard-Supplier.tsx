@@ -132,7 +132,7 @@ export default function DashboardSupplier() {
 
     return (
         <>
-            <Header />
+            
             <div style={{ padding: '40px', maxWidth: '1200px', margin: '0 auto' }}>
 
                 <div style={{ marginBottom: '40px' }}>
