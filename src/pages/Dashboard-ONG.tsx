@@ -57,6 +57,7 @@ export default function DashboardONG() {
 
     const loadAllProducts = async () => {
         const p = await getAllProducts();
+        console.log("Produtos carregados do backend:", p); // Debug
         setAllProducts(p);
     }
 
@@ -149,12 +150,12 @@ export default function DashboardONG() {
                     <h1 style={{ fontSize: '28px', color: '#333' }}>Painel da ONG - {ngo.trade_name || ngo.name}</h1>
                     <p style={{ color: '#666' }}>Gerencie as necessidades de doação da sua organização.</p>
                     <div style={{ marginTop: '10px', fontSize: '14px', color: '#888' }}>
-                        <span style={{ marginRight: '20px' }}>Status: <strong>{ngo.status === 'approved' ? 'Aprovada' : ngo.status}</strong></span>
+                        <span style={{ marginRight: '20px' }}>Status: <strong>{ngo.status?.toLowerCase() === 'approved' ? 'Aprovada' : ngo.status}</strong></span>
                         <span>CNPJ: {ngo.cnpj}</span>
                     </div>
                 </div>
 
-                {ngo.status !== 'APPROVED' ? (
+                {ngo.status?.toLowerCase() !== 'approved' ? (
                     <div style={{ padding: 20, textAlign: 'center', color: '#999' }}>
                         <h2>ONG não aprovada</h2>
                         <p>Sua ONG ainda não foi aprovada. Aguarde a aprovação para adicionar necessidades.</p>
@@ -243,9 +244,10 @@ export default function DashboardONG() {
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 15 }}>
                         <div>
                             <label style={{ display: 'block', marginBottom: 5, fontWeight: 500 }}>Produto</label>
+                            <small style={{ display: 'block', color: '#666', marginBottom: 5 }}>Apenas produtos ofertados por fornecedores estão listados.</small>
                             <select style={{ width: '100%', padding: 10, borderRadius: 5, border: '1px solid #ccc' }} value={selectedProductUuid} onChange={e => setSelectedProductUuid(e.target.value)}>
                                 <option value="">Selecione um produto...</option>
-                                {allProducts.map(p => <option key={p.uuid} value={p.uuid}>{p.name} ({p.category})</option>)}
+                                {allProducts.filter(p => p.supplierProducts && p.supplierProducts.length > 0).map(p => <option key={p.uuid} value={p.uuid}>{p.name} ({p.category})</option>)}
                             </select>
                         </div>
                         <div>

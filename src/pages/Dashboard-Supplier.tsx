@@ -129,74 +129,74 @@ export default function DashboardSupplier() {
 
     return (
         <>
-            
+
             <div style={{ padding: '40px', maxWidth: '1200px', margin: '0 auto' }}>
 
                 <div style={{ marginBottom: '40px' }}>
                     <h1 style={{ fontSize: '28px', color: '#333' }}>Painel da Empresa - {supplier.tradeName}</h1>
                     <p style={{ color: '#666' }}>Gerencie seus produtos e preços disponíveis para as ONGs.</p>
                     <div style={{ marginTop: '10px', fontSize: '14px', color: '#888' }}>
-                        <span style={{ marginRight: '20px' }}>Status: <strong>{supplier.status === 'APPROVED' ? 'Ativo' : supplier.status}</strong></span>
+                        <span style={{ marginRight: '20px' }}>Status: <strong>{supplier.status?.toLowerCase() === 'approved' ? 'Ativo' : supplier.status}</strong></span>
                         <span>CNPJ: {supplier.cnpj}</span>
                     </div>
                 </div>
 
-                { supplier.status !== 'APPROVED' ? (
+                {supplier.status?.toLowerCase() !== 'approved' ? (
                     <div style={{ padding: 20, textAlign: 'center', color: '#999' }}>
                         <h2>Fornecedor não aprovado</h2>
                         <p>Sua empresa ainda não foi aprovada. Aguarde a aprovação para adicionar produtos.</p>
                     </div>
                 ) : (
                     <>
-                    <div className="dashboard-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px', marginBottom: '40px' }}>
-                        <Card titleSection="Total Ofertado">
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                                <FontAwesomeIcon icon={faBoxOpen} size="2x" color="#2BB673" />
-                                <div style={{ fontSize: '24px', fontWeight: 'bold' }}>{myProducts.length} Produtos</div>
-                            </div>
-                        </Card>
-                        <Card titleSection="Acesso Rápido">
-                            <Button text="+ Ofertar Novo Produto" onClick={handleOpenModal} variant="primary" style={{ width: '100%' }} />
-                        </Card>
-                    </div>
+                        <div className="dashboard-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px', marginBottom: '40px' }}>
+                            <Card titleSection="Total Ofertado">
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                                    <FontAwesomeIcon icon={faBoxOpen} size="2x" color="#2BB673" />
+                                    <div style={{ fontSize: '24px', fontWeight: 'bold' }}>{myProducts.length} Produtos</div>
+                                </div>
+                            </Card>
+                            <Card titleSection="Acesso Rápido">
+                                <Button text="+ Ofertar Novo Produto" onClick={handleOpenModal} variant="primary" style={{ width: '100%' }} />
+                            </Card>
+                        </div>
 
-                    <Card titleSection="Meus Produtos à Venda" subtitleSection="Estes produtos ficarão visíveis para as ONGs.">
-                        {myProducts.length === 0 ? <p style={{ padding: 20, textAlign: 'center', color: '#999' }}>Nenhum produto cadastrado.</p> : (
-                            <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: 10 }}>
-                                <thead>
-                                    <tr style={{ background: '#f9f9f9', textAlign: 'left' }}>
-                                        <th style={{ padding: 12, borderBottom: '1px solid #eee' }}>Produto</th>
-                                        <th style={{ padding: 12, borderBottom: '1px solid #eee' }}>Preço Unit.</th>
-                                        <th style={{ padding: 12, borderBottom: '1px solid #eee' }}>Estoque</th>
-                                        <th style={{ padding: 12, borderBottom: '1px solid #eee' }}>Entrega</th>
-                                        <th style={{ padding: 12, borderBottom: '1px solid #eee' }}>Ação</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {myProducts.map((item: any) => (
-                                        <tr key={item.id} style={{ borderBottom: '1px solid #eee' }}>
-                                            <td style={{ padding: 12 }}>
-                                                <div style={{ fontWeight: 'bold' }}>{item.product?.name}</div>
-                                                <div style={{ fontSize: '12px', color: '#777' }}>{item.product?.category}</div>
-                                            </td>
-                                            <td style={{ padding: 12, color: '#2BB673', fontWeight: 'bold' }}>R$ {Number(item.price).toFixed(2)}</td>
-                                            <td style={{ padding: 12 }}>{item.availableQuantity}</td>
-                                            <td style={{ padding: 12 }}><FontAwesomeIcon icon={faTruckFast} style={{ marginRight: 5, color: '#aaa' }} /> {item.avgDeliveryTimeDays} dias</td>
-                                            <td style={{ padding: 12 }}>
-                                                <button
-                                                    onClick={() => handleRemoveItem(item.id)}
-                                                    title="Remover Oferta"
-                                                    style={{ color: '#d33', border: 'none', background: '#fff', cursor: 'pointer', padding: 5 }}
-                                                >
-                                                    <FontAwesomeIcon icon={faTrash} />
-                                                </button>
-                                            </td>
+                        <Card titleSection="Meus Produtos à Venda" subtitleSection="Estes produtos ficarão visíveis para as ONGs.">
+                            {myProducts.length === 0 ? <p style={{ padding: 20, textAlign: 'center', color: '#999' }}>Nenhum produto cadastrado.</p> : (
+                                <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: 10 }}>
+                                    <thead>
+                                        <tr style={{ background: '#f9f9f9', textAlign: 'left' }}>
+                                            <th style={{ padding: 12, borderBottom: '1px solid #eee' }}>Produto</th>
+                                            <th style={{ padding: 12, borderBottom: '1px solid #eee' }}>Preço Unit.</th>
+                                            <th style={{ padding: 12, borderBottom: '1px solid #eee' }}>Estoque</th>
+                                            <th style={{ padding: 12, borderBottom: '1px solid #eee' }}>Entrega</th>
+                                            <th style={{ padding: 12, borderBottom: '1px solid #eee' }}>Ação</th>
                                         </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        )}
-                    </Card>
+                                    </thead>
+                                    <tbody>
+                                        {myProducts.map((item: any) => (
+                                            <tr key={item.id} style={{ borderBottom: '1px solid #eee' }}>
+                                                <td style={{ padding: 12 }}>
+                                                    <div style={{ fontWeight: 'bold' }}>{item.product?.name}</div>
+                                                    <div style={{ fontSize: '12px', color: '#777' }}>{item.product?.category}</div>
+                                                </td>
+                                                <td style={{ padding: 12, color: '#2BB673', fontWeight: 'bold' }}>R$ {Number(item.price).toFixed(2)}</td>
+                                                <td style={{ padding: 12 }}>{item.availableQuantity}</td>
+                                                <td style={{ padding: 12 }}><FontAwesomeIcon icon={faTruckFast} style={{ marginRight: 5, color: '#aaa' }} /> {item.avgDeliveryTimeDays} dias</td>
+                                                <td style={{ padding: 12 }}>
+                                                    <button
+                                                        onClick={() => handleRemoveItem(item.id)}
+                                                        title="Remover Oferta"
+                                                        style={{ color: '#d33', border: 'none', background: '#fff', cursor: 'pointer', padding: 5 }}
+                                                    >
+                                                        <FontAwesomeIcon icon={faTrash} />
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            )}
+                        </Card>
                     </>
                 )}
             </div>

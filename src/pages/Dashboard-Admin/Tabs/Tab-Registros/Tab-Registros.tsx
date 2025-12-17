@@ -5,11 +5,10 @@ import EntityCreate from "../../../../components/Forms/EntityCreate/EntityCreate
 import EntityUpdate from "../../../../components/Forms/EntityUpdate/EntityUpdate";
 import DynamicTable from "../../../../components/Table/DynamicTable/DynamicTable";
 import { EntityType } from "../../Dashboard-Admin";
-import { deleteUser, User } from "../../../../services/user.service";
-import { deleteOng, NGO } from "../../../../services/ong.service";
-import { errorUserService } from "../../../../services/user.service";
-import { errorOngService } from "../../../../services/ong.service";
-
+import { deleteUser, User, errorUserService } from "../../../../services/user.service";
+import { deleteOng, NGO, errorOngService } from "../../../../services/ong.service";
+import { deleteSupplier, Supplier, errorSupplierService } from "../../../../services/supplier.service";
+import { deleteProduct, Product } from "../../../../services/product.service";
 
 
 type Props = {
@@ -17,10 +16,12 @@ type Props = {
     isLoading: boolean;
     dataUsers: User[];
     dataOngs: NGO[];
+    dataSuppliers: Supplier[];
+    dataProducts: Product[];
 }
 
 
-export default function TabRegistro({ onfreshData, isLoading, dataUsers, dataOngs }: Props) {
+export default function TabRegistro({ onfreshData, isLoading, dataUsers, dataOngs, dataSuppliers, dataProducts }: Props) {
     // Controle do Modal de Edição
     const [isEditEntity, setIsEditEntity] = useState(false);
     const [entityForEdit, setEntityForEdit] = useState<any>(null);
@@ -42,8 +43,8 @@ export default function TabRegistro({ onfreshData, isLoading, dataUsers, dataOng
     const handleClickForDelete = async (obj: any, type: EntityType) => {
         console.log("handleClickForDelete - Obj:", obj);
 
-        // Prioriza ID numérico se existir (backend legacy), senão tenta UUID
-        const identifier = obj.id || obj.uuid;
+        // Prioriza UUID se existir (padrão atual), senão tenta ID (legacy)
+        const identifier = obj.uuid || obj.id;
         console.log(`handleClickForDelete - Identifier extracted: ${identifier} (Type: ${typeof identifier})`);
 
         if (!identifier) {
@@ -61,13 +62,18 @@ export default function TabRegistro({ onfreshData, isLoading, dataUsers, dataOng
                 success = await deleteUser(identifier);
                 errorMessage = errorUserService;
             } else if (type === 'ong') {
-                // ONGs usually use UUID, but let's be safe and use whatever identifier we got
                 success = await deleteOng(identifier);
                 errorMessage = errorOngService;
+            } else if (type === 'supplier') {
+                success = await deleteSupplier(identifier);
+                errorMessage = errorSupplierService;
+            } else if (type === 'product') { // Assumindo que EntityType suporta 'product' ou vamos ajustar
+                // @ts-ignore
+                success = await deleteProduct(identifier);
             }
 
             if (!success) {
-                alert(errorMessage || "Erro ao excluir.");
+                alert("Não foi possível excluir este registro.\n\nMotivo provável: Este item possui vínculos ativos (ONGs, Produtos, Fornecedores, etc) que impedem a exclusão.\n\nRemova os vínculos antes de tentar novamente.\n\nDetalhes do erro: " + (errorMessage || "Erro desconhecido."));
                 return;
             }
 
@@ -88,12 +94,14 @@ export default function TabRegistro({ onfreshData, isLoading, dataUsers, dataOng
                 titleSection="Barra de Ação Rápida"
                 style={{ margin: '50px auto', maxWidth: '1000px' }}
             >
-                <Button
-                    variant="primary"
-                    type="button"
-                    text="Cadastrar ONG"
-                    onClick={() => setIsCreatingEntity(true)}
-                />
+                <div style={{ display: 'flex', gap: '10px' }}>
+                    <Button
+                        variant="primary"
+                        type="button"
+                        text="Novo Cadastro"
+                        onClick={() => setIsCreatingEntity(true)}
+                    />
+                </div>
             </Card>
 
             {/* Modal de Edição */}
@@ -126,7 +134,6 @@ export default function TabRegistro({ onfreshData, isLoading, dataUsers, dataOng
                     <DynamicTable
                         typeData="user"
                         listData={dataUsers || []}
-                        // Aqui está o segredo: usamos uma arrow function para passar o tipo certo
                         onEdit={(obj) => handleClickForEdit(obj, 'user')}
                         onDelete={(obj) => handleClickForDelete(obj, 'user')}
                     />
@@ -143,10 +150,47 @@ export default function TabRegistro({ onfreshData, isLoading, dataUsers, dataOng
                     <p>Carregando ONGs...</p>
                 ) : (
                     <DynamicTable
-                        typeData="ong" // Hardcoded 'ong' porque ESSA é a tabela de ongs
+                        typeData="ong"
                         listData={dataOngs || []}
                         onEdit={(obj) => handleClickForEdit(obj, 'ong')}
                         onDelete={(obj) => handleClickForDelete(obj, 'ong')}
+                    />
+                )}
+            </Card>
+
+            {/* Tabela de Fornecedores */}
+            <Card
+                titleSection="Fornecedores"
+                subtitleSection="Gerencie todos os fornecedores cadastrados."
+                style={{ margin: '50px auto' }}
+            >
+                {isLoading ? (
+                    <p>Carregando Fornecedores...</p>
+                ) : (
+                    <DynamicTable
+                        typeData="supplier"
+                        listData={dataSuppliers || []}
+                        onEdit={(obj) => handleClickForEdit(obj, 'supplier')}
+                        onDelete={(obj) => handleClickForDelete(obj, 'supplier')}
+                    />
+                )}
+            </Card>
+
+            {/* Tabela de Produtos */}
+            <Card
+                titleSection="Produtos Globais"
+                subtitleSection="Catálogo de produtos disponíveis na plataforma."
+                style={{ margin: '50px auto' }}
+            >
+                {isLoading ? (
+                    <p>Carregando Produtos...</p>
+                ) : (
+                    <DynamicTable
+                        typeData="ong" // Reuso temporário do layout ou precisamos de 'product' no DynamicTable
+                        listData={dataProducts || []}
+                        onEdit={(obj) => alert('Edição de produto via tabela ainda não implementada')}
+                        // @ts-ignore
+                        onDelete={(obj) => handleClickForDelete(obj, 'product')}
                     />
                 )}
             </Card>

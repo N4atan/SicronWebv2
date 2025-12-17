@@ -13,7 +13,7 @@ export interface Supplier {
     city?: string;
     state?: string;
     postalCode?: string;
-    status?: 'PENDING' | 'APPROVED' | 'REJECTED';
+    status?: 'pending' | 'approved' | 'rejected' | 'PENDING' | 'APPROVED' | 'REJECTED';
 
     // Metadados backend
     created_at?: string;

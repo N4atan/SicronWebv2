@@ -19,7 +19,8 @@ type Product = {
     name: string;
     price: number;
     description: string;
-    qtd: number
+    qtd: number;
+    collected?: number; // Opcional para compatibilidade
 };
 
 export default function PageONG() {
@@ -113,7 +114,8 @@ export default function PageONG() {
                     description: ngoProduct.product?.description || "Ajude com a doação deste item.",
                     tag: ngoProduct.product?.category || "Geral",
                     price: avgPrice, // Agora reflete a média do mercado
-                    qtd: ngoProduct.quantity || 1
+                    qtd: ngoProduct.quantity || 1,
+                    collected: ngoProduct.collected_quantity || 0 // Novo campo
                 };
             });
             setProductsList(mappedProducts);
@@ -136,7 +138,7 @@ export default function PageONG() {
 
     // Formata data de criação
     const ongFounded = dataFormatter(ongData?.created_at);
-
+    console.log(ongData)
 
     // Listas de contato dinâmicas
     const listContactInfo = useMemo(() => [
@@ -170,10 +172,17 @@ export default function PageONG() {
 
         setCartList(prevItems => {
             // 1. O item já existe no carrinho?
+
+
             const itemExistente = prevItems.find(item => item.name === itemClicado.name);
 
             if (itemExistente) {
                 // 2. Se sim, mapeia o array e atualiza a quantidade (de forma imutável)
+                if (itemExistente.qtd >= itemClicado.qtd) {
+                    alert('Quantidade necessária máxima atingida!');
+                    return prevItems;
+                }
+
                 return prevItems.map(item =>
                     item.name === itemClicado.name
                         ? { ...item, qtd: item.qtd + 1 } // Incrementa
@@ -181,7 +190,8 @@ export default function PageONG() {
                 );
             } else {
                 // 3. Se não, adiciona o novo item com quantidade 1
-                return [...prevItems, { ...itemClicado, quantity: 1 }];
+                // IMPORTANTE: Sobrescrever 'qtd' para 1, pois itemClicado.qtd é a META da ONG
+                return [...prevItems, { ...itemClicado, qtd: 1 }];
             }
         });
     }

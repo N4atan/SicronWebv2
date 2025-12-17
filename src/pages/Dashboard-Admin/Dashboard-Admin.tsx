@@ -21,8 +21,13 @@ import TabProdutos from "./Tabs/Tab-Produtos/Tab-Produtos";
 import { faMicrosoft } from "@fortawesome/free-brands-svg-icons";
 import Modal from "../../components/Modal/Modal";
 
+import { getAllProducts, Product } from "../../services/product.service";
+
+// ... (imports)
+
 // Defino um tipo para evitar erros de string solta
-export type EntityType = 'user' | 'ong' | 'supplier';
+// Adicionei 'product' para tipagem correta
+export type EntityType = 'user' | 'ong' | 'supplier' | 'product';
 
 const opçõesAside = [
     {
@@ -52,6 +57,7 @@ export default function DashboardAdmin() {
     const [dataUsers, setDataUsers] = useState<User[]>([]);
     const [dataOngs, setDataOngs] = useState<NGO[]>([]);
     const [dataSuppliers, setDataSuppliers] = useState<Supplier[]>([]);
+    const [dataProducts, setDataProducts] = useState<Product[]>([]);
 
     const [tabActive, setTabActive] = useState<'cadastros' | 'ongs' | 'fornecedores' | 'produtos'>('cadastros');
 
@@ -73,6 +79,11 @@ export default function DashboardAdmin() {
                 const response = await getAllSuppliers();
                 if (response) setDataSuppliers(response);
             }
+
+            if (entity === 'product') {
+                const response = await getAllProducts();
+                if (response) setDataProducts(response);
+            }
         } catch (e: any) {
             console.error('Erro ao buscar dados:', e);
         }
@@ -86,7 +97,8 @@ export default function DashboardAdmin() {
                 await Promise.all([
                     fetchData('user'),
                     fetchData('ong'),
-                    fetchData('supplier')
+                    fetchData('supplier'),
+                    fetchData('product')
                 ]);
             } catch (e) {
                 alert("Erro ao carregar painel");
@@ -150,6 +162,8 @@ export default function DashboardAdmin() {
                             isLoading={isLoading}
                             dataUsers={dataUsers}
                             dataOngs={dataOngs}
+                            dataSuppliers={dataSuppliers}
+                            dataProducts={dataProducts}
                         />
                     )}
                     {tabActive === 'ongs' && (
