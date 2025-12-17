@@ -134,7 +134,6 @@ export default function DashboardONG() {
 
     if (!ngo) return (
         <>
-            <Header />
             <div style={{ padding: 50, textAlign: 'center' }}>
                 <h2>Você ainda não tem uma ONG cadastrada.</h2>
                 <p>Clique em "Minha ONG" no menu para cadastrar.</p>
@@ -155,71 +154,80 @@ export default function DashboardONG() {
                     </div>
                 </div>
 
-                <div className="dashboard-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px', marginBottom: '40px' }}>
-                    <Card titleSection="Itens Necessários">
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                            <FontAwesomeIcon icon={faHandHoldingHeart} size="2x" color="#2bb673" />
-                            <div style={{ fontSize: '24px', fontWeight: 'bold' }}>{ngoProducts.length} Itens</div>
+                {ngo.status !== 'APPROVED' ? (
+                    <div style={{ padding: 20, textAlign: 'center', color: '#999' }}>
+                        <h2>ONG não aprovada</h2>
+                        <p>Sua ONG ainda não foi aprovada. Aguarde a aprovação para adicionar necessidades.</p>
+                    </div>
+                ) : (
+                    <>
+                        <div className="dashboard-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px', marginBottom: '40px' }}>
+                            <Card titleSection="Itens Necessários">
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                                    <FontAwesomeIcon icon={faHandHoldingHeart} size="2x" color="#2bb673" />
+                                    <div style={{ fontSize: '24px', fontWeight: 'bold' }}>{ngoProducts.length} Itens</div>
+                                </div>
+                            </Card>
+                            <Card titleSection="Acesso Rápido">
+                                <Button text="+ Adicionar Necessidade" onClick={handleOpenModal} variant="primary" style={{ width: '100%' }} />
+                            </Card>
                         </div>
-                    </Card>
-                    <Card titleSection="Acesso Rápido">
-                        <Button text="+ Adicionar Necessidade" onClick={handleOpenModal} variant="primary" style={{ width: '100%' }} />
-                    </Card>
-                </div>
 
-                <Card titleSection="Necessidades de Doação" subtitleSection="Estes itens ficarão visíveis para doadores e fornecedores.">
-                    {ngoProducts.length === 0 ? <p style={{ padding: 20, textAlign: 'center', color: '#999' }}>Nenhuma necessidade cadastrada.</p> : (
-                        <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: 10 }}>
-                            <thead>
-                                <tr style={{ background: '#f9f9f9', textAlign: 'left' }}>
-                                    <th style={{ padding: 12, borderBottom: '1px solid #eee' }}>Item</th>
-                                    <th style={{ padding: 12, borderBottom: '1px solid #eee' }}>Categoria</th>
-                                    <th style={{ padding: 12, borderBottom: '1px solid #eee' }}>Qtd. Necessária</th>
-                                    <th style={{ padding: 12, borderBottom: '1px solid #eee' }}>Valor de Mercado (Estimado)</th>
-                                    <th style={{ padding: 12, borderBottom: '1px solid #eee' }}>Ação</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {ngoProducts.map((item: any) => {
-                                    const priceInfo = getEstimatedPrice(item);
-                                    return (
-                                        <tr key={item.id} style={{ borderBottom: '1px solid #eee' }}>
-                                            <td style={{ padding: 12 }}>
-                                                <div style={{ fontWeight: 'bold' }}>{item.product?.name}</div>
-                                                <div style={{ fontSize: '12px', color: '#777' }}>{item.product?.description}</div>
-                                            </td>
-                                            <td style={{ padding: 12 }}>{item.product?.category || '-'}</td>
-                                            <td style={{ padding: 12 }}>{item.quantity}</td>
-                                            <td style={{ padding: 12 }}>
-                                                {priceInfo ? (
-                                                    <div>
-                                                        <div style={{ fontWeight: 'bold', color: '#2BB673' }}>
-                                                            ~ R$ {priceInfo.avg.toFixed(2)}
-                                                        </div>
-                                                        <small style={{ color: '#666', fontSize: '11px' }}>
-                                                            Mín: R$ {priceInfo.min.toFixed(2)} ({priceInfo.count} ofertas)
-                                                        </small>
-                                                    </div>
-                                                ) : (
-                                                    <span style={{ color: '#999', fontStyle: 'italic' }}>Sem ofertas disponíveis</span>
-                                                )}
-                                            </td>
-                                            <td style={{ padding: 12 }}>
-                                                <button
-                                                    onClick={() => handleRemoveItem(item.id)}
-                                                    title="Remover Necessidade"
-                                                    style={{ color: '#d33', border: 'none', background: '#fff', cursor: 'pointer', padding: 5 }}
-                                                >
-                                                    <FontAwesomeIcon icon={faTrash} />
-                                                </button>
-                                            </td>
+                        <Card titleSection="Necessidades de Doação" subtitleSection="Estes itens ficarão visíveis para doadores e fornecedores.">
+                            {ngoProducts.length === 0 ? <p style={{ padding: 20, textAlign: 'center', color: '#999' }}>Nenhuma necessidade cadastrada.</p> : (
+                                <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: 10 }}>
+                                    <thead>
+                                        <tr style={{ background: '#f9f9f9', textAlign: 'left' }}>
+                                            <th style={{ padding: 12, borderBottom: '1px solid #eee' }}>Item</th>
+                                            <th style={{ padding: 12, borderBottom: '1px solid #eee' }}>Categoria</th>
+                                            <th style={{ padding: 12, borderBottom: '1px solid #eee' }}>Qtd. Necessária</th>
+                                            <th style={{ padding: 12, borderBottom: '1px solid #eee' }}>Valor de Mercado (Estimado)</th>
+                                            <th style={{ padding: 12, borderBottom: '1px solid #eee' }}>Ação</th>
                                         </tr>
-                                    );
-                                })}
-                            </tbody>
-                        </table>
-                    )}
-                </Card>
+                                    </thead>
+                                    <tbody>
+                                        {ngoProducts.map((item: any) => {
+                                            const priceInfo = getEstimatedPrice(item);
+                                            return (
+                                                <tr key={item.id} style={{ borderBottom: '1px solid #eee' }}>
+                                                    <td style={{ padding: 12 }}>
+                                                        <div style={{ fontWeight: 'bold' }}>{item.product?.name}</div>
+                                                        <div style={{ fontSize: '12px', color: '#777' }}>{item.product?.description}</div>
+                                                    </td>
+                                                    <td style={{ padding: 12 }}>{item.product?.category || '-'}</td>
+                                                    <td style={{ padding: 12 }}>{item.quantity}</td>
+                                                    <td style={{ padding: 12 }}>
+                                                        {priceInfo ? (
+                                                            <div>
+                                                                <div style={{ fontWeight: 'bold', color: '#2BB673' }}>
+                                                                    ~ R$ {priceInfo.avg.toFixed(2)}
+                                                                </div>
+                                                                <small style={{ color: '#666', fontSize: '11px' }}>
+                                                                    Mín: R$ {priceInfo.min.toFixed(2)} ({priceInfo.count} ofertas)
+                                                                </small>
+                                                            </div>
+                                                        ) : (
+                                                            <span style={{ color: '#999', fontStyle: 'italic' }}>Sem ofertas disponíveis</span>
+                                                        )}
+                                                    </td>
+                                                    <td style={{ padding: 12 }}>
+                                                        <button
+                                                            onClick={() => handleRemoveItem(item.id)}
+                                                            title="Remover Necessidade"
+                                                            style={{ color: '#d33', border: 'none', background: '#fff', cursor: 'pointer', padding: 5 }}
+                                                        >
+                                                            <FontAwesomeIcon icon={faTrash} />
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            );
+                                        })}
+                                    </tbody>
+                                </table>
+                            )}
+                        </Card>
+                    </>
+                )}
             </div>
 
             {isModalOpen && (

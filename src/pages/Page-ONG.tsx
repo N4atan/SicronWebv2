@@ -12,6 +12,7 @@ import ListaItens from "../components/ListaItens/ListaItens";
 import { useLocation, useSearchParams } from "react-router-dom";
 import { NGO, getOngByUuid } from "../services/ong.service";
 import { Oval } from "react-loader-spinner";
+import { dataFormatter } from "../utils/dataFormatter";
 
 type Product = {
     tag: string;
@@ -134,7 +135,7 @@ export default function PageONG() {
     const ongPhone = ongData?.phone_number || "Telefone não informado";
 
     // Formata data de criação
-    const ongFounded = ongData?.created_at?.split('T')[0].split('-').reverse().join('/') || "Data desconhecida";
+    const ongFounded = dataFormatter(ongData?.created_at);
 
 
     // Listas de contato dinâmicas

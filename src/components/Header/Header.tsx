@@ -2,7 +2,7 @@ import "./Header.css";
 import LogoComponent from "../../assets/icons/Logo.svg?react";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faXmark, faUser, faHouse, faHandHoldingHeart, faRightFromBracket, faBriefcase, faMap } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faXmark, faUser, faHouse, faHandHoldingHeart, faRightFromBracket, faBriefcase, faMap, faCubes } from "@fortawesome/free-solid-svg-icons";
 import { useState, useRef, useEffect } from "react";
 import Button from "../Button/Button";
 import { useAuth } from "../../contexts/AuthContext";
@@ -42,13 +42,13 @@ export default function Header() {
   const userLinks = [
     { to: '/perfil/me', label: 'Meu Perfil', icon: faUser, state: undefined },
     {
-      to: isOngManager ? '/dashboard-ong' : '/solicitar/ong',
+      to: isOngManager ? '/dashboard/ong' : '/cadastro/ong',
       label: 'Minha ONG',
       icon: faHandHoldingHeart,
       state: !isOngManager ? { email: user?.email, type: 'ong' } : undefined
     },
     {
-      to: user?.role === UserRole.SUPPLIER_MANAGER ? '/dashboard-supplier' : '/solicitar/ong',
+      to: user?.role === UserRole.SUPPLIER_MANAGER ? '/dashboard/supplier' : '/cadastro/supplier',
       label: 'Minha Empresa',
       icon: faBriefcase,
       state: user?.role !== UserRole.SUPPLIER_MANAGER ? { email: user?.email, type: 'supplier' } : undefined
@@ -105,6 +105,14 @@ export default function Header() {
                       </Link>
                     </li>
                   ))}
+                  {user?.role === UserRole.ADMIN && (
+                    <li>
+                      <Link to="/dashboard/admin" onClick={() => setUserMenuOpen(false)} className="dropdown-item">
+                        <FontAwesomeIcon icon={faCubes} className="icon-width" />
+                        Dashboard Admin
+                      </Link>
+                    </li>
+                  )}
 
                   <hr className="dropdown-divider" />
                   <li>

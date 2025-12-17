@@ -85,7 +85,7 @@ export default function OngRequestCard(props: Props) {
                         style={{ width: '100%', justifyContent: 'center' }}
                         onClick={() => {
                             const nameParam = encodeURIComponent(ongRequest.trade_name || ongRequest.name);
-                            navigate(`/perfil-ong?nome=${nameParam}`);
+                            navigate(`/perfil/ong?nome=${nameParam}`);
                         }}
                     >
                         {/* Ícone alterado para lupa (Magnifying Glass) ou Seta direita (ArrowRight) conforme preferência */}

@@ -1,8 +1,10 @@
 
 import Header from "../components/Header/Header";
-
 import DonationReceipt from "../components/DonationReceipt/DonationReceipt";
-import { faEnvelope, faLocationDot } from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope, faLocationDot, faHandHoldingHeart, faBuilding, faTruck, faUserTie, faBuildingNgo } from '@fortawesome/free-solid-svg-icons';
+import { translateRole } from "../utils/roleTranslator";
+import { faCalendar } from "@fortawesome/free-regular-svg-icons";
+import { dataFormatter } from "../utils/dataFormatter";
 import InfoContactCard from './../components/InfoContactCard/InfoContactCard';
 import ContainerPage from "../components/ContainerPage/ContainerPage";
 import { useSearchParams } from "react-router-dom";
@@ -11,20 +13,11 @@ import Card from "../components/Card/Card";
 import UserProfileCard from "../components/UserProfileCard/UserProfileCard";
 import { getAll, User } from "../services/user.service";
 import { useAuth } from "../contexts/AuthContext";
+import Button from "../components/Button/Button";
+import EntityUpdate from "../components/Forms/EntityUpdate/EntityUpdate";
+import HistoryCard from "../components/HistoryCard/HistoryCard";
 
-
-const listContact = [
-    {
-        icon: faEnvelope,
-        text: 'seu@email.com',
-        subtext: 'Email'
-    },
-    {
-        icon: faLocationDot,
-        text: 'seu@email.com',
-        subtext: 'Email'
-    }
-];
+// ... (imports)
 
 const historyActivities = [
     {
@@ -45,11 +38,10 @@ interface PagePerfilProps {
     isMe?: boolean;
 }
 
-import Button from "../components/Button/Button";
-import EntityUpdate from "../components/Forms/EntityUpdate/EntityUpdate";
+
 
 export default function PagePerfil({ isMe = false }: PagePerfilProps) {
-    const { user: authUser, loading: authLoading, signOut } = useAuth();
+    const { user: authUser, loading: authLoading } = useAuth();
     const [searchParams] = useSearchParams();
     const [user, setUser] = useState<Partial<User> | null>(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -114,6 +106,43 @@ export default function PagePerfil({ isMe = false }: PagePerfilProps) {
     }, [searchParams, isMe, authUser, authLoading]);
 
 
+
+    console.log(user)
+
+    // Lógica para definir ícone e texto baseados no Papel (Role)
+    const getRoleInfo = (u: Partial<User>) => {
+        const role = u.role;
+        switch (role) {
+            case 'ngoManager':
+                return {
+                    icon: faBuildingNgo,
+                    text: u.managedNGO?.trade_name || u.managedNGO?.name || '-',
+                    subtext: 'ONG Vinculada'
+                };
+            case 'supplierManager':
+                return {
+                    icon: faTruck,
+                    text: u.managedSupplier?.tradeName || '-',
+                    subtext: 'Empresa Vinculada'
+                };
+            case 'admin':
+                return { icon: faUserTie, text: 'Administrador', subtext: 'Perfil' };
+            default:
+                return { icon: faHandHoldingHeart, text: 'Doador', subtext: 'Perfil' };
+        }
+    }
+
+    const contactList = user ? [
+        {
+            icon: isMe ? faEnvelope : faCalendar,
+            text: isMe ? (user.email || 'Email não disponível') : dataFormatter(user.created_at),
+            subtext: isMe ? 'Email' : 'Na Plataforma desde'
+        },
+        {
+            ...getRoleInfo(user)
+        }
+    ] : [];
+
     return (
         <>
             {/* Caso Especial: Sem parâmetros de busca na URL (e não é "me") */}
@@ -140,10 +169,7 @@ export default function PagePerfil({ isMe = false }: PagePerfilProps) {
                     <aside>
                         <UserProfileCard
                             name={user.username!}
-                            onLogout={isMe ? () => {
-                                alert("Você será redirecionado para a página de login.");
-                                signOut();
-                            } : undefined}
+                            role={user.role!}
                             isMe={isMe}
                             onEdit={() => setIsEditing(true)}
                         />
@@ -151,28 +177,28 @@ export default function PagePerfil({ isMe = false }: PagePerfilProps) {
 
 
                         <InfoContactCard
-                            listContact={[
-                                {
-                                    icon: faEnvelope,
-                                    text: user.email || 'Retirar',
-                                    subtext: 'Email'
-                                }
-                            ]}
+                            listContact={contactList}
                         />
                     </aside>
 
                     <main>
-                        <DonationReceipt
-                            id="123"
-                            date="2022-01-01"
-                            ongName="ONG Teste"
-                            donorName="Doador Teste"
-                            items={[
-                                { name: "Item 1", qtd: 1, price: 10 },
-                                { name: "Item 2", qtd: 2, price: 20 },
-                            ]}
-                            total={50}
-                        />
+                        {isMe ? (
+                            <DonationReceipt
+                                id="123"
+                                date="2022-01-01"
+                                ongName="ONG Teste"
+                                donorName="Doador Teste"
+                                items={[
+                                    { name: "Item 1", qtd: 1, price: 10 },
+                                    { name: "Item 2", qtd: 2, price: 20 },
+                                ]}
+                                total={50}
+                            />
+                        ) : (
+                            <HistoryCard
+                                historyActivities={historyActivities}
+                            />
+                        )}
                     </main>
                 </ContainerPage>
             )}
