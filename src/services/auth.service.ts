@@ -20,15 +20,12 @@ export const logoutRequest = async (): Promise<void> => {
     }
 };
 
-// Verifica se a sessão é válida
-export const checkAuthRequest = async (): Promise<boolean> => {
+// Verifica se a sessão é válida e retorna o usuário se logado
+export const checkAuthRequest = async (): Promise<User | null> => {
     try {
-        // Se der 401, o interceptor tenta renovar. 
-        // Se renovar, aqui retorna 200 (true). 
-        // Se falhar mesmo, cai no catch (false).
-        await api.post('/users/auth/check');
-        return true;
+        const response = await api.post('/users/auth/check');
+        return response.data;
     } catch (error) {
-        return false;
+        return null;
     }
 };

@@ -1,6 +1,6 @@
 // contexts/AuthContext.tsx
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { getAll, User } from "../services/user.service";
+import { User } from "../services/user.service";
 import { loginRequest, logoutRequest, checkAuthRequest } from "../services/auth.service";
 
 interface AuthContextData {
@@ -20,29 +20,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     // Função auxiliar para carregar dados do usuário
     const loadUserProfile = async () => {
         try {
-            const users = await getAll({});
-            const storedEmail = localStorage.getItem('@App:user_email');
-
-            let myUser = null;
-
-            if (storedEmail) {
-                // Tenta achar exatamente o e-mail que usamos no login (útil para Admins que veem todos)
-                myUser = users.find((u: any) => u.email === storedEmail);
-            }
-
-            // Fallback: se não achou pelo email guardado, pega o primeiro que tiver email (Lógica segura para usuário comum)
-            if (!myUser) {
-                myUser = users.find((u: any) => u.email);
-            }
-
-            if (myUser) {
-                setUser(myUser);
-                // Atualiza o storage com o email confirmado vindo do banco
-                if (myUser.email) localStorage.setItem('@App:user_email', myUser.email);
+            const userProfile = await checkAuthRequest();
+            if (userProfile) {
+                setUser(userProfile);
+                if (userProfile.email) localStorage.setItem('@App:user_email', userProfile.email);
                 return true;
             }
         } catch (error) {
-            // Silent
+            // Silent or Log
         }
         return false;
     };
@@ -51,15 +36,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     useEffect(() => {
         const initAuth = async () => {
             try {
-                const isValid = await checkAuthRequest();
-                if (isValid) {
-                    await loadUserProfile();
+                // Tenta carregar o perfil diretamente da verificação de sessão
+                const userProfile = await checkAuthRequest();
+
+                if (userProfile) {
+                    setUser(userProfile);
+                    if (userProfile.email) localStorage.setItem('@App:user_email', userProfile.email);
                 } else {
                     setUser(null);
                     localStorage.removeItem('@App:user_email');
                 }
             } catch (err) {
                 console.error("Erro na verificação de autenticação.");
+                setUser(null);
             } finally {
                 setLoading(false);
             }
@@ -70,14 +59,21 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     // 2. Login
     const signIn = async (data: User) => {
         await loginRequest(data); // Cria a sessão
-        // Salva email provisoriamente para ajudar na identificação pós-login
-        if (data.email) localStorage.setItem('@App:user_email', data.email);
-        await loadUserProfile();  // Puxa os dados
+
+        // Puxa os dados e verifica sucesso. 
+        // Agora checkAuthRequest já retorna o usuário correto se o cookie estiver setado.
+        const success = await loadUserProfile();
+
+        if (!success) {
+            console.error("Login realizado mas falha ao obter dados do usuário/sessão.");
+            throw new Error("Erro ao carregar dados do usuário. Tente novamente.");
+        }
     };
 
     // 3. Logout
     const signOut = async () => {
         await logoutRequest();
+        console.log("Logout realizado com sucesso.");
         setUser(null);
         localStorage.removeItem('@App:user_email');
         window.location.href = '/login';
