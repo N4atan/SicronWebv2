@@ -14,18 +14,18 @@ api.interceptors.response.use(
         const originalRequest = error.config;
 
         // VERIFICAÇÃO CRUCIAL ADICIONADA: 
-        // && !originalRequest.url.includes('/user/auth/refresh')
+        // && !originalRequest.url.includes('/users/auth/refresh')
         // Isso impede que ele tente renovar o token se a falha veio da própria renovação
         if (
             error.response?.status === 401 &&
             !originalRequest._retry &&
-            !originalRequest.url.includes('/user/auth/refresh')
+            !originalRequest.url.includes('/users/auth/refresh')
         ) {
             originalRequest._retry = true;
 
             try {
                 // Tenta renovar
-                await api.post('/user/auth/refresh');
+                await api.post('/users/auth/refresh');
                 // Se funcionar, refaz a requisição original
                 return api(originalRequest);
             } catch (refreshError) {
