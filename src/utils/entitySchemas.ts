@@ -47,5 +47,10 @@ export const ENTITY_SCHEMAS = {
         { name: 'postalCode', label: 'CEP', type: 'text', placeholder: '00000-000' },
         { name: 'stateRegistration', label: 'Inscrição Estadual', type: 'text', placeholder: 'Isento ou número' },
         { name: 'municipalRegistration', label: 'Inscrição Municipal', type: 'text', placeholder: 'Isento ou número' }
+    ],
+    product: [
+        { name: 'name', label: 'Nome do Produto', type: 'text', placeholder: 'Ex: Arroz 5kg' },
+        { name: 'description', label: 'Descrição', type: 'text', placeholder: 'Detalhes do produto' },
+        { name: 'expiration_date', label: 'Validade (Dias)', type: 'number', placeholder: 'Dias' }
     ]
 };

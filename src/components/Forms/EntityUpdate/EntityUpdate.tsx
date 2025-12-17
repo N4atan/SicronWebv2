@@ -5,10 +5,11 @@ import Modal from "../../Modal/Modal";
 import { ENTITY_SCHEMAS } from "../../../utils/entitySchemas";
 import { updateUser, errorUserService } from "../../../services/user.service";
 import { updateOng, errorOngService } from "../../../services/ong.service";
+import { updateProduct } from "../../../services/product.service";
 
 type Props = {
     entity: any; // User or NGO
-    typeEntity: 'user' | 'ong' | 'user_profile' | 'supplier';
+    typeEntity: 'user' | 'ong' | 'user_profile' | 'supplier' | 'product';
     onClose: () => void;
     onRefresh: () => void;
 }
@@ -62,6 +63,8 @@ export default function EntityUpdate(props: Props) {
             } else if (props.typeEntity === 'ong') {
                 success = await updateOng(identifier, cleanData);
                 errorMessage = errorOngService;
+            } else if (props.typeEntity === 'product') {
+                success = await updateProduct(identifier, cleanData);
             }
 
             if (!success) {
