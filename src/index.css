@@ -19,3 +19,60 @@ body {
   color: #222;
   scroll-behavior: smooth;
 }
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Base class for reveal component - ensures opacity 0 initially if desired via component */
+.reveal-transition {
+  opacity: 0;
+  /* JS will toggle animate-fade-up which sets opacity to 1 via animation */
+}
+
+.animate-fade-up {
+  opacity: 0;
+  /* Hidden initially */
+  animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+/* Stagger delays for sequential appearance */
+.stagger-1 {
+  animation-delay: 0.1s;
+}
+
+.stagger-2 {
+  animation-delay: 0.2s;
+}
+
+.stagger-3 {
+  animation-delay: 0.3s;
+}
+
+.stagger-4 {
+  animation-delay: 0.4s;
+}
+
+.stagger-5 {
+  animation-delay: 0.5s;
+}
+
+/* Enhanced Hover Effects */
+button,
+a {
+  transition: all 0.2s ease-in-out;
+}
+
+button:active,
+a:active {
+  transform: scale(0.98);
+}

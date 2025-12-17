@@ -11,9 +11,8 @@ export default function ContactSection() {
           Cadastre-se agora e ajude a transformar vidas com transparência e eficiência.
         </p>
       </div>
-
       <div className="contact-right">
-        <ContatoForm />
+        <ContatoForm recipientEmail="contato@sicron.com" />
       </div>
     </section>
   );

@@ -9,6 +9,7 @@ import { faCalendar } from "@fortawesome/free-regular-svg-icons";
 import ContatoForm from "../components/Forms/Contato/Contato";
 import Cart from "../components/Cart/Cart";
 import ListaItens from "../components/ListaItens/ListaItens";
+import RevealOnScroll from "../components/RevealOnScroll/RevealOnScroll";
 
 type Product = {
     tag: string;
@@ -19,28 +20,28 @@ type Product = {
 };
 
 export default function PageONG() {
-    const [ tab, setTab ] = useState('sobre'); // sobre | doar | contato
-    const [ productsList ] = useState(Array<Product>(
-            {
-                name: 'Kit Material Escolar',
-                description: 'Caneta, Cadernos, Estojo, Lápis, Borracha, Apontador, Mochila',
-                tag: 'Educação',
-                price: 120.00,
-                qtd: 1
-            },
-            {
-                name: 'Kit Primeiros Socorros',
-                description: 'Kit completo com medicamentos básicos e materiais de primeiros socorros',
-                tag: 'Saúde',
-                price: 80.00,
-                qtd: 1
-            },
-        ))
+    const [tab, setTab] = useState('sobre'); // sobre | doar | contato
+    const [productsList] = useState(Array<Product>(
+        {
+            name: 'Kit Material Escolar',
+            description: 'Caneta, Cadernos, Estojo, Lápis, Borracha, Apontador, Mochila',
+            tag: 'Educação',
+            price: 120.00,
+            qtd: 1
+        },
+        {
+            name: 'Kit Primeiros Socorros',
+            description: 'Kit completo com medicamentos básicos e materiais de primeiros socorros',
+            tag: 'Saúde',
+            price: 80.00,
+            qtd: 1
+        },
+    ))
 
-    const [ cartlist, setCartList ] = useState(Array<Product>());
+    const [cartlist, setCartList] = useState(Array<Product>());
 
     const handleAddToCart = (itemClicado: Product) => {
-        
+
         setCartList(prevItems => {
             // 1. O item já existe no carrinho?
             const itemExistente = prevItems.find(item => item.name === itemClicado.name);
@@ -56,7 +57,8 @@ export default function PageONG() {
                 // 3. Se não, adiciona o novo item com quantidade 1
                 return [...prevItems, { ...itemClicado, quantity: 1 }];
             }
-        });}
+        });
+    }
 
     const handleClearCart = () => {
         setCartList([]);
@@ -64,96 +66,96 @@ export default function PageONG() {
 
     return (
         <>
-            <Header />
+            <RevealOnScroll><Header /></RevealOnScroll>
 
-            <ProfileCard name="ONG Genérica" tags={['Animais']} />
+            <RevealOnScroll threshold={0.1}>
+                <ProfileCard name="ONG Genérica" tags={['Animais']} />
+            </RevealOnScroll>
 
-            <ContainerPage variant={tab == 'doar' ? "a-right" : 'a-left'} >
+            <RevealOnScroll threshold={0.1} delay={0.2}>
+                <ContainerPage variant={tab == 'doar' ? "a-right" : 'a-left'} >
 
-                <nav className="tabs-nav">
-
-                    {/* --- Opção 1: Sobre --- */}
-                    <div className="radio-tab-item">
-                        <input 
-                            type="radio" id="nav-sobre" name="nav-view"
-                            value="sobre" checked={tab === 'sobre'}
-                            onChange={(e) => setTab(e.target.value)}
-                        />
-                        <label htmlFor="nav-sobre">Sobre</label>
-                    </div>
-
-                    {/* --- Opção 2: Doar --- */}
-                    <div className="radio-tab-item">
-                        <input 
-                            type="radio" id="nav-doar" name="nav-view"
-                            value="doar" checked={tab === 'doar'}
-                            onChange={(e) => setTab(e.target.value)}
-                        />
-                        <label htmlFor="nav-doar">Doar</label>
-                    </div>
-
-                    {/* --- Opção 3: Contato --- */}
-                    <div className="radio-tab-item">
-                        <input 
-                            type="radio" id="nav-contato" name="nav-view"
-                            value="contato" checked={tab === 'contato'}
-                            onChange={(e) => setTab(e.target.value)}
-                        />
-                        <label htmlFor="nav-contato">Contato</label>
-                    </div>
-                </nav>
+                    <nav className="tabs-nav">
+                        {/* ... keep tabs as is ... */}
+                        <div className="radio-tab-item">
+                            <input
+                                type="radio" id="nav-sobre" name="nav-view"
+                                value="sobre" checked={tab === 'sobre'}
+                                onChange={(e) => setTab(e.target.value)}
+                            />
+                            <label htmlFor="nav-sobre">Sobre</label>
+                        </div>
+                        {/* ... (other tabs) ... */}
+                        <div className="radio-tab-item">
+                            <input
+                                type="radio" id="nav-doar" name="nav-view"
+                                value="doar" checked={tab === 'doar'}
+                                onChange={(e) => setTab(e.target.value)}
+                            />
+                            <label htmlFor="nav-doar">Doar</label>
+                        </div>
+                        <div className="radio-tab-item">
+                            <input
+                                type="radio" id="nav-contato" name="nav-view"
+                                value="contato" checked={tab === 'contato'}
+                                onChange={(e) => setTab(e.target.value)}
+                            />
+                            <label htmlFor="nav-contato">Contato</label>
+                        </div>
+                    </nav>
 
 
-                { tab == 'sobre' && (
-                    <>
-                        <aside>
-                            <InfoContactCard listContact={listContact} />
-                        </aside>
+                    {tab == 'sobre' && (
+                        <>
+                            <aside>
+                                <InfoContactCard listContact={listContact} />
+                            </aside>
 
-                        <main>
-                            <Card titleSection="Nossa Missão" >
-                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit voluptatum at quia ratione? Enim animi blanditiis aspernatur et inventore voluptate ex eveniet, praesentium aperiam ut in ad deleniti voluptatum autem!</p>
-                            </Card>
-                        </main>
-                    </>
-                )}
+                            <main>
+                                <Card titleSection="Nossa Missão" >
+                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit voluptatum at quia ratione? Enim animi blanditiis aspernatur et inventore voluptate ex eveniet, praesentium aperiam ut in ad deleniti voluptatum autem!</p>
+                                </Card>
+                            </main>
+                        </>
+                    )}
 
-                { tab == 'doar' && (
-                    <>
-                    <aside>
-                        <Cart datalist={cartlist} onClearCart={handleClearCart}/>
-                    </aside>
+                    {tab == 'doar' && (
+                        <>
+                            <aside>
+                                <Cart datalist={cartlist} onClearCart={handleClearCart} />
+                            </aside>
 
-                    <main>
-                        <Card titleSection="Itens Necessários" subtitleSection="Ajude-nos a fazer a diferença.">
-                            <ListaItens datalist={productsList} onAddCart={handleAddToCart} />
-                        </Card>
-                    </main>
-                    </>
-                )}
+                            <main>
+                                <Card titleSection="Itens Necessários" subtitleSection="Ajude-nos a fazer a diferença.">
+                                    <ListaItens datalist={productsList} onAddCart={handleAddToCart} />
+                                </Card>
+                            </main>
+                        </>
+                    )}
 
-                { tab == 'contato' && (
-                    <>
-                    <aside>
-                        <InfoContactCard listContact={listContact2}  />
-                    </aside>
+                    {tab == 'contato' && (
+                        <>
+                            <aside>
+                                <InfoContactCard listContact={listContact2} />
+                            </aside>
 
-                    <main>
-                        <Card titleSection="Entre em Contato" subtitleSection="">
-                            <ContatoForm />
-                        </Card>
-                    </main>
-                    </>
-                )}
+                            <main>
+                                <Card titleSection="Entre em Contato" subtitleSection="">
+                                    <ContatoForm recipientEmail={listContact2[0].text} />
+                                </Card>
+                            </main>
+                        </>
+                    )}
 
-            </ContainerPage>
-        
+                </ContainerPage>
+            </RevealOnScroll>
+
         </>
     )
 }
 
 
-const listContact =[
+const listContact = [
     {
         icon: faCalendar,
         text: 'AAAA',
@@ -166,7 +168,7 @@ const listContact =[
     }
 ];
 
-const listContact2 =[
+const listContact2 = [
     {
         icon: faEnvelope,
         text: 'seu@email.com',
