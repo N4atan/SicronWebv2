@@ -13,6 +13,7 @@ import { useLocation, useSearchParams } from "react-router-dom";
 import { NGO, getOngByUuid } from "../services/ong.service";
 import { Oval } from "react-loader-spinner";
 import { dataFormatter } from "../utils/dataFormatter";
+import RevealOnScroll from "../components/RevealOnScroll/RevealOnScroll";
 
 type Product = {
     tag: string;
@@ -232,8 +233,11 @@ export default function PageONG() {
         <>
 
 
-            <ProfileCard name={ongName} tags={[ongArea]} />
+            <RevealOnScroll threshold={0.1}>
+                <ProfileCard name="ONG Genérica" tags={['Animais']} />
+            </RevealOnScroll>
 
+            <RevealOnScroll threshold={0.1} delay={0.2}>
             <ContainerPage variant={tab == 'doar' ? "a-right" : 'a-left'} >
 
                 <nav className="tabs-nav">
@@ -317,6 +321,7 @@ export default function PageONG() {
                 )}
 
             </ContainerPage>
+        </RevealOnScroll >
 
         </>
     )

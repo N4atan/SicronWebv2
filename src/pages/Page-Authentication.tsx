@@ -19,7 +19,7 @@ export default function PageAuthentication() {
                     </div>
                 </div>
             </div>
-            <Footer />
+            
         </div>
     )
 }
