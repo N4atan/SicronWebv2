@@ -85,6 +85,16 @@ export const deleteProduct = async (productUuid: string): Promise<boolean> => {
     }
 };
 
+export const updateProduct = async (productUuid: string, data: Partial<Product>): Promise<boolean> => {
+    try {
+        await api.patch(`/products/${productUuid}`, data);
+        return true;
+    } catch (error) {
+        console.error("Erro ao atualizar produto global:", error);
+        return false;
+    }
+};
+
 // Buscar produtos de uma ONG específica
 // O backend deve retornar isso dentro dos dados da ONG ou em rota separada.
 // Por padrão, getOngByUuid já deve trazer os produtos se tiver a relation 'products' carregada.
