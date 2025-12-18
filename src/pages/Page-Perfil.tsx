@@ -56,7 +56,6 @@ export default function PagePerfil({ isMe = false }: PagePerfilProps) {
     }
 
     useEffect(() => {
-        // Modo "Meu Perfil": Usa dados do contexto
         if (isMe) {
             if (!authLoading) {
                 if (!authUser) {
@@ -72,15 +71,14 @@ export default function PagePerfil({ isMe = false }: PagePerfilProps) {
             return;
         }
 
-        // Modo "Perfil Público": Busca via URL params
+
         async function fetchData() {
             setIsLoading(true);
 
             try {
                 const filters = Object.fromEntries(searchParams.entries());
 
-                // CORREÇÃO: Se não tiver filtros, não busca nada!
-                // Evita carregar o primeiro usuário do banco (ex: Natan) aleatoriamente.
+
                 if (Object.keys(filters).length === 0) {
                     setIsLoading(false);
                     return;
@@ -109,7 +107,7 @@ export default function PagePerfil({ isMe = false }: PagePerfilProps) {
 
     console.log(user)
 
-    // Lógica para definir ícone e texto baseados no Papel (Role)
+
     const getRoleInfo = (u: Partial<User>) => {
         const role = u.role;
         switch (role) {
@@ -145,14 +143,12 @@ export default function PagePerfil({ isMe = false }: PagePerfilProps) {
 
     return (
         <>
-            {/* Caso Especial: Sem parâmetros de busca na URL (e não é "me") */}
             {!isMe && searchParams.size === 0 && (
                 <Card style={{ width: '300px', margin: '1rem auto' }}>
                     <p>Por favor, informe um parâmetro de busca para visualizar um perfil.</p>
                 </Card>
             )}
 
-            {/* Loading ou Usuário não encontrado (Só exibe se tiver parâmetros ou for "me") */}
             {(isMe || searchParams.size > 0) && (isLoading || !user) && (
                 <Card
                     style={{ width: '300px', margin: '1rem auto' }}
@@ -205,7 +201,7 @@ export default function PagePerfil({ isMe = false }: PagePerfilProps) {
             {isEditing && user && (
                 <EntityUpdate
                     entity={user}
-                    typeEntity="user_profile" // Usa o schema restrito que criamos
+                    typeEntity="user_profile"
                     onClose={() => setIsEditing(false)}
                     onRefresh={handleRefresh}
                 />

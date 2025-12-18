@@ -25,8 +25,7 @@ import { getAllProducts, Product } from "../../services/product.service";
 
 // ... (imports)
 
-// Defino um tipo para evitar erros de string solta
-// Adicionei 'product' para tipagem correta
+
 export type EntityType = 'user' | 'ong' | 'supplier' | 'product';
 
 const opçõesAside = [
@@ -61,10 +60,10 @@ export default function DashboardAdmin() {
 
     const [tabActive, setTabActive] = useState<'cadastros' | 'ongs' | 'fornecedores' | 'produtos'>('cadastros');
 
-    // Função genérica para buscar dados
+
     const fetchData = async (entity: EntityType) => {
         try {
-            // Não setamos isLoading false aqui dentro para não conflitar
+
             if (entity === 'user') {
                 const response = await getAllUsers();
                 if (response) setDataUsers(response);
@@ -89,7 +88,7 @@ export default function DashboardAdmin() {
         }
     };
 
-    // Carregamento inicial (com Promise.all para esperar TODOS terminarem)
+
     useEffect(() => {
         const loadAllData = async () => {
             setIsLoading(true);

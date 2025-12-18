@@ -27,7 +27,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 return true;
             }
         } catch (error) {
-            // Silent or Log
+            alert(error);
+            console.error(error)
         }
         return false;
     };

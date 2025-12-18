@@ -1,21 +1,18 @@
 .receipt-container {
-    font-family: 'Inter', 'Segoe UI', sans-serif;
     background: #fff;
     border-radius: 8px;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
     overflow: hidden;
     max-width: 100%;
-    /* Se adapta ao container */
+
     margin: 0 auto;
     border: 1px solid #eee;
 }
 
 .receipt-header {
     background-color: #00bfa5;
-    /* Verde azulado da imagem */
     color: #fff;
     padding: 0.75rem 1rem;
-    /* Padding ultra reduzido */
     display: flex;
     flex-direction: column;
     gap: 0.15rem;
@@ -29,7 +26,6 @@
 
 .receipt-title {
     font-size: 0.9rem;
-    /* Título ainda menor */
     font-weight: 600;
     color: #fff;
     margin: 0;
@@ -44,14 +40,12 @@
 
 .receipt-body {
     padding: 1rem;
-    /* Padding reduzido */
 }
 
 .receipt-info-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 0.75rem;
-    /* Espaçamento bem menor */
     margin-bottom: 1rem;
     padding-bottom: 1rem;
     border-bottom: 1px solid #eee;
@@ -69,13 +63,11 @@
     gap: 0.3rem;
     color: #888;
     font-size: 0.7rem;
-    /* Rótulo pequeno */
     margin-bottom: 0;
 }
 
 .info-value {
     font-size: 0.85rem;
-    /* Valor compacto */
     color: #333;
     font-weight: 500;
     padding-left: 1.2rem;
@@ -126,7 +118,6 @@
     background-color: #f8fcfb;
     border-radius: 6px;
     padding: 0.6rem 0.85rem;
-    /* Caixa mais compacta */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -151,7 +142,7 @@
     margin-top: 0.5rem;
 }
 
-/* Estilos de Impressão */
+
 @media print {
     .receipt-container {
         box-shadow: none;

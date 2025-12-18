@@ -13,14 +13,14 @@ export enum UserRole {
     SUPPLIER_EMPLOYER = 'supplierEmployer'
 }
 
-// Interfaces espelhando as entidades do Backend (snake_case para NGO, camelCase para Supplier)
+
 
 export interface NGO {
     id?: number;
     uuid?: string;
     name: string;
     cnpj: string;
-    trade_name: string; // snake_case no backend
+    trade_name: string;
     area: string;
     description: string;
     wallet: number;
@@ -28,13 +28,13 @@ export interface NGO {
     phone_number: string; // snake_case no backend
     contact_email: string; // snake_case no backend
     creation_date: string; // snake_case no backend
-    status: string; // Enum no backend, string aqui por enquanto
+    status: string;
 }
 
 export interface Supplier {
     id?: number;
     uuid?: string;
-    companyName: string; // camelCase no backend
+    companyName: string;
     tradeName: string; // camelCase no backend
     cnpj: string;
     stateRegistration?: string;
@@ -57,7 +57,7 @@ export interface User {
     role?: UserRole;
     created_at?: string;
 
-    // Relações carregadas opcionalmente
+
     managedNGO?: NGO;
     managedSupplier?: Supplier;
 

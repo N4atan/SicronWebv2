@@ -196,7 +196,7 @@ export default function AuthenticationForm() {
         // Validação básica
         if (anyIsEmpty('l')) return alert('Preencha todos os campos!');
 
-        setIsLoading(true); // Ativa o loading local para mostrar o Spinner
+        setIsLoading(true); 
 
         try {
             // O CONTEXTO FAZ TUDO:

@@ -12,7 +12,7 @@ import { faPlus, faTrash, faBoxOpen, faTruckFast } from "@fortawesome/free-solid
 import { api } from "../services/api";
 import '../pages/Dashboard-Admin/Dashboard-Admin.css'; // Reusing some admin styles for consistency
 
-// Tipagem local (idealmente mover para service)
+
 interface SupplierProduct {
     id: number;
     price: number;
@@ -27,12 +27,12 @@ export default function DashboardSupplier() {
     const [supplier, setSupplier] = useState<Supplier | null>(null);
     const [myProducts, setMyProducts] = useState<SupplierProduct[]>([]);
 
-    // Modal
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [allProducts, setAllProducts] = useState<Product[]>([]);
     const [isSaving, setIsSaving] = useState(false);
 
-    // Form
+
     const [selectedProductUuid, setSelectedProductUuid] = useState("");
     const [price, setPrice] = useState("");
     const [qty, setQty] = useState("100");
@@ -42,14 +42,14 @@ export default function DashboardSupplier() {
         setIsLoading(true);
         try {
             if (!user?.uuid) return;
-            // 1. Encontra o fornecedor gerenciado pelo usuário
+
             const mySuppliers = await getAllSuppliers({ manager_uuid: user.uuid });
 
             if (mySuppliers && mySuppliers.length > 0) {
                 const mySup = mySuppliers[0];
                 setSupplier(mySup);
 
-                // 2. Busca detalhes completos (produtos)
+
                 const detailedSup = await getSupplierByUuid(mySup.uuid!);
                 if (detailedSup) {
                     // @ts-ignore

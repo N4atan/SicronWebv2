@@ -90,37 +90,6 @@ export default function EntityCreate(props: Props) {
 
             <form className="form-createEntity">
 
-                {/* 
-                    NOTE: User creation via Admin is currently blocked by the backend (register endpoint requires unauthenticated state).
-                    For now, we only allow creating ONGs.
-                */}
-                {/* 
-                <div className="container-tabs">
-                    <label className="radio-group" htmlFor="tab-user">
-                        <input
-                            type="radio"
-                            name="tab"
-                            id="tab-user"
-                            value="user"
-                            checked={tab === 'user'}
-                            onChange={() => setTab('user')}
-                        />
-                        Usuário
-                    </label>
-
-                    <label className="radio-group" htmlFor="tab-ong">
-                        <input
-                            type="radio"
-                            name="tab"
-                            id="tab-ong"
-                            value="ong"
-                            checked={tab === 'ong'}
-                            onChange={() => setTab('ong')}
-                        />
-                        ONG
-                    </label>
-                </div>
-                */}
 
                 <h3 style={{ marginBottom: '16px', color: '#555' }}>Cadastrar Nova ONG</h3>
 

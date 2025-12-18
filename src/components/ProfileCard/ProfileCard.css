@@ -25,11 +25,10 @@
 .container-info-profile {
     flex: 1;
     min-width: 250px;
-    /* Evita quebra prematura em telas médias */
+
 
     h1 {
         font-size: clamp(1.5rem, 2.5vw, 2.5rem);
-        /* Ajuste dinâmico */
         font-weight: 700;
         margin-top: 10px;
         line-height: 1.2;
@@ -42,7 +41,7 @@
         padding: 4px 12px;
         margin: 10px 8px 0 0;
         border-radius: 20px;
-        /* Mais arredondado */
+ 
         font-size: 14px;
         background-color: #f9f9f9;
         font-weight: 500;
