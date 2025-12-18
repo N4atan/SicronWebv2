@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const api = axios.create({
-    baseURL: '/api', // Usa o proxy do Vite para evitar problemas de CORS/Cookies
+    baseURL: 'https://sicronweb-backend-bi5j.onrender.com/', // Usa o proxy do Vite para evitar problemas de CORS/Cookies
     withCredentials: true,
     headers: {
         'Content-Type': 'application/json',
