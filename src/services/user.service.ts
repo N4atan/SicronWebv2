@@ -1,68 +1,8 @@
 import { api, AxiosHandleError } from "./api";
 
-export enum UserRole {
-    USER = 'user',
-    ADMIN = 'admin',
+import { User, UserRole } from "../interfaces";
 
-    NGO_OWNER = 'ngoOwner',
-    NGO_MANAGER = 'ngoManager',
-    NGO_EMPLOYER = 'ngoEmployer',
-
-    SUPPLIER_OWNER = 'supplierOwner',
-    SUPPLIER_MANAGER = 'supplierManager',
-    SUPPLIER_EMPLOYER = 'supplierEmployer'
-}
-
-// Interfaces espelhando as entidades do Backend (snake_case para NGO, camelCase para Supplier)
-
-export interface NGO {
-    id?: number;
-    uuid?: string;
-    name: string;
-    cnpj: string;
-    trade_name: string; // snake_case no backend
-    area: string;
-    description: string;
-    wallet: number;
-    local: string;
-    phone_number: string; // snake_case no backend
-    contact_email: string; // snake_case no backend
-    creation_date: string; // snake_case no backend
-    status: string; // Enum no backend, string aqui por enquanto
-}
-
-export interface Supplier {
-    id?: number;
-    uuid?: string;
-    companyName: string; // camelCase no backend
-    tradeName: string; // camelCase no backend
-    cnpj: string;
-    stateRegistration?: string;
-    municipalRegistration?: string;
-    status: string; // Enum
-    contactEmail: string; // camelCase no backend
-    phone?: string;
-    address?: string;
-    city?: string;
-    state?: string;
-    postalCode?: string;
-}
-
-export interface User {
-    id?: number | string; // Legacy ID or UUID
-    uuid?: string;
-    username: string;
-    email?: string;
-    password?: string;
-    role?: UserRole;
-    created_at?: string;
-
-    // Relações carregadas opcionalmente
-    managedNGO?: NGO;
-    managedSupplier?: Supplier;
-
-    [key: string]: any;
-}
+export { UserRole }; // Re-export for compatibility if needed elsewhere
 
 export let errorUserService: string;
 

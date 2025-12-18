@@ -1,17 +1,21 @@
-
-
-
 /* garante coluna (header no topo) e evita centralizar tudo */
 .App {
   min-height: 100vh;
   display: flex;
-  flex-direction: column; /* ESSENCIAL: coloca header em cima e conteúdo abaixo */
+  flex-direction: column;
+  /* ESSENCIAL: coloca header em cima e conteúdo abaixo */
 }
 
 /* conteúdo fica responsável por crescer */
 .App-main {
   flex: 1;
   padding: 2rem;
+}
+
+@media (max-width: 768px) {
+  .App-main {
+    padding: 1rem;
+  }
 }
 
 
@@ -24,7 +28,7 @@
 
 
 
-.title-section  {
+.title-section {
   font-size: 40px;
   flex: 1;
   margin-bottom: 10px;

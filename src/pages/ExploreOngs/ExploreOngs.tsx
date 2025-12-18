@@ -6,7 +6,8 @@ import Header from '../../components/Header/Header';
 import './ExploreOngs.css'
 import Input from '../../components/Inputs/Input/Input';
 import OngRequestCard from '../../components/OngRequestCard/OngRequestCard';
-import { getAllOngs, NGO } from "../../services/ong.service";
+import { getAllOngs } from "../../services/ong.service";
+import { NGO } from "../../interfaces";
 import { useEffect, useState } from "react";
 
 import Card from '../../components/Card/Card';

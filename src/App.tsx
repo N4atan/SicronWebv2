@@ -8,17 +8,18 @@ import ContactSection from "./components/Sections/Contact/ContactSection";
 import Footer from "./components/Footer/Footer";
 import OurImpact from "./components/Sections/OurImpact/OurImpact";
 
+import RevealOnScroll from "./components/RevealOnScroll/RevealOnScroll";
+
 export default function App() {
   return (
     <div className="App">
-      <HeroSection />
-      <ImpactSection />
-      <OurImpact />
-      <HowItWorksSection />
-      <ContactSection />
-      <Footer />
+      <RevealOnScroll><HeroSection /></RevealOnScroll>
+      <RevealOnScroll><ImpactSection /></RevealOnScroll>
+      <RevealOnScroll><OurImpact /></RevealOnScroll>
+      <RevealOnScroll><HowItWorksSection /></RevealOnScroll>
+      <RevealOnScroll><ContactSection /></RevealOnScroll>
+      <RevealOnScroll><Footer /></RevealOnScroll>
     </div>
-    // Ordem das seções, tomara que esteja bom
   );
 }
 

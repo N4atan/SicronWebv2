@@ -10,9 +10,11 @@ import ContatoForm from "../components/Forms/Contato/Contato";
 import Cart from "../components/Cart/Cart";
 import ListaItens from "../components/ListaItens/ListaItens";
 import { useLocation, useSearchParams } from "react-router-dom";
-import { NGO, getOngByUuid } from "../services/ong.service";
+import { getOngByUuid } from "../services/ong.service";
+import { NGO } from "../interfaces";
 import { Oval } from "react-loader-spinner";
 import { dataFormatter } from "../utils/dataFormatter";
+import RevealOnScroll from "../components/RevealOnScroll/RevealOnScroll";
 
 type Product = {
     tag: string;
@@ -27,20 +29,18 @@ export default function PageONG() {
     const location = useLocation();
     const [searchParams] = useSearchParams();
     const uuidParam = searchParams.get('uuid');
-    const nameParam = searchParams.get('nome'); // Novo parâmetro
+    const nameParam = searchParams.get('nome');
 
-    // Estado inicial: Tenta pegar do state, senão undefined
+
     const [ongData, setOngData] = useState<NGO | undefined>(location.state?.ong as NGO | undefined);
 
-    // Lista de produtos reais da ONG
-    // Inicializa vazio, será populado se vier no objeto da ONG ou precisar de fetch extra
+
     const [productsList, setProductsList] = useState<Product[]>([]);
 
-    // Loading inicial: Só é true se NÃO tivermos dados E tivermos algo para buscar (uuid ou nome)
     const [isLoading, setIsLoading] = useState<boolean>(!ongData && (!!uuidParam || !!nameParam));
 
     useEffect(() => {
-        // Se já temos dados carregados via state, verificamos se tem produtos
+
         if (ongData) {
             updateProductsFromOng(ongData);
             return;
@@ -50,7 +50,7 @@ export default function PageONG() {
             setIsLoading(true);
             try {
                 if (uuidParam) {
-                    // Prioridade 1: Busca por UUID (Único e Rápido)
+                    // Prioridade 1: Busca por UUID
                     const data = await getOngByUuid(uuidParam);
                     if (data) {
                         setOngData(data);
@@ -59,13 +59,12 @@ export default function PageONG() {
 
                 } else if (nameParam) {
                     // Prioridade 2: Busca por Nome Fantasia
-                    // Importamos dinamicamente services/ong.service para pegar getAllOngs
                     const { getAllOngs } = await import("../services/ong.service");
-                    // O backend deve suportar filter[trade_name]=...
+
                     const result = await getAllOngs({ trade_name: nameParam });
 
                     if (result && result.length > 0) {
-                        // Pega o primeiro match.
+
                         setOngData(result[0]);
                         // Se não tiver products depth, talvez precise de busca detalhada
                         // Mas por enquanto assumimos que vem ou que getOngByUuid do click resolveria
@@ -91,16 +90,16 @@ export default function PageONG() {
             fetchData();
         }
 
-    }, [uuidParam, nameParam]); // Executa quando uuid ou nome mudam
+    }, [uuidParam, nameParam]);
 
-    // Função helper para transformar dados do backend no formato do componente Product
+
     const updateProductsFromOng = (ong: NGO) => {
         // @ts-ignore - Products pode vir da relation backend
         if (ong.products && Array.isArray(ong.products)) {
             // @ts-ignore
             // @ts-ignore
             const mappedProducts = ong.products.map((ngoProduct: any) => {
-                // Lógica de Preço Estimado (Igual ao Dashboard)
+
                 let avgPrice = 0;
                 const sp = ngoProduct.product?.supplierProducts;
                 if (sp && Array.isArray(sp) && sp.length > 0) {
@@ -113,9 +112,9 @@ export default function PageONG() {
                     name: ngoProduct.product?.name || "Item",
                     description: ngoProduct.product?.description || "Ajude com a doação deste item.",
                     tag: ngoProduct.product?.category || "Geral",
-                    price: avgPrice, // Agora reflete a média do mercado
+                    price: avgPrice,
                     qtd: ngoProduct.quantity || 1,
-                    collected: ngoProduct.collected_quantity || 0 // Novo campo
+                    collected: ngoProduct.collected_quantity || 0
                 };
             });
             setProductsList(mappedProducts);
@@ -128,7 +127,7 @@ export default function PageONG() {
 
     const [cartlist, setCartList] = useState(Array<Product>());
 
-    // Helpers para formatar dados da ONG
+
     const ongName = ongData?.trade_name || ongData?.name || "ONG Genérica";
     const ongArea = ongData?.area || "Geral";
     const ongDescription = ongData?.description || "Descrição não disponível.";
@@ -136,11 +135,10 @@ export default function PageONG() {
     const ongEmail = ongData?.contact_email || "Email não informado";
     const ongPhone = ongData?.phone_number || "Telefone não informado";
 
-    // Formata data de criação
-    const ongFounded = dataFormatter(ongData?.created_at);
-    console.log(ongData)
 
-    // Listas de contato dinâmicas
+    const ongFounded = dataFormatter(ongData?.creation_date);
+
+
     const listContactInfo = useMemo(() => [
         {
             icon: faCalendar,
@@ -161,9 +159,9 @@ export default function PageONG() {
             subtext: 'Email'
         },
         {
-            icon: faLocationDot, // Poderia ser icone de telefone se tivesse importado
+            icon: faLocationDot,
             text: ongPhone,
-            subtext: 'Telefone' // Mudado de 'Email' que estava duplicado
+            subtext: 'Telefone'
         }
     ], [ongEmail, ongPhone]);
 
@@ -171,13 +169,13 @@ export default function PageONG() {
     const handleAddToCart = (itemClicado: Product) => {
 
         setCartList(prevItems => {
-            // 1. O item já existe no carrinho?
+
 
 
             const itemExistente = prevItems.find(item => item.name === itemClicado.name);
 
             if (itemExistente) {
-                // 2. Se sim, mapeia o array e atualiza a quantidade (de forma imutável)
+
                 if (itemExistente.qtd >= itemClicado.qtd) {
                     alert('Quantidade necessária máxima atingida!');
                     return prevItems;
@@ -185,11 +183,11 @@ export default function PageONG() {
 
                 return prevItems.map(item =>
                     item.name === itemClicado.name
-                        ? { ...item, qtd: item.qtd + 1 } // Incrementa
+                        ? { ...item, qtd: item.qtd + 1 }
                         : item
                 );
             } else {
-                // 3. Se não, adiciona o novo item com quantidade 1
+
                 // IMPORTANTE: Sobrescrever 'qtd' para 1, pois itemClicado.qtd é a META da ONG
                 return [...prevItems, { ...itemClicado, qtd: 1 }];
             }
@@ -232,91 +230,95 @@ export default function PageONG() {
         <>
 
 
-            <ProfileCard name={ongName} tags={[ongArea]} />
+            <RevealOnScroll threshold={0.1}>
+                <ProfileCard name={ongName} tags={[ongArea]} />
+            </RevealOnScroll>
 
-            <ContainerPage variant={tab == 'doar' ? "a-right" : 'a-left'} >
+            <RevealOnScroll threshold={0.1} delay={0.2}>
+                <ContainerPage variant={tab == 'doar' ? "a-right" : 'a-left'} >
 
-                <nav className="tabs-nav">
-
-                    {/* --- Opção 1: Sobre --- */}
-                    <div className="radio-tab-item">
-                        <input
-                            type="radio" id="nav-sobre" name="nav-view"
-                            value="sobre" checked={tab === 'sobre'}
-                            onChange={(e) => setTab(e.target.value)}
-                        />
-                        <label htmlFor="nav-sobre">Sobre</label>
-                    </div>
-
-                    {/* --- Opção 2: Doar --- */}
-                    <div className="radio-tab-item">
-                        <input
-                            type="radio" id="nav-doar" name="nav-view"
-                            value="doar" checked={tab === 'doar'}
-                            onChange={(e) => setTab(e.target.value)}
-                        />
-                        <label htmlFor="nav-doar">Doar</label>
-                    </div>
-
-                    {/* --- Opção 3: Contato --- */}
-                    <div className="radio-tab-item">
-                        <input
-                            type="radio" id="nav-contato" name="nav-view"
-                            value="contato" checked={tab === 'contato'}
-                            onChange={(e) => setTab(e.target.value)}
-                        />
-                        <label htmlFor="nav-contato">Contato</label>
-                    </div>
-                </nav>
+                    <nav className="tabs-nav">
 
 
-                {tab == 'sobre' && (
-                    <>
-                        <aside>
-                            <InfoContactCard listContact={listContactInfo} />
-                        </aside>
+                        <div className="radio-tab-item">
+                            <input
+                                type="radio" id="nav-sobre" name="nav-view"
+                                value="sobre" checked={tab === 'sobre'}
+                                onChange={(e) => setTab(e.target.value)}
+                            />
+                            <label htmlFor="nav-sobre">Sobre</label>
+                        </div>
 
-                        <main>
-                            <Card titleSection="Nossa Missão" >
-                                <p style={{ whiteSpace: 'pre-line' }}>{ongDescription}</p>
-                            </Card>
-                        </main>
-                    </>
-                )}
 
-                {tab == 'doar' && (
-                    <>
-                        <aside>
-                            <Cart datalist={cartlist} onClearCart={handleClearCart} />
-                        </aside>
+                        <div className="radio-tab-item">
+                            <input
+                                type="radio" id="nav-doar" name="nav-view"
+                                value="doar" checked={tab === 'doar'}
+                                onChange={(e) => setTab(e.target.value)}
+                            />
+                            <label htmlFor="nav-doar">Doar</label>
+                        </div>
 
-                        <main>
-                            <Card titleSection="Itens Necessários" subtitleSection="Ajude-nos a fazer a diferença.">
-                                {productsList.length > 0 ? (
-                                    <ListaItens datalist={productsList} onAddCart={handleAddToCart} />
-                                ) : (
-                                    <p style={{ padding: '20px', color: '#777' }}>Esta ONG ainda não cadastrou itens necessários.</p>
-                                )}
-                            </Card>
-                        </main>
-                    </>
-                )}
 
-                {tab == 'contato' && (
-                    <>
-                        <aside>
-                            <InfoContactCard listContact={listContactMethods} />
-                        </aside>
+                        <div className="radio-tab-item">
+                            <input
+                                type="radio" id="nav-contato" name="nav-view"
+                                value="contato" checked={tab === 'contato'}
+                                onChange={(e) => setTab(e.target.value)}
+                            />
+                            <label htmlFor="nav-contato">Contato</label>
+                        </div>
+                    </nav>
 
-                        <main>
-                            <Card titleSection="Entre em Contato" subtitleSection="">
-                                <ContatoForm />
-                            </Card>
-                        </main>
-                    </>
-                )}
 
-            </ContainerPage>
+                    {tab == 'sobre' && (
+                        <>
+                            <aside>
+                                <InfoContactCard listContact={listContactInfo} />
+                            </aside>
+
+                            <main>
+                                <Card titleSection="Nossa Missão" >
+                                    <p style={{ whiteSpace: 'pre-line' }}>{ongDescription}</p>
+                                </Card>
+                            </main>
+                        </>
+                    )}
+
+                    {tab == 'doar' && (
+                        <>
+                            <aside>
+                                <Cart datalist={cartlist} onClearCart={handleClearCart} />
+                            </aside>
+
+                            <main>
+                                <Card titleSection="Itens Necessários" subtitleSection="Ajude-nos a fazer a diferença.">
+                                    {productsList.length > 0 ? (
+                                        <ListaItens datalist={productsList} onAddCart={handleAddToCart} />
+                                    ) : (
+                                        <p style={{ padding: '20px', color: '#777' }}>Esta ONG ainda não cadastrou itens necessários.</p>
+                                    )}
+                                </Card>
+                            </main>
+                        </>
+                    )}
+
+                    {tab == 'contato' && (
+                        <>
+                            <aside>
+                                <InfoContactCard listContact={listContactMethods} />
+                            </aside>
+
+                            <main>
+                                <Card titleSection="Entre em Contato" subtitleSection="">
+                                    <ContatoForm />
+                                </Card>
+                            </main>
+                        </>
+                    )}
+
+                </ContainerPage>
+            </RevealOnScroll >
 
         </>
     )

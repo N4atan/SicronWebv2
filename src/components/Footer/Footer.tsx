@@ -44,6 +44,7 @@ export default function Footer() {
         <div className="footer-legal">
           <a href="#">Política de Privacidade</a>
           <a href="#">Termos de Uso</a>
+          <a href="https://storyset.com/" target="_blank"><p>Ilustrações por Storyset</p></a>
         </div>
       </div>
     </footer>

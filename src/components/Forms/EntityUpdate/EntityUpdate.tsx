@@ -6,6 +6,7 @@ import { ENTITY_SCHEMAS } from "../../../utils/entitySchemas";
 import { updateUser, errorUserService } from "../../../services/user.service";
 import { updateOng, errorOngService } from "../../../services/ong.service";
 import { updateProduct } from "../../../services/product.service";
+import { updateSupplier, errorSupplierService } from "../../../services/supplier.service";
 
 type Props = {
     entity: any; // User or NGO
@@ -65,6 +66,9 @@ export default function EntityUpdate(props: Props) {
                 errorMessage = errorOngService;
             } else if (props.typeEntity === 'product') {
                 success = await updateProduct(identifier, cleanData);
+            } else if (props.typeEntity === 'supplier') {
+                success = await updateSupplier(identifier, cleanData);
+                errorMessage = errorSupplierService;
             }
 
             if (!success) {

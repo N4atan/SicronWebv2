@@ -1,7 +1,7 @@
 import '../OngRequestCard/OngRequestCard.css'; // Reusing generic styles
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faEnvelope, faLocationDot, faPhone, faXmark, faBuilding, faFileLines } from '@fortawesome/free-solid-svg-icons';
-import { Supplier } from '../../services/supplier.service';
+import { Supplier } from '../../interfaces';
 
 type Props = {
     supplierData: Supplier;
@@ -34,11 +34,11 @@ export default function SupplierRequestCard(props: Props) {
     };
 
     return (
-        <div className='card-ongRequest'> {/* Reusing class */}
+        <div className='card-ongRequest'>
             <h3>{supplierData.tradeName || supplierData.companyName}</h3>
             <p style={{ fontStyle: 'italic' }}>{supplierData.companyName}</p>
 
-            {/* Status Badge - Only for Admin/Private */}
+
             {variant !== 'public' && (
                 <div className={`badge ${getStatusClass(supplierData.status)}`}>
                     <span>{getStatusLabel(supplierData.status)}</span>
@@ -72,7 +72,7 @@ export default function SupplierRequestCard(props: Props) {
             <div className='container-actions'>
                 {variant === 'admin' && (
                     <>
-                        {/* Placeholder for Docs button to match alignment if needed */}
+
                         <button className='btn-documents' onClick={() => alert('Em Desenvolvimento...')} >
                             <FontAwesomeIcon icon={faFileLines} />
                             Ver Documentação

@@ -4,8 +4,9 @@ import Card from "../components/Card/Card";
 import Button from "../components/Button/Button";
 import Modal from "../components/Modal/Modal";
 import { useAuth } from "../contexts/AuthContext";
-import { getOngByUuid, NGO } from "../services/ong.service";
-import { addProductToNGO, getAllProducts, NGOProduct, Product, removeProductFromNGO } from "../services/product.service";
+import { getOngByUuid } from "../services/ong.service";
+import { addProductToNGO, getAllProducts, removeProductFromNGO } from "../services/product.service";
+import { NGO, NGOProduct, Product } from "../interfaces";
 import { Oval } from "react-loader-spinner";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faTrash, faHandHoldingHeart, faCoins } from "@fortawesome/free-solid-svg-icons";
@@ -18,7 +19,7 @@ export default function DashboardONG() {
     const [ngo, setNgo] = useState<NGO | null>(null);
     const [ngoProducts, setNgoProducts] = useState<NGOProduct[]>([]);
 
-    // Modal
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [allProducts, setAllProducts] = useState<Product[]>([]);
     const [selectedProductUuid, setSelectedProductUuid] = useState("");
@@ -29,7 +30,7 @@ export default function DashboardONG() {
         setIsLoading(true);
         try {
             if (!user?.uuid) return;
-            // Busca ONG do usuário (agora com filtro funcionando)
+            // Busca ONG do usuário
             const { getAllOngs } = await import("../services/ong.service");
             // @ts-ignore
             const myOngs = await getAllOngs({ manager_uuid: user.uuid });
@@ -57,7 +58,7 @@ export default function DashboardONG() {
 
     const loadAllProducts = async () => {
         const p = await getAllProducts();
-        console.log("Produtos carregados do backend:", p); // Debug
+
         setAllProducts(p);
     }
 
@@ -105,14 +106,14 @@ export default function DashboardONG() {
 
             // @ts-ignore
             await removeProductFromNGO(itemId);
-            // O service se chama removeProductFromNGO(id: number).
+
             loadData();
         } catch (e) {
             alert("Erro ao remover.");
         }
     }
 
-    // Lógica de Preço
+
     const getEstimatedPrice = (item: any) => {
         // item é NGOProduct
         // item.product.supplierProducts é array de SupplierProduct (com price)
@@ -125,7 +126,7 @@ export default function DashboardONG() {
         const sum = prices.reduce((a: number, b: number) => a + b, 0);
         const avg = sum / prices.length;
 
-        // Retorna média e menor preço
+
         const min = Math.min(...prices);
 
         return { avg, min, count: prices.length };

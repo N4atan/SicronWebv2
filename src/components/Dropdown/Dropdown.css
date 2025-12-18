@@ -13,9 +13,7 @@
 .dropdown-menu {
     position: absolute;
     right: 0;
-    /* Alinha à direita do trigger */
     top: 100%;
-    /* Logo abaixo */
     margin-top: 5px;
     background-color: white;
     border: 1px solid #e0e0e0;
@@ -64,6 +62,5 @@
     width: 20px;
     text-align: center;
     display: flex;
-    /* Garante que o ícone fique centralizado */
     justify-content: center;
 }

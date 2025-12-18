@@ -1,6 +1,6 @@
 import AuthenticationForm from "../components/Forms/Authentication/Authentication";
 import Header from "../components/Header/Header";
-import IllustrationImg from "../assets/images/undraw_welcome-cats_tw36.svg?react";
+import IllustrationImg from "../assets/images/Charity-rafiki.svg?react";
 import "./Page-Authentication.css";
 import Footer from "../components/Footer/Footer";
 
@@ -19,7 +19,7 @@ export default function PageAuthentication() {
                     </div>
                 </div>
             </div>
-            <Footer />
+            
         </div>
     )
 }

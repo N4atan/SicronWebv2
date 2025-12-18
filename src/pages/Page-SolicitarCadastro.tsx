@@ -18,7 +18,7 @@ export default function PageSolicitarCadastro() {
     const navigate = useNavigate();
     const { user } = useAuth();
 
-    // Identifica o tipo de solicitação: 'ong' ou 'supplier'
+
     const type = location.state?.type === 'supplier' ? 'supplier' : 'ong';
     const isSupplier = type === 'supplier';
 
@@ -28,7 +28,7 @@ export default function PageSolicitarCadastro() {
         return schema.map((field: any) => ({ ...field, value: '' }));
     });
 
-    // Atualiza campos se o tipo mudar (ex: navegação interna)
+
     useEffect(() => {
         // @ts-ignore
         const schema = ENTITY_SCHEMAS[type] || ENTITY_SCHEMAS['ong'];

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const api = axios.create({
-    baseURL: '/api', // Usa o proxy do Vite para evitar problemas de CORS/Cookies
+    baseURL: '/api',
     withCredentials: true,
     headers: {
         'Content-Type': 'application/json',
@@ -24,13 +24,12 @@ api.interceptors.response.use(
             originalRequest._retry = true;
 
             try {
-                // Tenta renovar
+
                 await api.post('/users/auth/refresh');
-                // Se funcionar, refaz a requisição original
+
                 return api(originalRequest);
             } catch (refreshError) {
-                // Se falhar, não faz nada (o usuário será deslogado pelo fluxo normal)
-                // O catch do auth_check no service vai pegar esse erro.
+
                 return Promise.reject(refreshError);
             }
         }

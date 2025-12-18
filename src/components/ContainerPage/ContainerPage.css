@@ -54,7 +54,7 @@
 
 /* O container <nav> que segura os rádios */
 .tabs-nav {
-    grid-area: nav; /* Pega a área do grid pai */
+    grid-area: nav; 
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     
@@ -64,7 +64,7 @@
     border-radius: 10px;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
-    margin-bottom: 24px; /* Separa do conteúdo (como no seu layout) */
+    margin-bottom: 24px; 
 }
 
 .radio-tab-item {
@@ -75,7 +75,7 @@
     }
 }
 
-/* 2. Estiliza a <label> para parecer uma aba */
+/* Estiliza a <label> para parecer uma aba */
 .radio-tab-item label {
     display: block;
     text-align: center;
@@ -84,35 +84,20 @@
     color: #666; /* Cor da aba inativa */
     font-weight: 500;
     font-size: 0.8rem;
-    /* Borda inativa, crucial para evitar "pulo" de layout */
+    /* Borda inativa */
     border-bottom: 3px solid transparent; 
     transition: all 0.2s ease;
 }
 
-/* 3. Estilo da ABA ATIVA (quando o radio está :checked) */
+/* Estilo da ABA ATIVA (quando o radio está :checked) */
 .radio-tab-item input[type="radio"]:checked + label {
     color: #333; /* Cor da aba ativa */
     /* Você pode usar seu verde aqui, se quiser */
     border-bottom-color: #333; /* Cor da linha ativa (como na imagem) */
 }
 
-/* 4. (Opcional) Efeito hover para abas inativas */
+/* Efeito hover para abas inativas */
 .radio-tab-item input[type="radio"]:not(:checked) + label:hover {
     color: #333;
-    border-bottom-color: #e0e0e0; /* Mostra uma linha leve no hover */
+    border-bottom-color: #e0e0e0; 
 }
-
-/*
-.container-page {
-    max-width: 800px;
-    display: flex;
-    gap: 20px;
-
-    aside {
-        flex: 0 0 280px;
-    }
-
-    main {
-        flex: 1;
-    }
-} */

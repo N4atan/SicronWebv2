@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import OngRequestCard from "../../../../components/OngRequestCard/OngRequestCard";
-import { updateOng, NGO, errorOngService } from "../../../../services/ong.service";
+import { updateOng, errorOngService } from "../../../../services/ong.service";
+import { NGO } from "../../../../interfaces";
 import Card from "../../../../components/Card/Card";
 import './Tab-Ongs.css';
 import Input from "../../../../components/Inputs/Input/Input";

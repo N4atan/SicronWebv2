@@ -1,6 +1,6 @@
 // contexts/AuthContext.tsx
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { User } from "../services/user.service";
+import { User } from "../interfaces";
 import { loginRequest, logoutRequest, checkAuthRequest } from "../services/auth.service";
 
 interface AuthContextData {
@@ -27,7 +27,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 return true;
             }
         } catch (error) {
-            // Silent or Log
+            alert(error);
+            console.error(error)
         }
         return false;
     };

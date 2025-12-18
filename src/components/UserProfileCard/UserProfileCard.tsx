@@ -1,8 +1,6 @@
 import Card from "../Card/Card";
 import Button from "../Button/Button";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
-import { translateRole } from "../../utils/roleTranslator";
+
 
 type Props = {
     name: string;
@@ -26,10 +24,10 @@ export default function UserProfileCard({ name, role, src_img, isMe, onEdit }: P
                     justifyContent: 'center',
                     alignItems: 'center',
                     height: '150px',
-                    width: '150px',          // 1. Adicionado para ser um quadrado
+                    width: '150px',          
                     marginBottom: '1rem',
-                    borderRadius: '50%',      // 2. Alterado para círculo
-                    overflow: 'hidden',        // 3. Adicionado para cortar a imagem
+                    borderRadius: '50%',      
+                    overflow: 'hidden',        
                     border: '1px solid rgba(0, 0, 0, 0.1)'
                 }}
             >
@@ -40,7 +38,7 @@ export default function UserProfileCard({ name, role, src_img, isMe, onEdit }: P
                         style={{
                             height: '100%',
                             width: '100%',
-                            objectFit: 'cover'    // 4. Alterado para preencher
+                            objectFit: 'cover'    
                         }}
                     />
                 ) : (

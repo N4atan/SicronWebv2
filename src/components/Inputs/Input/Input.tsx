@@ -19,7 +19,7 @@ const SelectionInput = ({ options, ...rest }: InputProps) => (
         className='select-field borders'
         {...rest} // Aqui entram onChange, value, name, etc.
     >
-        {/* Segurança: verificamos se options existe antes de fazer map */}
+        
         {options?.map((option, index) => (
             <option key={index} value={option}>
                 {option}
@@ -68,7 +68,7 @@ export default function Input({ label, sizeStyle, variant, ...rest }: InputProps
                     // O 'options' está dentro de 'rest' aqui, então vai funcionar
 
                     case 'default':
-                    default: // Sempre bom ter um fallback
+                    default: 
                         return <DefaultInputField {...rest} />;
                 }
             })()}
