@@ -1,11 +1,14 @@
-/* WRAPPER GERAL – NÃO usa flex aqui pra não esmagar o header */
+/* WRAPPER GERAL */
 .auth-page-wrapper {
     width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
-/* Adiciona espaçamento maior para o footer */
+/* Adiciona espaçamento maior para o footer, mas o flex-grow cuida do posicionamento */
 .auth-page-wrapper .footer {
-    margin-top: 80px;
+    margin-top: auto;
 }
 
 /* CONTAINER PRINCIPAL – divide IMG ↔ FORM */
@@ -18,6 +21,8 @@
     margin: 0 auto;
     padding: 40px 0;
     gap: 60px;
+    flex: 1;
+    /* Ocupa o espaço restante verticalmente */
     /* espaço entre a imagem e o formulário */
 }
 

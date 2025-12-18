@@ -171,7 +171,7 @@ const listContact = [
 const listContact2 = [
     {
         icon: faEnvelope,
-        text: 'seu@email.com',
+        text: 'ariellorenz24@gmail.com',
         subtext: 'Email'
     },
     {

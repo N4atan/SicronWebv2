@@ -31,7 +31,7 @@ export default function ContatoForm({ recipientEmail = "mauriciolorenzinvest@gma
         const data = {
             sender_name: name,
             sender_email: "ariellorenz24@gmail.com", // Email validado na Brevo
-            recipient_email: "contato@sicron.com", // Destinatário fixo
+            recipient_email: recipientEmail, // Destinatário dinâmico
             visitor_email: email, // Email preenchido no formulário (Para usar no Reply-To)
             subject: subject || "Novo Contato via Site",
             message: message

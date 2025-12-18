@@ -103,20 +103,6 @@ export default function PagePerfil() {
                             ]}
                         />
                     </aside>
-
-                    <main>
-                        <DonationReceipt
-                            id="123"
-                            date="2022-01-01"
-                            ongName="ONG Teste"
-                            donorName="Doador Teste"
-                            items={[
-                                { name: "Item 1", qtd: 1, price: 10 },
-                                { name: "Item 2", qtd: 2, price: 20 },
-                            ]}
-                            total={50}
-                        />
-                    </main>
                 </ContainerPage>
             )}
         </>
