@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import SupplierRequestCard from "../../../../components/SupplierRequestCard/SupplierRequestCard";
-import { updateSupplier, Supplier, errorSupplierService } from "../../../../services/supplier.service";
+import { updateSupplier, errorSupplierService } from "../../../../services/supplier.service";
+import { Supplier } from "../../../../interfaces";
 import Card from "../../../../components/Card/Card";
 import Input from "../../../../components/Inputs/Input/Input";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";

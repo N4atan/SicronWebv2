@@ -10,7 +10,8 @@ import ContatoForm from "../components/Forms/Contato/Contato";
 import Cart from "../components/Cart/Cart";
 import ListaItens from "../components/ListaItens/ListaItens";
 import { useLocation, useSearchParams } from "react-router-dom";
-import { NGO, getOngByUuid } from "../services/ong.service";
+import { getOngByUuid } from "../services/ong.service";
+import { NGO } from "../interfaces";
 import { Oval } from "react-loader-spinner";
 import { dataFormatter } from "../utils/dataFormatter";
 import RevealOnScroll from "../components/RevealOnScroll/RevealOnScroll";
@@ -136,7 +137,6 @@ export default function PageONG() {
 
 
     const ongFounded = dataFormatter(ongData?.creation_date);
-    console.log(ongData)
 
 
     const listContactInfo = useMemo(() => [

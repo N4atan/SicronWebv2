@@ -5,7 +5,8 @@ import Modal from "../../../../components/Modal/Modal";
 import Input from "../../../../components/Inputs/Input/Input";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import { getAllProducts, createProduct, deleteProduct, Product } from "../../../../services/product.service";
+import { getAllProducts, createProduct, deleteProduct } from "../../../../services/product.service";
+import { Product } from "../../../../interfaces";
 import { Oval } from "react-loader-spinner";
 
 export default function TabProdutos() {

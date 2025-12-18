@@ -1,25 +1,7 @@
 import { api, AxiosHandleError } from "./api";
 
 
-export interface Supplier {
-    uuid?: string;
-    id?: number;
-    companyName: string;
-    tradeName: string;
-    cnpj: string;
-    contactEmail: string;
-    phone?: string;
-    address?: string;
-    city?: string;
-    state?: string;
-    postalCode?: string;
-    status?: 'pending' | 'approved' | 'rejected' | 'PENDING' | 'APPROVED' | 'REJECTED';
-
-
-    created_at?: string;
-    updated_at?: string;
-    manager_uuid?: string;
-}
+import { Supplier } from "../interfaces";
 
 export let errorSupplierService: string;
 

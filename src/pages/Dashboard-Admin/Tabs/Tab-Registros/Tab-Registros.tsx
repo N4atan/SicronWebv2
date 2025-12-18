@@ -5,10 +5,11 @@ import EntityCreate from "../../../../components/Forms/EntityCreate/EntityCreate
 import EntityUpdate from "../../../../components/Forms/EntityUpdate/EntityUpdate";
 import DynamicTable from "../../../../components/Table/DynamicTable/DynamicTable";
 import { EntityType } from "../../Dashboard-Admin";
-import { deleteUser, User, errorUserService } from "../../../../services/user.service";
-import { deleteOng, NGO, errorOngService } from "../../../../services/ong.service";
-import { deleteSupplier, Supplier, errorSupplierService } from "../../../../services/supplier.service";
-import { deleteProduct, Product } from "../../../../services/product.service";
+import { deleteUser, errorUserService } from "../../../../services/user.service";
+import { deleteOng, errorOngService } from "../../../../services/ong.service";
+import { deleteSupplier, errorSupplierService } from "../../../../services/supplier.service";
+import { deleteProduct } from "../../../../services/product.service";
+import { User, NGO, Supplier, Product } from "../../../../interfaces";
 
 
 type Props = {

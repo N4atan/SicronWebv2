@@ -2,7 +2,7 @@ import './OngRequestCard.css';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faEnvelope, faFileLines, faLocationDot, faPhone, faXmark, faBuilding, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-import { NGO } from '../../services/ong.service';
+import { NGO } from '../../interfaces';
 
 
 type Props = {
@@ -41,7 +41,7 @@ export default function OngRequestCard(props: Props) {
             <h3>{ongRequest.trade_name || ongRequest.name}</h3>
             <p style={{ fontStyle: 'italic' }}>{ongRequest.area}</p>
 
-            
+
             {variant !== 'public' && (
                 <div className={`badge ${getStatusClass(ongRequest.status)}`}>
                     <span>{getStatusLabel(ongRequest.status)}</span>
@@ -88,7 +88,7 @@ export default function OngRequestCard(props: Props) {
                             navigate(`/perfil/ong?nome=${nameParam}`);
                         }}
                     >
-                       
+
                         <FontAwesomeIcon icon={faMagnifyingGlass} />
                         Ver Detalhes
                     </button>

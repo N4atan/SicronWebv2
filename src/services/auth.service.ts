@@ -1,6 +1,6 @@
 // services/auth.service.ts
 import { api, AxiosHandleError } from "./api";
-import { User } from "./user.service";
+import { User } from "../interfaces";
 
 
 export const loginRequest = async (data: User): Promise<void> => {

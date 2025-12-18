@@ -1,23 +1,7 @@
 import { api } from "./api";
 
 
-export interface Product {
-    id?: number;
-    uuid: string;
-    name: string;
-    description: string;
-    category: string;
-    supplierProducts?: any[]; // array de ofertas
-}
-
-
-export interface NGOProduct {
-    id: number;
-    quantity: number;
-    notes?: string;
-    product: Product;
-}
-
+import { Product, NGOProduct } from "../interfaces";
 
 export interface CreateNGOProductDTO {
     name: string;

@@ -1,23 +1,7 @@
 import { api, AxiosHandleError } from "./api";
 
 
-export interface NGO {
-    uuid?: string;
-    id?: number;
-    name: string;
-    trade_name: string;
-    cnpj: string;
-    area: string;
-    description: string;
-    local: string;
-    phone_number: string;
-    contact_email: string;
-
-
-    status?: 'pending' | 'approved' | 'rejected' | 'PENDING' | 'APPROVED' | 'REJECTED';
-    creation_date?: string;
-    wallet?: number;
-}
+import { NGO } from "../interfaces";
 
 export let errorOngService: string;
 

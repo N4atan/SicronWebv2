@@ -1,27 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import Card from "../../components/Card/Card";
-import Header from "../../components/Header/Header";
 import { useEffect, useState } from "react";
-import { getAll as getAllUsers, User } from "../../services/user.service";
-import { getAllOngs, NGO } from "../../services/ong.service";
-import { getAllSuppliers, Supplier } from "../../services/supplier.service";
-import EntityUpdate from "../../components/Forms/EntityUpdate/EntityUpdate";
-import DynamicTable from "../../components/Table/DynamicTable/DynamicTable";
-import EntityCreate from "../../components/Forms/EntityCreate/EntityCreate";
-import Button from "../../components/Button/Button";
-import OngRequestCard from "../../components/OngRequestCard/OngRequestCard";
+import { getAll as getAllUsers } from "../../services/user.service";
+import { User, NGO, Supplier, Product } from "../../interfaces";
+import { getAllOngs } from "../../services/ong.service";
+import { getAllSuppliers } from "../../services/supplier.service";
 import './Dashboard-Admin.css';
-import TabCadastro from "./Tabs/Tab-Registros/Tab-Registros";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAddressCard, faBorderAll, faBuildingNgo, faCubes, faSeedling, faTableCellsLarge, faTruckFast } from "@fortawesome/free-solid-svg-icons";
 import TabRegistro from "./Tabs/Tab-Registros/Tab-Registros";
 import TabOngs from "./Tabs/Tab-Ongs/Tab-Ongs";
 import TabFornecedores from "./Tabs/Tab-Fornecedores/Tab-Fornecedores";
 import TabProdutos from "./Tabs/Tab-Produtos/Tab-Produtos";
-import { faMicrosoft } from "@fortawesome/free-brands-svg-icons";
-import Modal from "../../components/Modal/Modal";
 
-import { getAllProducts, Product } from "../../services/product.service";
+
+
+import { getAllProducts } from "../../services/product.service";
 
 // ... (imports)
 
