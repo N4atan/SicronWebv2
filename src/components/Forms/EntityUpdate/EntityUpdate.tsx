@@ -5,10 +5,11 @@ import Modal from "../../Modal/Modal";
 import { ENTITY_SCHEMAS } from "../../../utils/entitySchemas";
 import { updateUser, errorUserService } from "../../../services/user.service";
 import { updateOng, errorOngService } from "../../../services/ong.service";
+import { updateSupplier, errorSupplierService } from "../../../services/supplier.service";
 
 type Props = {
     entity: any; // User or NGO
-    typeEntity: 'user' | 'ong' | 'user_profile' | 'supplier';
+    typeEntity: 'user' | 'ong' | 'user_profile' | 'supplier' | 'product';
     onClose: () => void;
     onRefresh: () => void;
 }
@@ -16,7 +17,6 @@ type Props = {
 export default function EntityUpdate(props: Props) {
     const [formData, setFormData] = useState(props.entity);
 
-    // @ts-ignore
     const fields = ENTITY_SCHEMAS[props.typeEntity] || [];
 
     const handleChange = (field: string, value: any) => {
@@ -28,10 +28,7 @@ export default function EntityUpdate(props: Props) {
 
     const [isLoading, setIsLoading] = useState(false);
 
-    // ... (handleChange)
-
     const handleSave = async () => {
-        // Backend usa UUID ou ID Legacy
         const identifier = formData.uuid || formData.id;
 
         console.log("EntityUpdate - handleSave - Identifier:", identifier);
@@ -62,6 +59,14 @@ export default function EntityUpdate(props: Props) {
             } else if (props.typeEntity === 'ong') {
                 success = await updateOng(identifier, cleanData);
                 errorMessage = errorOngService;
+            } else if (props.typeEntity === 'supplier') {
+                success = await updateSupplier(identifier, cleanData);
+                errorMessage = errorSupplierService;
+            } else if (props.typeEntity === 'product') {
+                console.warn("Update product yet not implemented in service");
+                alert("Edição de produtos ainda não está disponível.");
+                setIsLoading(false);
+                return;
             }
 
             if (!success) {

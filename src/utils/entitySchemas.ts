@@ -47,5 +47,10 @@ export const ENTITY_SCHEMAS = {
         { name: 'postalCode', label: 'CEP', type: 'text', placeholder: '00000-000' },
         { name: 'stateRegistration', label: 'Inscrição Estadual', type: 'text', placeholder: 'Isento ou número' },
         { name: 'municipalRegistration', label: 'Inscrição Municipal', type: 'text', placeholder: 'Isento ou número' }
+    ],
+    product: [
+        { name: 'name', label: 'Nome do Produto', type: 'text', placeholder: 'Nome do Produto' },
+        { name: 'description', label: 'Descrição', type: 'text', variant: 'text-area', placeholder: 'Descrição detalhada' },
+        { name: 'category', label: 'Categoria', type: 'text', placeholder: 'Categoria' }
     ]
 };
