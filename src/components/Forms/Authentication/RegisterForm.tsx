@@ -33,9 +33,9 @@ export default function RegisterForm({ onChangeForm }: IRegisterFormProps) {
         setIsLoading(true);
 
         try {
-            const userCreated = await registerUser(data);
+            const success = await registerUser(data);
             
-            if (!userCreated) return alert(errorUserService);
+            if (!success) return alert(errorUserService);
 
             alert('Registrado com Sucesso!');
 
@@ -52,29 +52,7 @@ export default function RegisterForm({ onChangeForm }: IRegisterFormProps) {
     } 
 
 
-    /*
-    async function handleSubmitRegister(event: React.FormEvent) {
-        event.preventDefault();
-
-        setIsLoading(true);
-
-        try {
-            const userCreated = await registerUser({ username, email, password });
-
-            if (!userCreated) return alert(errorUserService);
-
-            alert('Registrado com Sucesso!');
-            clearData();
-
-            alert('Realize seu Login Agora!');
-            onChangeForm();
-        }
-        catch (error: unknown) {
-            alert(error);
-            console.log(error);
-        }
-    }
-    */
+    
 
     if (isLoading)
         return <Oval

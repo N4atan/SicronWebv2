@@ -1,7 +1,8 @@
 /* EntityUpdate.css */
 
 /* O formulário ocupa todo o espaço disponível dentro do Card */
-.form-editEntity {
+/* O formulário ocupa todo o espaço disponível dentro do Card */
+.form-entity {
     display: flex;
     flex-direction: column;
     height: 100%;       /* Garante que o form ocupe a altura do pai */
