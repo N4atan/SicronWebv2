@@ -24,7 +24,14 @@
     color: #333;
 }
 
-.form-container p {
+.form-container .subtitle-form {
     color: #666;
     font-size: 14px;
+}
+
+.form-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
 }

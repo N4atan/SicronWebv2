@@ -6,7 +6,7 @@
 
     font-size: clamp(14px, 1rem, 1.5rem);
     font-weight: bold;
-    
+
     border: none;
     border-radius: 6px;
 
@@ -22,9 +22,9 @@
 
 .btn-secondary {
     background-color: #fff;
-    
+
     padding: 10px;
-    
+
     color: #333;
     font-size: clamp(12px, 0.8rem, 1rem);
     font-weight: bold;
@@ -38,4 +38,18 @@
 .btn-secondary:hover {
     background: #eee;
     cursor: pointer;
+}
+
+/* Disabled Styles */
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed !important;
+    background-color: #ccc !important;
+    color: #666 !important;
+    border-color: #bbb !important;
+}
+
+button:disabled:hover {
+    background-color: #ccc !important;
+    /* Mantém a cor original no hover */
 }

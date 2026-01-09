@@ -11,6 +11,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement | HTMLTe
     icon?: IconDefinition;
     sizeStyle?: 'default' | 'compact';
     options?: string[];
+    errorMessage?: string;
 }
 
 
@@ -19,7 +20,7 @@ const SelectionInput = ({ options, ...rest }: InputProps) => (
         className='select-field borders'
         {...rest} // Aqui entram onChange, value, name, etc.
     >
-        
+
         {options?.map((option, index) => (
             <option key={index} value={option}>
                 {option}
@@ -32,7 +33,7 @@ const SelectionInput = ({ options, ...rest }: InputProps) => (
 const TextArea = (props: InputProps) => (
     <textarea
         className='text-area-field borders'
-        {...props} 
+        {...props}
     />
 );
 
@@ -43,13 +44,13 @@ const DefaultInputField = ({ styleDefault, icon, ...rest }: InputProps) => (
 
         <input
             className='input-field'
-            {...rest} 
+            {...rest}
         />
     </div>
 )
 
 // 5. COMPONENTE PRINCIPAL
-export default function Input({ label, sizeStyle, variant, ...rest }: InputProps) {
+export default function Input({ label, sizeStyle, variant, errorMessage, ...rest }: InputProps) {
 
 
     return (
@@ -68,10 +69,14 @@ export default function Input({ label, sizeStyle, variant, ...rest }: InputProps
                     // O 'options' está dentro de 'rest' aqui, então vai funcionar
 
                     case 'default':
-                    default: 
+                    default:
                         return <DefaultInputField {...rest} />;
                 }
             })()}
+
+            {errorMessage && (
+                <p className="input-error-message">{errorMessage}</p>
+            )}
         </div>
     );
 }

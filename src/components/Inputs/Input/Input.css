@@ -99,3 +99,13 @@ option {
     border-color: #333;
     box-shadow: 0 0 0 1px #333;
 }
+
+/* Adicionando estilo para mensagem de erro */
+.input-error-message {
+    color: #e74c3c;
+    font-size: 0.75rem;
+    /* 12px */
+    margin-top: 5px;
+    margin-left: 2px;
+    font-weight: 500;
+}
