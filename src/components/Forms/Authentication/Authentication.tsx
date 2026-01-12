@@ -61,7 +61,7 @@ function LoginForm(props: LoginFormProps) {
             />
 
             <Button
-                variant='secondary'
+                variant='ghost'
                 text='Criar nova conta'
                 type='button'
                 onClick={() => props.eventChangeForm('register')}
@@ -123,7 +123,7 @@ function RegisterForm(props: RegisterFormProps) {
             />
 
             <Button
-                variant='secondary'
+                variant='ghost'
                 text='Já possui uma conta?'
                 type='button'
                 onClick={() => props.eventChangeForm('login')}
