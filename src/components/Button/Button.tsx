@@ -10,7 +10,7 @@ export default function Button({ variant, type, text, ...rest }: ButtonProps) {
     return (
         <button
             type={type}
-            className={variant === 'primary' ? "btn-primary" : "btn-secondary"}
+            className={`${variant === 'primary' ? "btn-primary" : "btn-secondary"} ${rest.className || ''}`}
             {...rest}
         >
             {text}

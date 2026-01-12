@@ -1,0 +1,75 @@
+.stats-section {
+    background-color: var(--primary-color);
+    padding: 3rem 2rem;
+    width: 100%;
+}
+
+.stats-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    flex: 1;
+    min-width: 140px;
+    /* Allow wrapping */
+    position: relative;
+    padding: 1rem 0;
+    /* Add padding for vertical spacing when wrapped */
+}
+
+/* Optional separator lines if needed, but ref image uses just spacing or subtle dividers */
+.stat-item:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 10%;
+    height: 80%;
+    width: 1px;
+    background-color: rgba(0, 0, 0, 0.1);
+    display: none;
+}
+
+@media (min-width: 768px) {
+    .stat-item:not(:last-child)::after {
+        display: block;
+        /* Show dividers only on desktop */
+    }
+}
+
+@media (max-width: 768px) {
+    .stats-container {
+        gap: 1rem;
+    }
+
+    .stats-section {
+        padding: 2rem 1.5rem;
+    }
+}
+
+.stat-value {
+    font-size: 2.5rem;
+    /* Big bold text */
+    font-weight: 800;
+    color: var(--text-dark);
+    /* Black usually looks good on this green */
+    line-height: 1.2;
+}
+
+.stat-label {
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: rgba(0, 0, 0, 0.7);
+    margin-top: 0.5rem;
+}

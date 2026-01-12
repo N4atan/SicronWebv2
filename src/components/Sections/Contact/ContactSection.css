@@ -1,37 +1,90 @@
 .contact-section {
+  padding: 4rem 2rem;
+  background-color: white;
+  /* Parent is white */
+  display: flex;
+  justify-content: center;
+}
+
+.contact-container {
+  background-color: #0f172a;
+  /* Dark Slate 900 */
+  width: 100%;
+  max-width: 1280px;
+  border-radius: 24px;
+  padding: 4rem;
   display: flex;
   justify-content: space-between;
-  align-items: flex-start; /* 👈 AGORA FICA NO TOPO */
-  gap: 3rem;
-  padding: 4rem 8%;
-  background-color: #f9f9f9;
+  align-items: flex-start;
+  /* Aligned to top because form is tall */
+  color: white;
   flex-wrap: wrap;
+  gap: 3rem;
 }
 
 .contact-left {
   flex: 1;
   min-width: 300px;
+  position: sticky;
+  top: 2rem;
+  /* Stick content if form is long */
 }
 
+.contact-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  color: white;
+}
+
+.contact-desc {
+  color: #cbd5e1;
+  /* Slate 300 */
+  font-size: 1.1rem;
+  max-width: 500px;
+  line-height: 1.6;
+}
 
 .contact-right {
   flex: 1;
-  min-width: 300px;
+  min-width: 350px;
+  display: flex;
+  justify-content: flex-end;
 }
 
+/* Wrapper for the injected form to override or assist styles */
+.form-wrapper-dark {
+  width: 100%;
+  background-color: white;
+  /* Give form a white card background for contrast */
+  padding: 2rem;
+  border-radius: 16px;
+  color: var(--text-dark);
+  /* Ensure text inside form is dark */
+}
 
-/* Responsividade */
 @media (max-width: 768px) {
-  .contact-section {
+  .contact-container {
+    padding: 2.5rem 1.5rem;
     flex-direction: column;
     text-align: center;
-  }
-
-  .contact-left p {
-    margin: 0 auto;
+    gap: 2rem;
   }
 
   .contact-right {
+    justify-content: center;
     width: 100%;
+  }
+
+  .contact-left {
+    position: static;
+  }
+
+  .contact-title {
+    font-size: 1.75rem;
+  }
+
+  .form-wrapper-dark {
+    padding: 1.5rem;
   }
 }

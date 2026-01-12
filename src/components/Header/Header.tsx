@@ -1,35 +1,35 @@
 import "./Header.css";
-import LogoComponent from "../../assets/icons/Logo.svg?react"; // Ajuste o caminho se necessário
+import LogoComponent from "../../assets/icons/Logo.svg?react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faXmark, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
-import Button from "../Button/Button"; // Ajuste o caminho se necessário
+
 
 export default function Header() {
   const [menuIsOpen, setMenuIsOpen] = useState(false);
 
-  // Lista de links para evitar repetição de código
   const links = [
-    { to: '/', label: 'Início' },
-    { to: '/explorar', label: 'Explora ONGs' },
-    { to: '/cadastros', label: 'Cadastros' },
-
+    { to: '/', label: 'Sobre' },
+    { to: '/explorar', label: 'ONGs' },
+    { to: '/services', label: 'Serviços' },
+    { to: '/impact', label: 'Impacto' },
   ];
 
   return (
-    <header className={`header ${menuIsOpen ? "menu-open" : ""}`}>
+    <header className="header">
+      <div className="header-container">
+        {/* 1. LOGO */}
+        <Link to="/" className="logo-area" onClick={() => setMenuIsOpen(false)}>
+          <div className="logo-icon">
+            <LogoComponent />
+          </div>
+          <span className="logo-text">SICRON</span>
+        </Link>
 
-      {/* 1. LOGO (Sempre Visível) */}
-      <div className="logo-container">
-        <LogoComponent className="logo-img" />
-        <h1 className="logo">SICRON</h1>
-      </div>
 
-      {/* 2. DESKTOP VIEW (Visível apenas em telas grandes) */}
-      <div className="container-desktop-view">
-        {/* Nav Centralizada */}
-        <nav className="nav nav-desktop">
+        {/* 2. DESKTOP NAV */}
+        <nav className="desktop-nav">
           {links.map((link, index) => (
             <Link key={index} to={link.to} className="nav-link">
               {link.label}
@@ -37,53 +37,52 @@ export default function Header() {
           ))}
         </nav>
 
-        {/* Botão na Direita */}
-        <Link to="/login" className="nav-link" onClick={() => setMenuIsOpen(false)}>
-          <Button variant="primary" text={"Entrar"} />
-        </Link>
+        {/* 3. ACTIONS (Search + Buttons) */}
+        <div className="header-actions">
+          <div className="search-bar">
+            <FontAwesomeIcon icon={faSearch} className="search-icon" />
+            <input type="text" placeholder="Buscar ONGs..." />
+          </div>
+
+          <Link to="/login" className="login-link">
+            Entrar
+          </Link>
+
+          <Link to="/cadastros" className="login-link">
+            Participe
+          </Link>
+
+          {/* Mobile Toggle */}
+          <button
+            className="mobile-toggle"
+            onClick={() => setMenuIsOpen(!menuIsOpen)}
+          >
+            <FontAwesomeIcon icon={menuIsOpen ? faXmark : faBars} />
+          </button>
+        </div>
       </div>
 
-      {/* 3. MOBILE VIEW (Visível apenas em telas pequenas) */}
-      <div className="container-mobile-view">
-
-        {/* Ícone Hambúrguer / X com círculo */}
-        <div
-          className={`menu-toggle-button ${menuIsOpen ? 'open' : ''}`}
-          onClick={() => setMenuIsOpen(!menuIsOpen)}
-        >
-          <FontAwesomeIcon
-            icon={menuIsOpen ? faXmark : faBars}
-            size="lg"
-          />
-        </div>
-
-        {/* Menu Dropdown Flutuante */}
-        <div className={`container-toggle-menu ${menuIsOpen ? "active" : ""}`}>
-
-          <nav className="nav-mobile">
-            <ul className="mobile-list">
-              {links.map((link, index) => (
-                <li key={index} className="mobile-item">
-                  <Link
-                    to={link.to}
-                    className="nav-link"
-                    onClick={() => setMenuIsOpen(false)} // Fecha o menu ao clicar
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-
-              <li className="mobile-item">
-                <Link to="/login" className="nav-link" onClick={() => setMenuIsOpen(false)}>
-                  ENTRAR  
-                </Link>
-              </li>
-            </ul>
+      {/* MOBILE MENU */}
+      {menuIsOpen && (
+        <div className="mobile-menu">
+          <nav>
+            {links.map((link, index) => (
+              <Link
+                key={index}
+                to={link.to}
+                className="mobile-nav-link"
+                onClick={() => setMenuIsOpen(false)}
+              >
+                {link.label}
+              </Link>
+            ))}
+            <div className="mobile-actions">
+              <Link to="/login" onClick={() => setMenuIsOpen(false)}>Entrar</Link>
+              <Link to="/cadastros" onClick={() => setMenuIsOpen(false)}>Participe</Link>
+            </div>
           </nav>
         </div>
-      </div>
-
+      )}
     </header>
   );
 }

@@ -7,6 +7,7 @@ import "./App.css";
 import ContactSection from "./components/Sections/Contact/ContactSection";
 import Footer from "./components/Footer/Footer";
 import OurImpact from "./components/Sections/OurImpact/OurImpact";
+import StatsSection from "./components/Sections/Stats/StatsSection";
 
 import RevealOnScroll from "./components/RevealOnScroll/RevealOnScroll";
 
@@ -15,12 +16,12 @@ export default function App() {
     <div className="App">
       <RevealOnScroll><Header /></RevealOnScroll>
       <RevealOnScroll><HeroSection /></RevealOnScroll>
-      <RevealOnScroll><ImpactSection /></RevealOnScroll>
-      <RevealOnScroll><OurImpact /></RevealOnScroll>
       <RevealOnScroll><HowItWorksSection /></RevealOnScroll>
+      <RevealOnScroll><StatsSection /></RevealOnScroll>
+      <RevealOnScroll><OurImpact /></RevealOnScroll>
+      <RevealOnScroll><ImpactSection /></RevealOnScroll>
       <RevealOnScroll><ContactSection /></RevealOnScroll>
       <RevealOnScroll><Footer /></RevealOnScroll>
     </div>
   );
 }
-

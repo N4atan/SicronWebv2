@@ -13,11 +13,31 @@ body,
   height: 100%;
 }
 
+:root {
+  --primary-color: #22c55e;
+  /* Green */
+  --primary-hover: #16a34a;
+  --text-dark: #0f172a;
+  /* Slate 900 */
+  --text-medium: #334155;
+  /* Slate 700 */
+  --text-light: #64748b;
+  /* Slate 500 */
+  --bg-white: #ffffff;
+  --bg-light: #f8fafc;
+  /* Slate 50 */
+
+  --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
 body {
-  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-  background: #fafafa;
-  color: #222;
+  font-family: var(--font-family);
+  background: var(--bg-white);
+  color: var(--text-medium);
   scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* Animations */

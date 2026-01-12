@@ -29,13 +29,11 @@ interface RegisterFormProps {
 
 function LoginForm(props: LoginFormProps) {
     return (
-        <>
-
-            <div>
-                <h1>Bem-Vindo de Volta!</h1>
-                <p>Insira suas credenciais para acessar sua conta.</p>
+        <div className="auth-form-inner">
+            <div className="auth-header">
+                <h1 className="auth-title">Bem-Vindo de Volta!</h1>
+                <p className="auth-subtitle">Insira suas credenciais para acessar sua conta.</p>
             </div>
-
 
             <Input
                 variant='default'
@@ -57,26 +55,28 @@ function LoginForm(props: LoginFormProps) {
 
             <Button
                 variant='primary'
-                text='Entrar na Minha Conta'
+                text='Entrar'
                 type='submit'
+                className="btn-full-width"
             />
 
             <Button
                 variant='secondary'
-                text='Ainda não possui uma conta?'
+                text='Criar nova conta'
                 type='button'
                 onClick={() => props.eventChangeForm('register')}
+                className="btn-full-width"
             />
-        </>
+        </div>
     )
 };
 
 function RegisterForm(props: RegisterFormProps) {
     return (
-        <>
-            <div>
-                <h1>Bem-Vindo!</h1>
-                <p>Veja como é rápido criar a sua conta.</p>
+        <div className="auth-form-inner">
+            <div className="auth-header">
+                <h1 className="auth-title">Crie sua Conta</h1>
+                <p className="auth-subtitle">Junte-se a nós e faça parte da mudança.</p>
             </div>
 
             <Input
@@ -112,13 +112,14 @@ function RegisterForm(props: RegisterFormProps) {
 
             <Checkbox
                 id='terms'
-                text='Concordo que minha alma seja processada e consumida para os devidos fins que constamnos termos e condições de usuários'
+                text='Declaro que li e concordo com os Termos e Condições de Uso, autorizando o tratamento dos meus dados conforme descrito.'
             />
 
             <Button
                 variant='primary'
                 text='Criar Minha Conta'
                 type='submit'
+                className="btn-full-width"
             />
 
             <Button
@@ -126,28 +127,29 @@ function RegisterForm(props: RegisterFormProps) {
                 text='Já possui uma conta?'
                 type='button'
                 onClick={() => props.eventChangeForm('login')}
+                className="btn-full-width"
             />
-        </>
+        </div>
     )
 }
 
 
 export default function AuthenticationForm() {
-    const [ formType, setFormType ] = useState<'login' | 'register'>('register');
-    const [ username, setUsername ] = useState<string>('');
-    const [ email   , setEmail    ] = useState<string>('');
-    const [ password, setPassword ] = useState<string>('');
+    const [formType, setFormType] = useState<'login' | 'register'>('register');
+    const [username, setUsername] = useState<string>('');
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
 
-    function clearData(){
+    function clearData() {
         setUsername('');
         setEmail('');
         setPassword('');
     }
 
-    function anyIsEmpty(): boolean{
+    function anyIsEmpty(): boolean {
         return username.trim().length == 0 || email.trim().length == 0 || password.trim().length == 0;
     }
-    
+
     function handleClickChangeForm(type: 'login' | 'register') {
         console.log(type);
         setFormType(type);
@@ -157,9 +159,9 @@ export default function AuthenticationForm() {
         event.preventDefault();
 
         try {
-            if(anyIsEmpty()) return alert('Preencha os campos corretamente!');
-            
-            const user = await api.fetchCreateUser({username, email, password});
+            if (anyIsEmpty()) return alert('Preencha os campos corretamente!');
+
+            const user = await api.fetchCreateUser({ username, email, password });
 
             if (!user) {
                 console.info(api.errorResponse);
@@ -185,7 +187,7 @@ export default function AuthenticationForm() {
 
 
     return (
-        <form className="form-container" onSubmit={formType == 'register'? handleSubmitRegister : handleSubmitLogin}>
+        <form className="form-container" onSubmit={formType == 'register' ? handleSubmitRegister : handleSubmitLogin}>
             {/* Componente do header */}
             <div></div>
 

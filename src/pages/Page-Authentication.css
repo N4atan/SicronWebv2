@@ -1,76 +1,102 @@
-/* WRAPPER GERAL */
 .auth-page-wrapper {
-    width: 100%;
-    min-height: 100vh;
     display: flex;
     flex-direction: column;
+    min-height: 100vh;
+    background-color: #f8fafc;
 }
 
-/* Adiciona espaçamento maior para o footer, mas o flex-grow cuida do posicionamento */
-.auth-page-wrapper .footer {
-    margin-top: auto;
-}
-
-/* CONTAINER PRINCIPAL – divide IMG ↔ FORM */
-.auth-main-container {
+.auth-content {
+    flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 3rem 2rem;
+}
+
+.auth-split-container {
+    display: flex;
     width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 40px 0;
-    gap: 60px;
-    flex: 1;
-    /* Ocupa o espaço restante verticalmente */
-    /* espaço entre a imagem e o formulário */
+    max-width: 1100px;
+    background: white;
+    border-radius: 24px;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    overflow: hidden;
+    min-height: 600px;
 }
 
-/* LADO DA IMAGEM */
-.auth-illustration-side {
+/* Visual Side (Left) */
+.auth-visual-side {
     flex: 1;
+    background: linear-gradient(135deg, var(--primary-color) 0%, #16a34a 100%);
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding: 3rem;
+    color: white;
+    text-align: center;
+    position: relative;
 }
 
-.auth-dog-image {
-    width: 320px;
-    height: 320px;
-    object-fit: cover;
-    border-radius: 20px;
+.visual-content h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
 }
 
-/* LADO DO FORMULÁRIO */
+.visual-content p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    margin-bottom: 2rem;
+}
+
+.illustration-wrapper {
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+.auth-illustration {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+}
+
+/* Form Side (Right) */
 .auth-form-side {
     flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 3rem;
+    background-color: white;
 }
 
-.auth-form-wrapper {
+.form-card {
     width: 100%;
-    max-width: 380px;
-    /* tamanho do form */
+    max-width: 400px;
 }
 
-/* RESPONSIVO – remove a imagem no celular e ajusta o layout */
-@media (max-width: 768px) {
-    .auth-illustration-side {
-        display: none;
-        /* some com a imagem no celular */
-    }
-
-    .auth-main-container {
+@media (max-width: 850px) {
+    .auth-split-container {
         flex-direction: column;
-        gap: 30px;
-        padding: 20px 0;
-        justify-content: center;
-        align-items: center;
     }
 
-    .auth-form-wrapper {
-        max-width: 90%;
+    .auth-visual-side {
+        padding: 2rem;
+        min-height: 200px;
+    }
+
+    .visual-content h2 {
+        font-size: 1.5rem;
+    }
+
+    .illustration-wrapper {
+        display: none;
+        /* Hide illustration on small screens to save space */
+    }
+
+    .auth-form-side {
+        padding: 2rem;
     }
 }

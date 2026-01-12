@@ -9,17 +9,29 @@ export default function PageAuthentication() {
         <div className="auth-page-wrapper">
             <Header />
 
-            <div className="auth-main-container">
-                <div className="auth-illustration-side">
-                    <IllustrationImg style={{ width: "80%", height: "100%" }} />
-                </div>
+            <div className="auth-content">
+                <div className="auth-split-container">
 
-                <div className="auth-form-side">
-                    <div className="auth-form-wrapper">
-                        <AuthenticationForm />
+                    {/* Left Side: Visual/Brand */}
+                    <div className="auth-visual-side">
+                        <div className="visual-content">
+                            <h2>Junte-se à Comunidade</h2>
+                            <p>Conecte-se, colabore e faça a diferença hoje mesmo.</p>
+                            <div className="illustration-wrapper">
+                                <IllustrationImg className="auth-illustration" />
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Right Side: Form */}
+                    <div className="auth-form-side">
+                        <div className="form-card">
+                            <AuthenticationForm />
+                        </div>
                     </div>
                 </div>
             </div>
+
             <Footer />
         </div>
     )
