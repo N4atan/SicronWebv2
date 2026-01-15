@@ -1,4 +1,4 @@
-import './EntityUpdate.css'
+
 import Input from "../../Inputs/Input/Input";
 import { useState } from "react";
 import Modal from "../../Modal/Modal";

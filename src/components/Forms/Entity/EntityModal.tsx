@@ -5,12 +5,12 @@ import { User, NGO, Product, Supplier } from "../../../interfaces";
 import UserForm from "./UserForm";
 import './EntityModal.css';
 // import OngForm from "./OngForm"; // Vamos criar em breve
-// import ProductForm from "./ProductForm"; // Vamos criar em breve
+import ProductForm from "./ProductForm"; // Vamos criar em breve
 // import SupplierForm from "./SupplierForm"; // Vamos criar em breve
 
 type Props = {
     title: string;
-    entity?: User | NGO | Product | Supplier | null; // Dados iniciais (se edição)
+    entity?: Partial<User> | Partial<NGO> | Partial<Product> | Partial<Supplier> | null; // Dados iniciais (se edição)
     typeEntity: 'user' | 'ong' | 'product' | 'supplier'; // OBRIGATÓRIO para saber qual form abrir
     onClose: () => void;
     onRefresh?: () => void;
@@ -62,9 +62,16 @@ export default function EntityModal({ title, entity, typeEntity, onClose, onRefr
                         />
                     )}
 
+                    {typeEntity === 'product' && (
+                        <ProductForm
+                            initialData={entity as Product}
+                            onSuccess={handleSuccess}
+                            onLoading={setIsLoading}
+                        />
+                    )}
+
                     {/* 
                     {typeEntity === 'ong' && <OngForm initialData={entity as NGO} onSuccess={handleSuccess} />}
-                    {typeEntity === 'product' && <ProductForm initialData={entity as Product} onSuccess={handleSuccess} />}
                     */}
                 </>
             )}

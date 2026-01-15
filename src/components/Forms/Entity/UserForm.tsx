@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
-import { schema_createUser, schema_updateUser } from "../../../utils/userSchemas";
+import { ROLE_OPTIONS, schema_createUser, schema_updateUser } from "../../../utils/userSchemas";
 import { User } from "../../../interfaces";
 import Input from "../../Inputs/Input/Input";
 import { errorUserService, registerUser, updateUser } from "../../../services/user.service";
@@ -35,7 +35,7 @@ export default function UserForm({ initialData, onSuccess, onLoading }: Props) {
             if (!identifier) return alert("ID não passado para atualização");
 
 
-            const success = await updateUser(identifier, data);
+            const success = await updateUser(identifier, data as Partial<User>);
             if (!success) return alert(errorUserService || "Erro ao atualizar usuário");
 
 
@@ -88,7 +88,7 @@ export default function UserForm({ initialData, onSuccess, onLoading }: Props) {
                             variant='default'
                             styleDefault='default'
                             type="text"
-                            placeholder="Nome de Usuário"
+                            label="Nome de Usuário"
                             errorMessage={errors.username?.message?.toString()}
                         />
                     )}
@@ -103,12 +103,29 @@ export default function UserForm({ initialData, onSuccess, onLoading }: Props) {
                             variant='default'
                             styleDefault='default'
                             type="email"
-                            placeholder="E-mail"
+                            label="E-mail"
                             errorMessage={errors.email?.message?.toString()}
                         />
                     )}
                 />
-
+                {/* 
+                <Controller
+                    control={control}
+                    name="role"
+                    render={({ field }) => (
+                        <Input
+                            {...field}
+                            variant='selection'
+                            styleDefault='default'
+                            type="select"
+                            label="Tipo de Usuário"
+                            options={ROLE_OPTIONS}
+                            errorMessage={errors.role?.message?.toString()}
+                        />
+                    )}
+                />
+                */}
+                
                 <Controller
                     control={control}
                     name="password"
@@ -118,11 +135,14 @@ export default function UserForm({ initialData, onSuccess, onLoading }: Props) {
                             variant='default'
                             styleDefault='default'
                             type="password"
-                            placeholder="Senha"
+                            label="Nova Senha"
+
                             errorMessage={errors.password?.message?.toString()}
                         />
                     )}
                 />
+
+
             </div>
         </form>
     )

@@ -10,7 +10,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement | HTMLTe
     label?: string;
     icon?: IconDefinition;
     sizeStyle?: 'default' | 'compact';
-    options?: string[];
+    options?: string[] | readonly string[];
     errorMessage?: string;
 }
 

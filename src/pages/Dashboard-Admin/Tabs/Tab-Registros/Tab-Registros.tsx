@@ -10,6 +10,7 @@ import { deleteOng, errorOngService } from "../../../../services/ong.service";
 import { deleteSupplier, errorSupplierService } from "../../../../services/supplier.service";
 import { deleteProduct } from "../../../../services/product.service";
 import { User, NGO, Supplier, Product } from "../../../../interfaces";
+import EntityModal from "../../../../components/Forms/Entity/EntityModal";
 
 
 type Props = {
@@ -26,18 +27,12 @@ export default function TabRegistro({ onfreshData, isLoading, dataUsers, dataOng
     // Controle do Modal de Edição
     const [isEditEntity, setIsEditEntity] = useState(false);
     const [entityForEdit, setEntityForEdit] = useState<any>(null);
-    const [typeEntity, setTypeEntity] = useState<EntityType>('user'); // Valor padrão ou undefined
-
-    // Controle do Modal de Criação
-    const [isCreatingEntity, setIsCreatingEntity] = useState(false);
+    const [typeEntity, setTypeEntity] = useState<EntityType>('user');
 
 
-    // Prepara o modal de edição. 
-    // IMPORTANTE: Recebe o objeto E o tipo (user ou ong)
     const handleClickForEdit = (obj: any, type: EntityType) => {
-        console.log("handleClickForEdit - Obj:", obj);
         setEntityForEdit(obj);
-        setTypeEntity(type); // Agora sabemos quem estamos editando
+        setTypeEntity(type);
         setIsEditEntity(true);
     };
 
@@ -88,40 +83,21 @@ export default function TabRegistro({ onfreshData, isLoading, dataUsers, dataOng
     };
 
 
-
     return (
         <>
-            <Card
-                titleSection="Barra de Ação Rápida"
-                style={{ margin: '50px auto', maxWidth: '1000px' }}
-            >
-                <div style={{ display: 'flex', gap: '10px' }}>
-                    <Button
-                        variant="primary"
-                        type="button"
-                        text="Novo Cadastro"
-                        onClick={() => setIsCreatingEntity(true)}
-                    />
-                </div>
-            </Card>
 
             {/* Modal de Edição */}
             {isEditEntity && (
-                <EntityUpdate
+                <EntityModal
+                    title="Editar Usuário"
+                    typeEntity={typeEntity}
                     entity={entityForEdit}
-                    typeEntity={typeEntity} // Passa a string limpa 'user' ou 'ong'
                     onClose={() => setIsEditEntity(false)}
                     onRefresh={() => onfreshData(typeEntity)}
                 />
             )}
 
-            {/* Modal de Criação */}
-            {isCreatingEntity && (
-                <EntityCreate
-                    onClose={() => setIsCreatingEntity(false)}
-                    onRefresh={() => onfreshData(typeEntity)}
-                />
-            )}
+            
 
             {/* Tabela de Usuários */}
             <Card

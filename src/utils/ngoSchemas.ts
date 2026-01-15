@@ -1,9 +1,27 @@
 import { z } from 'zod';
 
 const AREAS_OPTIONS = [
-    'Assistência Social', 'Cultura', 'Saúde', 'Meio Ambiente', 
-    'Desenvolvimento e Defesa de Direitos', 'Habitação', 
-    'Educação e Pesquisa', 'Outros'
+    'Assistência Social',
+    'Cultura',
+    'Saúde',
+    'Meio Ambiente',
+    'Educação e Pesquisa',
+    'Habitação',
+    'Desenvolvimento e Defesa de Direitos',
+    'Direitos Humanos',
+    'Combate à Fome',
+    'Segurança Alimentar',
+    'Geração de Renda',
+    'Emprego e Capacitação Profissional',
+    'Inclusão Social',
+    'Apoio a Crianças e Adolescentes',
+    'Apoio a Idosos',
+    'Apoio a Pessoas com Deficiência',
+    'Proteção Animal',
+    'Esporte e Lazer',
+    'Tecnologia e Inovação Social',
+    'Cidadania',
+  'Outros'
 ] as const;
 
 export const schema_ngo = z.object({
