@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const AREAS_OPTIONS = [
+export const AREAS_OPTIONS = [
     'Assistência Social',
     'Cultura',
     'Saúde',
@@ -21,20 +21,45 @@ const AREAS_OPTIONS = [
     'Esporte e Lazer',
     'Tecnologia e Inovação Social',
     'Cidadania',
-  'Outros'
+    'Outros'
 ] as const;
 
 export const schema_ngo = z.object({
-    name: z.string().min(3, "Nome deve ter pelo menos 3 caracteres"),
-    trade_name: z.string().min(3, "Nome deve ter pelo menos 3 caracteres"),
-    cnpj: z.string().min(14, "Utilize apenas números"),
-    area: z.string().refine((val) => AREAS_OPTIONS.includes(val as any), {
-        message: "Por favor, selecione uma área válida",
-    }),
-    description: z.string().min(3, "Descrição deve ter pelo menos 3 caracteres"),
-    local: z.string().min(3, "Utilize o formato Cidade-Estado"),
-    phone_number: z.string().min(14, "Utilize o formato (00) 00000-0000"),
-    contact_email: z.string().email("E-mail inválido"),
+    name: 
+        z.string({ error: "Campo inválido ou vazio" })
+        .min(1, "Nome é obrigatório")
+        .min(3, "O nome social deve ter pelo menos 3 caracteres"),
+    trade_name: 
+        z.string({ error: "Campo inválido ou vazio" })
+        .min(1, "Nome fantasia é obrigatório")
+        .min(3, "O nome fantasia deve ter pelo menos 3 caracteres"),
+    cnpj: 
+        z.string({ error: "Campo inválido ou vazio" })
+        .min(1, "CNPJ é obrigatório")
+        .min(14, "O CNPJ deve conter pelo menos 14 números")
+        .regex(/^\d+$/, "Utilize apenas números para o CNPJ"),
+    area: 
+        z.string({ error: "Campo inválido ou vazio" })
+        .min(1, "Selecione uma área")
+        .refine((val) => AREAS_OPTIONS.includes(val as any), {
+            message: "Por favor, selecione uma área de atuação válida",
+            }),
+    description: 
+        z.string({ error: "Campo inválido ou vazio" })
+        .min(1, "Descrição é obrigatória")
+        .min(10, "A descrição deve ser detalhada (mínimo 10 caracteres)"),
+    local: 
+        z.string({ error: "Campo inválido ou vazio" })
+        .min(1, "Localização é obrigatória")
+        .min(3, "Informe a cidade e estado (ex: Curitiba - PR)"),
+    phone_number: 
+        z.string({ error: "Campo inválido ou vazio" })
+        .min(1, "Telefone é obrigatório")
+        .min(10, "Informe um telefone válido com DDD"),
+    contact_email: 
+        z.string({ error: "Campo inválido ou vazio" })
+        .min(1, "E-mail é obrigatório")
+        .email("Insira um endereço de e-mail válido para contato"),
 })
 
 

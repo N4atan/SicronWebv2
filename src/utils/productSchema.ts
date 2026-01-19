@@ -21,11 +21,11 @@ export const CATEGORIES_OPTIONS = [
 ] as const;
 
 export const schema_createProduct = z.object({
-    name: z.string().min(3, "Nome deve ter pelo menos 3 caracteres"),
+    name: z.string().min(1, "Nome do produto é obrigatório").min(3, "Nome deve ter pelo menos 3 caracteres"),
     description: z.string().min(3, "Descrição deve ter pelo menos 3 caracteres").optional(),
-    category: z.string().refine((val) => CATEGORIES_OPTIONS.includes(val as any), {
-            message: "Por favor, selecione uma categoria válida",
-        }),
+    category: z.string().min(1, "Categoria é obrigatória").refine((val) => CATEGORIES_OPTIONS.includes(val as any), {
+        message: "Por favor, selecione uma categoria válida",
+    }),
 })
 
 export const schema_updateProduct = schema_createProduct.partial();
