@@ -32,3 +32,28 @@
 .form-container {
     width: 100%;
 }
+
+.btn-login-primary {
+    background-color: #e5e7eb !important;
+    /* Light gray */
+    color: #1f2937 !important;
+    /* Dark text */
+    font-weight: bold !important;
+    border: none !important;
+}
+
+.btn-login-primary:hover {
+    background-color: #d1d5db !important;
+}
+
+.btn-login-secondary {
+    background-color: white !important;
+    color: #1f2937 !important;
+    border: 1px solid #e5e7eb !important;
+    font-weight: bold !important;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.btn-login-secondary:hover {
+    background-color: #f9fafb !important;
+}

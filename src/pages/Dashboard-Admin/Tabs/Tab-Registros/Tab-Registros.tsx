@@ -17,7 +17,7 @@ type Props = {
 }
 
 
-export default function TabRegistro({onfreshData, isLoading, dataUsers, dataOngs}: Props) {
+export default function TabRegistro({ onfreshData, isLoading, dataUsers, dataOngs }: Props) {
     // Controle do Modal de Edição
     const [isEditEntity, setIsEditEntity] = useState(false);
     const [entityForEdit, setEntityForEdit] = useState<any>(null);
@@ -42,9 +42,9 @@ export default function TabRegistro({onfreshData, isLoading, dataUsers, dataOngs
             let response;
             if (type === 'user') {
                 response = await api.fetchDeleteUser(obj.id);
-            } else if (type ==='ong'){
+            } else if (type === 'ong') {
                 response = await api.fetchDeleteOng(obj.id);
-            }else {
+            } else {
                 // Assumindo que existe um delete para ONG, senão tem que criar
                 // response = await api.fetchDeleteOng(obj.id); 
                 alert("Funcionalidade de deletar ONG ainda não implementada na API");
@@ -68,73 +68,70 @@ export default function TabRegistro({onfreshData, isLoading, dataUsers, dataOngs
 
 
     return (
-        <>
-        <Card
-            titleSection="Barra de Ação Rápida"
-            style={{ margin: '50px auto', maxWidth: '1000px' }}
-        >
-            <Button
-                variant="primary"
-                type="button"
-                text="Adicionar Novo"
-                onClick={() => setIsCreatingEntity(true)}
-            />
-        </Card>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', width: '100%', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+            <Card
+                titleSection="Barra de Ação Rápida"
+            >
+                <Button
+                    variant="primary"
+                    type="button"
+                    text="Adicionar Novo"
+                    onClick={() => setIsCreatingEntity(true)}
+                />
+            </Card>
 
-        {/* Modal de Edição */}
-        {isEditEntity && (
-            <EntityUpdate
-                entity={entityForEdit}
-                typeEntity={typeEntity} // Passa a string limpa 'user' ou 'ong'
-                onClose={() => setIsEditEntity(false)}
-                onRefresh={() => onfreshData(typeEntity)}
-            />
-        )}
-
-        {/* Modal de Criação */}
-        {isCreatingEntity && (
-            <EntityCreate
-                onClose={() => setIsCreatingEntity(false)}
-                onRefresh={() => onfreshData(typeEntity)}
-            />
-        )}
-
-        {/* Tabela de Usuários */}
-        <Card
-            titleSection="Usuários"
-            subtitleSection="Gerencie todos os usuários cadastrados no sistema."
-            style={{ margin: '50px auto' }}
-        >
-            {isLoading ? (
-                <p>Carregando Usuários...</p>
-            ) : (
-                <DynamicTable
-                    typeData="user"
-                    listData={dataUsers || []}
-                    // Aqui está o segredo: usamos uma arrow function para passar o tipo certo
-                    onEdit={(obj) => handleClickForEdit(obj, 'user')}
-                    onDelete={(obj) => handleClickForDelete(obj, 'user')}
+            {/* Modal de Edição */}
+            {isEditEntity && (
+                <EntityUpdate
+                    entity={entityForEdit}
+                    typeEntity={typeEntity} // Passa a string limpa 'user' ou 'ong'
+                    onClose={() => setIsEditEntity(false)}
+                    onRefresh={() => onfreshData(typeEntity)}
                 />
             )}
-        </Card>
 
-        {/* Tabela de ONGs */}
-        <Card
-            titleSection="ONGS"
-            subtitleSection="Gerencie todas as ongs cadastrados no sistema."
-            style={{ margin: '50px auto' }}
-        >
-            {isLoading ? (
-                <p>Carregando ONGs...</p>
-            ) : (
-                <DynamicTable
-                    typeData="ong" // Hardcoded 'ong' porque ESSA é a tabela de ongs
-                    listData={dataOngs || []}
-                    onEdit={(obj) => handleClickForEdit(obj, 'ong')}
-                    onDelete={(obj) => handleClickForDelete(obj, 'ong')}
+            {/* Modal de Criação */}
+            {isCreatingEntity && (
+                <EntityCreate
+                    onClose={() => setIsCreatingEntity(false)}
+                    onRefresh={() => onfreshData(typeEntity)}
                 />
             )}
-        </Card>
-        </>
+
+            {/* Tabela de Usuários */}
+            <Card
+                titleSection="Usuários"
+                subtitleSection="Gerencie todos os usuários cadastrados no sistema."
+            >
+                {isLoading ? (
+                    <p>Carregando Usuários...</p>
+                ) : (
+                    <DynamicTable
+                        typeData="user"
+                        listData={dataUsers || []}
+                        // Aqui está o segredo: usamos uma arrow function para passar o tipo certo
+                        onEdit={(obj) => handleClickForEdit(obj, 'user')}
+                        onDelete={(obj) => handleClickForDelete(obj, 'user')}
+                    />
+                )}
+            </Card>
+
+            {/* Tabela de ONGs */}
+            <Card
+                titleSection="ONGS"
+                subtitleSection="Gerencie todas as ongs cadastrados no sistema."
+            >
+                {isLoading ? (
+                    <p>Carregando ONGs...</p>
+                ) : (
+                    <DynamicTable
+                        typeData="ong" // Hardcoded 'ong' porque ESSA é a tabela de ongs
+                        listData={dataOngs || []}
+                        onEdit={(obj) => handleClickForEdit(obj, 'ong')}
+                        onDelete={(obj) => handleClickForDelete(obj, 'ong')}
+                    />
+                )}
+            </Card>
+        </div>
     )
 }

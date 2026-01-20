@@ -21,12 +21,12 @@ import Modal from "../../components/Modal/Modal";
 export type EntityType = 'user' | 'ong';
 
 const opçõesAside = [
-    { 
+    {
         label: 'Cadastros',
         icon: faAddressCard,
         value: 'cadastros'
     },
-    { 
+    {
         label: 'ONGs',
         icon: faBuildingNgo,
         value: 'ongs'
@@ -81,77 +81,85 @@ export default function DashboardAdmin() {
 
 
     return (
-        <main style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
+        <main className="admin-dashboard-wrapper">
             <Header />
 
-            <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
+            <div className="admin-layout">
 
-                <aside style={{ width: '200px', backgroundColor: '#ffff', overflowY: 'auto', borderRight: '1px solid rgb(0, 0, 0, 0.1)'}}>
-                        
-                    <ul className="ul-tabs" >
+                <aside className="admin-sidebar">
+                    <div className="sidebar-header">
+                        <h3>Menu</h3>
+                    </div>
+
+                    <ul className="ul-tabs">
                         <li onClick={() => alert('Em Desenvolvimento...')}>
-                            <input type="radio" name="tab" id="tab-geral"  />
+                            <input type="radio" name="tab" id="tab-geral" />
                             <label htmlFor="tab-geral">
                                 <FontAwesomeIcon icon={faCubes} />
-                                Visão Geral  
+                                Visão Geral
                             </label>
                         </li>
 
-                        { opçõesAside.map((opção) => (
-                            <li 
-                                key={opção.value} 
+                        {opçõesAside.map((opção) => (
+                            <li
+                                key={opção.value}
                                 onClick={() => setTabActive(opção.value as 'cadastros' | 'ongs')}
                                 className={tabActive === opção.value ? 'active' : ''}
                             >
-                                <input 
-                                    type="radio" 
-                                    name="tab" 
-                                    id={`tab-${opção.value}`}  
+                                <input
+                                    type="radio"
+                                    name="tab"
+                                    id={`tab-${opção.value}`}
                                     checked={tabActive === opção.value}
                                     readOnly
                                 />
                                 <label htmlFor={`tab-${opção.value}`}>
                                     <FontAwesomeIcon icon={opção.icon} />
-                                    {opção.label}  
+                                    {opção.label}
                                 </label>
 
                             </li>
-                                        ))}
+                        ))}
 
                         <li onClick={() => alert('Em Desenvolvimento...')}>
-                            <input type="radio" name="tab" id="tab-produtos"  />
+                            <input type="radio" name="tab" id="tab-produtos" />
                             <label htmlFor="tab-produtos">
                                 <FontAwesomeIcon icon={faSeedling} />
-                                Produtos  
+                                Produtos
                             </label>
                         </li>
                     </ul>
-
-
                 </aside>
 
-                <section style={{ flex: 1, padding: '20px', overflowY: 'auto' }}>
+                <section className="admin-content-area">
+                    <div className="admin-page-header">
+                        <h2>{
+                            tabActive === 'cadastros' ? 'Gerenciamento de Cadastros' :
+                                tabActive === 'ongs' ? 'Aprovação de ONGs' : 'Dashboard'
+                        }</h2>
+                        <p>Visão geral e administração do sistema.</p>
+                    </div>
 
-                    { tabActive === 'cadastros' && (
-                        <TabRegistro
-                            onfreshData={fetchData}
-                            isLoading={isLoading}
-                            dataUsers={dataUsers}
-                            dataOngs={dataOngs}
-                        />
-                    )}
-                    { tabActive === 'ongs' && (
-                        <TabOngs 
-                            dataOngs={dataOngs}
-                            isLoading={isLoading}
-                            onRefreshData={fetchData}
-                        />
-                        
-                    )}
+                    <div className="admin-content-body">
+                        {tabActive === 'cadastros' && (
+                            <TabRegistro
+                                onfreshData={fetchData}
+                                isLoading={isLoading}
+                                dataUsers={dataUsers}
+                                dataOngs={dataOngs}
+                            />
+                        )}
+                        {tabActive === 'ongs' && (
+                            <TabOngs
+                                dataOngs={dataOngs}
+                                isLoading={isLoading}
+                                onRefreshData={fetchData}
+                            />
+
+                        )}
+                    </div>
 
                 </section>
-                
-
 
             </div>
         </main>

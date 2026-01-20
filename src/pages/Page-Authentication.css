@@ -27,15 +27,16 @@
 /* Visual Side (Left) */
 .auth-visual-side {
     flex: 1;
-    background: linear-gradient(135deg, var(--primary-color) 0%, #16a34a 100%);
+    background: #ffffff;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 3rem;
-    color: white;
+    color: var(--text-dark, #333);
     text-align: center;
     position: relative;
+    border-right: 1px solid #f0f0f0;
 }
 
 .visual-content h2 {

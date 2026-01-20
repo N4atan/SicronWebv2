@@ -55,17 +55,17 @@ function LoginForm(props: LoginFormProps) {
 
             <Button
                 variant='primary'
-                text='Entrar'
+                text='Entrar na Minha Conta'
                 type='submit'
-                className="btn-full-width"
+                className="btn-full-width btn-login-primary"
             />
 
             <Button
                 variant='ghost'
-                text='Criar nova conta'
+                text='Ainda não possui uma conta?'
                 type='button'
                 onClick={() => props.eventChangeForm('register')}
-                className="btn-full-width"
+                className="btn-full-width btn-login-secondary"
             />
         </div>
     )
@@ -119,7 +119,7 @@ function RegisterForm(props: RegisterFormProps) {
                 variant='primary'
                 text='Criar Minha Conta'
                 type='submit'
-                className="btn-full-width"
+                className="btn-full-width btn-login-primary"
             />
 
             <Button
@@ -127,7 +127,7 @@ function RegisterForm(props: RegisterFormProps) {
                 text='Já possui uma conta?'
                 type='button'
                 onClick={() => props.eventChangeForm('login')}
-                className="btn-full-width"
+                className="btn-full-width btn-login-secondary"
             />
         </div>
     )
