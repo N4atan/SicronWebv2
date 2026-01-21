@@ -5,7 +5,7 @@ import Button from "../components/Button/Button";
 import Modal from "../components/Modal/Modal";
 import { useAuth } from "../contexts/AuthContext";
 import { getSupplierByUuid, getAllSuppliers } from "../services/supplier.service";
-import { Supplier, Product } from "../interfaces";
+import { Supplier, Product, SupplierProduct } from "../interfaces";
 import { getAllProducts } from "../services/product.service";
 import { Oval } from "react-loader-spinner";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -13,14 +13,6 @@ import { faPlus, faTrash, faBoxOpen, faTruckFast } from "@fortawesome/free-solid
 import { api } from "../services/api";
 import '../pages/Dashboard-Admin/Dashboard-Admin.css'; // Reusing some admin styles for consistency
 
-
-interface SupplierProduct {
-    id: number;
-    price: number;
-    availableQuantity: number;
-    avgDeliveryTimeDays: number;
-    product: Product;
-}
 
 export default function DashboardSupplier() {
     const { user } = useAuth();
@@ -39,11 +31,16 @@ export default function DashboardSupplier() {
     const [qty, setQty] = useState("100");
     const [deliveryDays, setDeliveryDays] = useState("3");
 
+    /**
+     * Loads the Supplier associated with the current user.
+     * Uses 'manager_uuid' filter to find the correct supplier.
+     */
     const loadData = async () => {
         setIsLoading(true);
         try {
             if (!user?.uuid) return;
 
+            // 1. Find the supplier managed by this user
             const mySuppliers = await getAllSuppliers({ manager_uuid: user.uuid });
 
             if (mySuppliers && mySuppliers.length > 0) {
@@ -51,11 +48,20 @@ export default function DashboardSupplier() {
                 setSupplier(mySup);
 
 
+                // 2. Load detailed data (including products)
                 const detailedSup = await getSupplierByUuid(mySup.uuid!);
+
+                // --- JAMBIARRA / LEGACY CODE START ---
+                // Keeping this for presentation purposes as requested.
+                // ideally: setMyProducts(detailedSup?.products || []);
                 if (detailedSup) {
                     // @ts-ignore
                     if (detailedSup.products) setMyProducts(detailedSup.products);
                 }
+                // This line seems risky but is part of the legacy presentation state.
+                // setMyProducts(detailedSup? || []) 
+                // --- JAMBIARRA END ---
+
             } else {
                 setSupplier(null);
             }
@@ -72,8 +78,8 @@ export default function DashboardSupplier() {
     }
 
     useEffect(() => {
-        if (user) loadData();
-    }, [user]);
+        loadData();
+    }, []);
 
     const handleOpenModal = () => {
         loadAllProducts();
@@ -120,13 +126,6 @@ export default function DashboardSupplier() {
     }
 
     if (isLoading) return <div style={{ display: 'flex', justifyContent: 'center', marginTop: 50 }}><Oval color="#2BB673" height={60} width={60} /></div>;
-
-    if (!supplier) return (
-        <div style={{ padding: 50, textAlign: 'center' }}>
-            <h2>Você ainda não tem uma empresa cadastrada.</h2>
-            <p>Clique em "Minha Empresa" no menu para cadastrar.</p>
-        </div>
-    );
 
     return (
         <>

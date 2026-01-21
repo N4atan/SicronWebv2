@@ -34,6 +34,7 @@ export default function LoginForm({ onChangeForm }: ILoginFormProps) {
 
     const handleLoginSubmit = async (data: z.infer<typeof schema_loginUser>) => {
         setIsLoading(true);
+        console.log(data)
 
         try {
             await signIn(data);

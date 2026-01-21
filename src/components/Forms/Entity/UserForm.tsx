@@ -1,10 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { ROLE_OPTIONS, schema_createUser, schema_updateUser } from "../../../utils/userSchemas";
-import { User } from "../../../interfaces";
+import { User, UserRole } from "../../../interfaces";
 import Input from "../../Inputs/Input/Input";
 import { errorUserService, registerUser, updateUser } from "../../../services/user.service";
 import z from "zod";
+import { useAuth } from "../../../contexts/AuthContext";
 
 
 type Props = {
@@ -16,6 +17,8 @@ type Props = {
 export default function UserForm({ initialData, onSuccess, onLoading }: Props) {
     const isEditing = !!initialData;
     const schema = isEditing ? schema_updateUser : schema_createUser;
+
+    const { user } = useAuth();
 
     const {
         control,
@@ -108,7 +111,7 @@ export default function UserForm({ initialData, onSuccess, onLoading }: Props) {
                         />
                     )}
                 />
-                {/* 
+                { user?.role === UserRole.ADMIN && (
                 <Controller
                     control={control}
                     name="role"
@@ -124,7 +127,7 @@ export default function UserForm({ initialData, onSuccess, onLoading }: Props) {
                         />
                     )}
                 />
-                */}
+                )}
                 
                 <Controller
                     control={control}

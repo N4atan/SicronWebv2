@@ -58,7 +58,7 @@ export default function AppRoutes() {
                 path='/cadastro/ong'
                 element={
                     <ProtectedRoute allowedRoles={[UserRole.USER, UserRole.ADMIN, UserRole.SUPPLIER_MANAGER, UserRole.NGO_MANAGER]}>
-                        <PageSolicitarCadastro />
+                        <PageSolicitarCadastro type='ngo' />
                     </ProtectedRoute>
                 }
             />
@@ -67,7 +67,7 @@ export default function AppRoutes() {
                 path='/cadastro/supplier'
                 element={
                     <ProtectedRoute allowedRoles={[UserRole.USER, UserRole.ADMIN, UserRole.SUPPLIER_MANAGER, UserRole.NGO_MANAGER]}>
-                        <PageSolicitarCadastro />
+                        <PageSolicitarCadastro type='supplier' />
                     </ProtectedRoute>
                 }
             />

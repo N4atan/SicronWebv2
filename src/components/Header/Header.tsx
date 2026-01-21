@@ -45,13 +45,11 @@ export default function Header() {
       to: isOngManager ? '/dashboard/ong' : '/cadastro/ong',
       label: 'Minha ONG',
       icon: faHandHoldingHeart,
-      state: !isOngManager ? { email: user?.email, type: 'ong' } : undefined
     },
     {
       to: user?.role === UserRole.SUPPLIER_MANAGER ? '/dashboard/supplier' : '/cadastro/supplier',
       label: 'Minha Empresa',
       icon: faBriefcase,
-      state: user?.role !== UserRole.SUPPLIER_MANAGER ? { email: user?.email, type: 'supplier' } : undefined
     },
   ];
 

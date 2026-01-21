@@ -5,6 +5,8 @@ import { AREAS_OPTIONS, schema_ngo, schema_updateNgo } from "../../../utils/ngoS
 import Input from "../../Inputs/Input/Input";
 import z from "zod";
 import { errorOngService, registerOng, updateOng } from "../../../services/ong.service";
+import Button from "../../Button/Button";
+import { faBuildingNgo, faEnvelope, faIdCard, faLocationDot, faPhone, faStore, faTreeCity } from "@fortawesome/free-solid-svg-icons";
 
 
 type Props = {
@@ -21,7 +23,7 @@ export default function NGOForm({ initialData, onSuccess, onLoading }: Props) {
     const {
         control,
         handleSubmit,
-        formState: { errors }
+        formState: { errors, isValid }
     } = useForm({
         resolver: zodResolver(schema),
         mode: 'all',
@@ -39,7 +41,7 @@ export default function NGOForm({ initialData, onSuccess, onLoading }: Props) {
 
             if (onSuccess) onSuccess();
 
-            onLoading(false);
+
         } catch (error) {
             console.error(error);
             alert(error || "Erro ao criar ONG.");
@@ -64,8 +66,6 @@ export default function NGOForm({ initialData, onSuccess, onLoading }: Props) {
 
             if (onSuccess) onSuccess();
 
-            onLoading(false);
-
         } catch (error) {
             console.error(error);
             alert(error || "Erro ao atualizar ONG.");
@@ -89,6 +89,7 @@ export default function NGOForm({ initialData, onSuccess, onLoading }: Props) {
                                 styleDefault='default'
                                 type="text"
                                 label="Nome Fantasia"
+                                icon={faStore}
                                 placeholder="Nome popular da ONG"
                                 errorMessage={errors.trade_name?.message?.toString()}
                             />
@@ -104,8 +105,9 @@ export default function NGOForm({ initialData, onSuccess, onLoading }: Props) {
                                 {...field}
                                 variant='default'
                                 styleDefault='default'
+                                label="Local de Atuação"
+                                icon={faTreeCity}
                                 type="text"
-                                label="Localização"
                                 placeholder="Cidade - Estado (Ex: São Paulo - SP)"
                                 errorMessage={errors.local?.message?.toString()}
                             />
@@ -124,6 +126,7 @@ export default function NGOForm({ initialData, onSuccess, onLoading }: Props) {
                                 styleDefault='default'
                                 type="text"
                                 label="Razão Social"
+                                icon={faBuildingNgo}
                                 placeholder="Ex: Associação Esperança "
                                 errorMessage={errors.name?.message?.toString()}
                             />
@@ -140,6 +143,7 @@ export default function NGOForm({ initialData, onSuccess, onLoading }: Props) {
                                 styleDefault='default'
                                 type="text"
                                 label="CNPJ"
+                                icon={faIdCard}
                                 placeholder="(Apenas números)"
                                 errorMessage={errors.cnpj?.message?.toString()}
                             />
@@ -174,7 +178,7 @@ export default function NGOForm({ initialData, onSuccess, onLoading }: Props) {
                             styleDefault='default'
                             type="text"
                             label="Descrição"
-                            placeholder="Descreva a missão, atividades e público-alvo da ONG..."
+                            placeholder="Descreva a missão, atividades e público-alvo da ONG... (Máx. 255 caracteres)"
                             errorMessage={errors.description?.message?.toString()}
                         />
                     )}
@@ -190,7 +194,8 @@ export default function NGOForm({ initialData, onSuccess, onLoading }: Props) {
                                 variant='default'
                                 styleDefault='default'
                                 type="text"
-                                label="Telefone"
+                                label="Telefone de Contato"
+                                icon={faPhone}
                                 placeholder="(DDD) 90000-0000"
                                 errorMessage={errors.phone_number?.message?.toString()}
                             />
@@ -205,13 +210,15 @@ export default function NGOForm({ initialData, onSuccess, onLoading }: Props) {
                                 variant='default'
                                 styleDefault='default'
                                 type="text"
-                                label="E-mail"
+                                label="E-mail de Contato"
+                                icon={faEnvelope}
                                 placeholder="contato@ong.exemplo.com"
                                 errorMessage={errors.contact_email?.message?.toString()}
                             />
                         )}
                     />
                 </div>
+
             </div>
         </form>
     );
