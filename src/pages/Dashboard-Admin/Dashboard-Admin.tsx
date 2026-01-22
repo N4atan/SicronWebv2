@@ -4,25 +4,23 @@ import { getAll as getAllUsers } from "../../services/user.service";
 import { User, NGO, Supplier, Product } from "../../interfaces";
 import { getAllOngs } from "../../services/ong.service";
 import { getAllSuppliers } from "../../services/supplier.service";
-import './Dashboard-Admin.css';
-
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAddressCard, faBorderAll, faBuildingNgo, faCubes, faSeedling, faTableCellsLarge, faTruckFast } from "@fortawesome/free-solid-svg-icons";
+import Aside from "../../components/Aside/Aside";
+import { faAddressCard, faCubes, faBuildingNgo, faTruckFast, faSeedling } from "@fortawesome/free-solid-svg-icons";
 import TabRegistro from "./Tabs/Tab-Registros/Tab-Registros";
 import TabOngs from "./Tabs/Tab-Ongs/Tab-Ongs";
 import TabFornecedores from "./Tabs/Tab-Fornecedores/Tab-Fornecedores";
 import TabProdutos from "./Tabs/Tab-Produtos/Tab-Produtos";
-
-
-
 import { getAllProducts } from "../../services/product.service";
-
-// ... (imports)
-
 
 export type EntityType = 'user' | 'ong' | 'supplier' | 'product';
 
 const opçõesAside = [
+    {
+        label: 'Visão Geral',
+        icon: faCubes,
+        value: 'geral',
+        onClick: () => alert('Em Desenvolvimento...')
+    },
     {
         label: 'Cadastros',
         icon: faAddressCard,
@@ -111,41 +109,11 @@ export default function DashboardAdmin() {
 
             <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
 
-                <aside style={{ width: '200px', backgroundColor: '#ffff', overflowY: 'auto', borderRight: '1px solid rgb(0, 0, 0, 0.1)' }}>
-
-                    <ul className="ul-tabs" >
-                        <li onClick={() => alert('Em Desenvolvimento...')}>
-                            <input type="radio" name="tab" id="tab-geral" />
-                            <label htmlFor="tab-geral">
-                                <FontAwesomeIcon icon={faCubes} />
-                                Visão Geral
-                            </label>
-                        </li>
-
-                        {opçõesAside.map((opção) => (
-                            <li
-                                key={opção.value}
-                                onClick={() => setTabActive(opção.value as any)}
-                                className={tabActive === opção.value ? 'active' : ''}
-                            >
-                                <input
-                                    type="radio"
-                                    name="tab"
-                                    id={`tab-${opção.value}`}
-                                    checked={tabActive === opção.value}
-                                    readOnly
-                                />
-                                <label htmlFor={`tab-${opção.value}`}>
-                                    <FontAwesomeIcon icon={opção.icon} />
-                                    {opção.label}
-                                </label>
-
-                            </li>
-                        ))}
-                    </ul>
-
-
-                </aside>
+                <Aside
+                    options={opçõesAside}
+                    activeTab={tabActive}
+                    setActiveTab={(val) => setTabActive(val as any)}
+                />
 
                 <section style={{ flex: 1, padding: '20px', overflowY: 'auto' }}>
 

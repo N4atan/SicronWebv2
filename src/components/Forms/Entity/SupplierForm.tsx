@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { Supplier } from "../../../interfaces";
+import { useState, useEffect } from "react";
+import { Supplier, UserRole } from "../../../interfaces";
+import { useAuth } from "../../../contexts/AuthContext";
 import { schema_updateSupplier, schema_supplier } from "../../../utils/supplierSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
@@ -20,18 +21,28 @@ type Props = {
 
 
 export default function SupplierForm({ onLoading, onSuccess, initialData }: Props) {
+    const { user } = useAuth();
     const isEdit = !!initialData;
+    const isDisabled = isEdit && user?.role !== UserRole.ADMIN;
+
     const schema = isEdit ? schema_updateSupplier : schema_supplier;
 
     const {
         control,
         handleSubmit,
+        reset,
         formState: { errors, isValid }
     } = useForm({
         resolver: zodResolver(schema),
         mode: 'all',
         defaultValues: (initialData || {}) as any
     });
+
+    useEffect(() => {
+        if (initialData) {
+            reset(initialData);
+        }
+    }, [initialData, reset]);
 
     const onSubmitCreate = async (data: z.infer<typeof schema_supplier>) => {
         try {
@@ -94,6 +105,7 @@ export default function SupplierForm({ onLoading, onSuccess, initialData }: Prop
                                 icon={faBuilding}
                                 placeholder="Ex: Supermercado Preço Bom Ltda"
                                 errorMessage={errors.companyName?.message?.toString()}
+                                disabled={isDisabled}
                             />
                         )}
                     />
@@ -111,6 +123,7 @@ export default function SupplierForm({ onLoading, onSuccess, initialData }: Prop
                                 icon={faIdCard}
                                 placeholder="(Apenas números)"
                                 errorMessage={errors.cnpj?.message?.toString()}
+                                disabled={isDisabled}
                             />
                         )}
                     />

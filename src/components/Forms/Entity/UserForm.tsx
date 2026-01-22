@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { ROLE_OPTIONS, schema_createUser, schema_updateUser } from "../../../utils/userSchemas";
@@ -19,16 +20,24 @@ export default function UserForm({ initialData, onSuccess, onLoading }: Props) {
     const schema = isEditing ? schema_updateUser : schema_createUser;
 
     const { user } = useAuth();
+    const isDisabled = isEditing && user?.role !== UserRole.ADMIN;
 
     const {
         control,
         handleSubmit,
+        reset,
         formState: { errors, isValid }
     } = useForm({
         resolver: zodResolver(schema),
         mode: 'all',
         defaultValues: (initialData || {}) as any
     })
+
+    useEffect(() => {
+        if (initialData) {
+            reset(initialData);
+        }
+    }, [initialData, reset]);
 
     const onSubmitUpdate = async (data: z.infer<typeof schema_updateUser>) => {
         onLoading(true);
@@ -93,6 +102,7 @@ export default function UserForm({ initialData, onSuccess, onLoading }: Props) {
                             type="text"
                             label="Nome de Usuário"
                             errorMessage={errors.username?.message?.toString()}
+                            disabled={isDisabled}
                         />
                     )}
                 />
@@ -108,27 +118,28 @@ export default function UserForm({ initialData, onSuccess, onLoading }: Props) {
                             type="email"
                             label="E-mail"
                             errorMessage={errors.email?.message?.toString()}
+                            disabled={isDisabled}
                         />
                     )}
                 />
-                { user?.role === UserRole.ADMIN && (
-                <Controller
-                    control={control}
-                    name="role"
-                    render={({ field }) => (
-                        <Input
-                            {...field}
-                            variant='selection'
-                            styleDefault='default'
-                            type="select"
-                            label="Tipo de Usuário"
-                            options={ROLE_OPTIONS}
-                            errorMessage={errors.role?.message?.toString()}
-                        />
-                    )}
-                />
+                {user?.role === UserRole.ADMIN && (
+                    <Controller
+                        control={control}
+                        name="role"
+                        render={({ field }) => (
+                            <Input
+                                {...field}
+                                variant='selection'
+                                styleDefault='default'
+                                type="select"
+                                label="Tipo de Usuário"
+                                options={ROLE_OPTIONS}
+                                errorMessage={errors.role?.message?.toString()}
+                            />
+                        )}
+                    />
                 )}
-                
+
                 <Controller
                     control={control}
                     name="password"

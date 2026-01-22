@@ -1,5 +1,7 @@
+import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Product } from "../../../interfaces";
+import { Product, UserRole } from "../../../interfaces";
+import { useAuth } from "../../../contexts/AuthContext";
 import { schema_createProduct, schema_updateProduct, CATEGORIES_OPTIONS } from "../../../utils/productSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "../../Inputs/Input/Input";
@@ -13,18 +15,28 @@ type Props = {
 }
 
 export default function ProductForm({ initialData, onSuccess, onLoading }: Props) {
+    const { user } = useAuth();
     const isEditing = !!initialData;
+    const isDisabled = isEditing && user?.role !== UserRole.ADMIN;
+
     const schema = isEditing ? schema_updateProduct : schema_createProduct;
 
     const {
         control,
         handleSubmit,
+        reset,
         formState: { errors, isValid }
     } = useForm({
         resolver: zodResolver(schema),
         mode: 'all',
         defaultValues: (initialData || {}) as any
     })
+
+    useEffect(() => {
+        if (initialData) {
+            reset(initialData);
+        }
+    }, [initialData, reset]);
 
     const onSubmitUpdate = async (data: z.infer<typeof schema_updateProduct>) => {
         onLoading(true);
@@ -85,6 +97,7 @@ export default function ProductForm({ initialData, onSuccess, onLoading }: Props
                             label="Nome do produto"
                             placeholder="Ex: Cesta Básica, Arroz 5kg..."
                             errorMessage={errors.name?.message?.toString()}
+                            disabled={isDisabled}
                         />
                     )}
                 />

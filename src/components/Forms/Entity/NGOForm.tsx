@@ -1,6 +1,8 @@
+import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
-import { NGO } from "../../../interfaces";
+import { NGO, UserRole } from "../../../interfaces";
+import { useAuth } from "../../../contexts/AuthContext";
 import { AREAS_OPTIONS, schema_ngo, schema_updateNgo } from "../../../utils/ngoSchemas";
 import Input from "../../Inputs/Input/Input";
 import z from "zod";
@@ -17,18 +19,28 @@ type Props = {
 
 
 export default function NGOForm({ initialData, onSuccess, onLoading }: Props) {
+    const { user } = useAuth();
     const isEditing = !!initialData;
+    const isDisabled = isEditing && user?.role !== UserRole.ADMIN;
+
     const schema = isEditing ? schema_updateNgo : schema_ngo;
 
     const {
         control,
         handleSubmit,
+        reset,
         formState: { errors, isValid }
     } = useForm({
         resolver: zodResolver(schema),
         mode: 'all',
         defaultValues: (initialData || {}) as any
     });
+
+    useEffect(() => {
+        if (initialData) {
+            reset(initialData);
+        }
+    }, [initialData, reset]);
 
     const onSubmitCreate = async (data: z.infer<typeof schema_ngo>) => {
         onLoading(true);
@@ -129,6 +141,7 @@ export default function NGOForm({ initialData, onSuccess, onLoading }: Props) {
                                 icon={faBuildingNgo}
                                 placeholder="Ex: Associação Esperança "
                                 errorMessage={errors.name?.message?.toString()}
+                                disabled={isDisabled}
                             />
                         )}
                     />
@@ -146,6 +159,7 @@ export default function NGOForm({ initialData, onSuccess, onLoading }: Props) {
                                 icon={faIdCard}
                                 placeholder="(Apenas números)"
                                 errorMessage={errors.cnpj?.message?.toString()}
+                                disabled={isDisabled}
                             />
                         )}
                     />
