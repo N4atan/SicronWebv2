@@ -78,3 +78,32 @@ export const updateProduct = async (productUuid: string, data: Partial<Product>)
 };
 
 
+export const updateNGOProduct = async (ngoProductUuid: string, data: Partial<CreateNGOProductDTO>): Promise<boolean> => {
+    try {
+        await api.patch(`/ngo-products/product/${ngoProductUuid}`, data);
+        return true;
+    } catch (error) {
+        console.error("Erro ao atualizar produto da ONG:", error);
+        return false;
+    }
+};
+
+export const addSupplierProduct = async (supplierUuid: string, data: any): Promise<any | null> => {
+    try {
+        const response = await api.post(`/supplier-products/${supplierUuid}/products`, data);
+        return response.data;
+    } catch (error) {
+        console.error("Erro ao adicionar produto do fornecedor:", error);
+        return null;
+    }
+};
+
+export const updateSupplierProduct = async (supplierProductUuid: string | number, data: any): Promise<boolean> => {
+    try {
+        await api.patch(`/supplier-products/product/${supplierProductUuid}`, data);
+        return true;
+    } catch (error) {
+        console.error("Erro ao atualizar produto do fornecedor:", error);
+        return false;
+    }
+};

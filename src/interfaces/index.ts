@@ -57,6 +57,7 @@ export interface NGO {
     creation_date?: string; // Backend sends Date, but via JSON it is string
 
     manager?: User;
+    manager_uuid?: string;
     employees?: User[];
     products?: NGOProduct[];
 }

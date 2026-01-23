@@ -21,6 +21,11 @@ const SelectionInput = ({ options, ...rest }: InputProps) => (
         {...rest} // Aqui entram onChange, value, name, etc.
     >
 
+        {rest.placeholder && (
+            <option value="" disabled selected hidden>
+                {rest.placeholder}
+            </option>
+        )}
         {options?.map((option, index) => (
             <option key={index} value={option}>
                 {option}

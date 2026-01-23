@@ -5,8 +5,8 @@ import App from "../App";
 import PageAuthentication from "../pages/Page-Authentication";
 import PagePerfil from "../pages/Page-Perfil";
 import PageONG from "../pages/Page-ONG";
-import DashboardONG from "../pages/Dashboard-ONG";
-import DashboardSupplier from "../pages/Dashboard-Supplier";
+import DashboardONG from "../pages/Dashboard-ONG/Dashboard-ONG";
+import DashboardSupplier from "../pages/Dashboard-Supplier/Dashboard-Supplier";
 import DashboardAdmin from "../pages/Dashboard-Admin/Dashboard-Admin";
 import PageSolicitarCadastro from "../pages/Page-SolicitarCadastro";
 import ExploreOngs from "../pages/ExploreOngs/ExploreOngs";
@@ -23,7 +23,7 @@ export default function AppRoutes() {
             <Route path='/perfil/me' element={<PagePerfil isMe={true} />} />
             <Route path='/explorar' element={<ExploreOngs />} />
             <Route path='/perfil/ong' element={<PageONG />} />
-            <Route path='/perfil/user' element={<PagePerfil />} /> 
+            <Route path='/perfil/user' element={<PagePerfil />} />
             <Route path='*' element={<PageNotFound />} />
 
             {/* Rotas Protegidas - Dashboards */}
@@ -62,7 +62,7 @@ export default function AppRoutes() {
                     </ProtectedRoute>
                 }
             />
-            
+
             <Route
                 path='/cadastro/supplier'
                 element={
