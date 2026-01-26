@@ -89,7 +89,7 @@ export default function TabRegistro({ onfreshData, isLoading, dataUsers, dataOng
             {/* Modal de Edição */}
             {isEditEntity && (
                 <EntityModal
-                    title="Editar Usuário"
+                    title={`Editar ${typeEntity === 'user' ? 'Usuário' : typeEntity === 'ong' ? 'ONG' : typeEntity === 'supplier' ? 'Fornecedor' : 'Produto'}`}
                     typeEntity={typeEntity}
                     entity={entityForEdit}
                     onClose={() => setIsEditEntity(false)}
@@ -97,7 +97,7 @@ export default function TabRegistro({ onfreshData, isLoading, dataUsers, dataOng
                 />
             )}
 
-            
+
 
             {/* Tabela de Usuários */}
             <Card
@@ -165,7 +165,7 @@ export default function TabRegistro({ onfreshData, isLoading, dataUsers, dataOng
                     <DynamicTable
                         typeData="ong" // Reuso temporário do layout ou precisamos de 'product' no DynamicTable
                         listData={dataProducts || []}
-                        onEdit={(obj) => alert('Edição de produto via tabela ainda não implementada')}
+                        onEdit={(obj) => handleClickForEdit(obj, 'product')}
                         // @ts-ignore
                         onDelete={(obj) => handleClickForDelete(obj, 'product')}
                     />

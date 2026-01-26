@@ -64,10 +64,31 @@ export default function SupplierForm({ onLoading, onSuccess, initialData }: Prop
         }
     }
 
-    // Ainda falta implementar a atualização 
     const onSubmitUpdate = async (data: z.infer<typeof schema_updateSupplier>) => {
-        console.log('Implementar atualização');
-        alert('Implementar atualização');
+        try {
+            onLoading(true);
+
+            if (!initialData?.uuid) {
+                alert("Erro: ID do fornecedor não encontrado para atualização.");
+                return;
+            }
+
+            const response = await updateSupplier(initialData.uuid, data);
+
+            if (!response) {
+                alert(errorSupplierService || "Erro ao atualizar Fornecedor");
+                return;
+            }
+
+            alert("Fornecedor atualizado com sucesso!");
+            onSuccess();
+
+        } catch (error) {
+            console.error(error);
+            alert("Erro ao atualizar Fornecedor.");
+        } finally {
+            onLoading(false);
+        }
     }
 
     return (

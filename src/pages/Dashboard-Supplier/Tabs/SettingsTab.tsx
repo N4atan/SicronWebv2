@@ -1,3 +1,4 @@
+import Button from "../../../components/Button/Button";
 import Card from "../../../components/Card/Card";
 import SupplierForm from "../../../components/Forms/Entity/SupplierForm";
 import { Supplier } from "../../../interfaces";
@@ -16,6 +17,14 @@ export default function SettingsTab({ supplier, onSuccess, onLoading }: Settings
                     initialData={supplier}
                     onSuccess={onSuccess}
                     onLoading={onLoading}
+                />
+
+                <Button
+                    variant='primary'
+                    text='Salvar Novas Informações'
+                    type='submit'
+                    form="entity-form"
+                    style={{ width: '100%', marginTop: '20px' }}
                 />
             </Card>
         </div>

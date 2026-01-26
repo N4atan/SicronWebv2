@@ -6,6 +6,7 @@ import UserForm from "./UserForm";
 import './EntityModal.css';
 import ProductForm from "./ProductForm";
 import NGOForm from "./NGOForm";
+import SupplierForm from "./SupplierForm";
 
 type Props = {
     title: string;
@@ -73,6 +74,14 @@ export default function EntityModal({ title, entity, typeEntity, parentUuid, ava
                     {typeEntity === 'ong' && (
                         <NGOForm
                             initialData={entity as NGO}
+                            onSuccess={handleSuccess}
+                            onLoading={setIsLoading}
+                        />
+                    )}
+
+                    {typeEntity === 'supplier' && (
+                        <SupplierForm
+                            initialData={entity as Supplier}
                             onSuccess={handleSuccess}
                             onLoading={setIsLoading}
                         />

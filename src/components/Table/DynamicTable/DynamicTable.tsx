@@ -2,6 +2,7 @@ import { faPencil, faTrash, faEllipsisVertical } from "@fortawesome/free-solid-s
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import Dropdown from "../../Dropdown/Dropdown";
+import { HEADER_MAP } from "../../../utils/tableTranslations"; // Import externo
 
 
 type Props = {
@@ -17,6 +18,7 @@ export default function DynamicTable(props: Props) {
 
     let listKeys = data.length > 0 ? Object.keys(data[0]) : [];
 
+
     // Remove keys indesejadas da visualização (Senha, IDs internos, Campos longos)
     const hiddenKeys = ['uuid', 'id', 'password', 'previousPassword', 'previous_password', 'manager_uuid'];
 
@@ -28,23 +30,6 @@ export default function DynamicTable(props: Props) {
         // Remove descrição longa que quebra o layout
         listKeys = listKeys.filter(key => !['description', 'objetivo'].includes(key));
     }
-
-
-    const HEADER_MAP: Record<string, string> = {
-        name: 'Razão Social',
-        trade_name: 'Nome Fantasia',
-        cnpj: 'CNPJ',
-        area: 'Área de Atuação',
-        wallet: 'Carteira',
-        local: 'Localização',
-        phone_number: 'Telefone',
-        contact_email: 'E-mail',
-        created_at: 'Criado em',
-        status: 'Status',
-        username: 'Usuário',
-        email: 'E-mail',
-        role: 'Perfil'
-    };
 
     return (
         <div style={{ width: '100%', overflowX: 'auto' }}>

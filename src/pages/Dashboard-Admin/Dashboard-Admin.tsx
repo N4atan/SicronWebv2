@@ -76,7 +76,7 @@ export default function DashboardAdmin() {
 
 
     return (
-        <main style={{ display: 'flex', overflow: 'hidden', height: '100vh' }}>
+        <main style={{ display: 'flex', overflow: 'hidden', height: 'calc(100vh - 70px)' }}>
             <Aside
                 options={[
                     { label: 'Visão Geral', icon: faHome, value: 'home' },

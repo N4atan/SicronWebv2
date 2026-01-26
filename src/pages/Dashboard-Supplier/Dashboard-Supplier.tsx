@@ -72,7 +72,7 @@ export default function DashboardSupplier() {
     );
 
     return (
-        <main style={{ display: 'flex', overflow: 'hidden', height: '100vh' }}>
+        <main style={{ display: 'flex', overflow: 'hidden', height: 'calc(100vh - 70px)' }}>
             <Aside
                 options={[
                     { label: "Início", icon: faHome, value: 'home' },
