@@ -1,56 +1,99 @@
 .how-section {
-    padding: 4rem 2rem;
-    background-color: white;
+    padding: 3rem 2rem;
+    /* Reduced from 6rem */
+    background-color: var(--white);
+    /* Force white */
     text-align: center;
+    overflow: hidden;
 }
 
-.how-title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-    color: #222;
+.how-header {
+    margin-bottom: 2.5rem;
+    /* Reduced from 5rem */
 }
 
-.how-subtitle {
-    font-size: 1.1rem;
-    font-weight: 400;
-    margin-bottom: 3.1rem;
-    color: #555;
-}
-
-.guia-container {
-    display: flex;
-    justify-content: center;
-    gap: 3rem;
-    flex-wrap: wrap;
-    /* responsivo para telas pequenas */
-}
-
-.guia-passo {
-    background-color: white;
-    padding: 1.5rem;
-    border-radius: 12px;
-    max-width: 350px;
-    text-align: center;
-}
-
-.card-icon {
-    width: 50px;
-    height: 80px;
-    object-fit: contain;
+.title-section {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--text-primary);
     margin-bottom: 1rem;
 }
 
-.card-text {
-    font-size: 1.4rem;
-    color: #222;
-    font-weight: 500;
-    margin: 10px;
+.subtitle-section {
+    font-size: 1.125rem;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
 }
 
-.card-subtitle {
+.steps-container {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+    position: relative;
+    padding-top: 1rem;
+    flex-wrap: wrap;
+}
+
+/* Timeline Line Removed - No ::before here */
+
+.step-card {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+    padding: 0 1rem;
+    min-width: 250px;
+}
+
+.icon-wrapper {
+    width: 100px;
+    height: 100px;
+    background-color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    /* Reduced from 1.5rem */
+    color: var(--text-primary)  ;
+    font-size: 3rem;
+    transition: transform 0.3s ease;
+    z-index: 2;
+}
+
+/* Timeline Dot Removed - No ::after here */
+
+.step-card:hover .icon-wrapper {
+    transform: translateY(-5px);
+}
+
+.step-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    /* Reduced from 0.75rem */
+    color: var(--text-primary);
+    margin-top: 0;
+}
+
+.step-desc {
     font-size: 1rem;
-    font-weight: 400;
-    margin-bottom: 3.1rem;
-    color: #555;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    max-width: 280px;
+}
+
+@media (max-width: 768px) {
+    .steps-container {
+        flex-direction: column;
+        gap: 3rem;
+    }
+
+    .icon-wrapper {
+        margin-bottom: 1rem;
+    }
 }

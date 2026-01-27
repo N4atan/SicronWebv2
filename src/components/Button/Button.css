@@ -1,6 +1,6 @@
 .btn-primary {
-    background: #2bb673;
-    color: white;
+    background: var(--primary-color);
+    color: var(--white);
 
     padding: 10px;
 
@@ -13,19 +13,17 @@
     transition: background-color 0.3s;
 }
 
-
-
 .btn-primary:hover {
-    background: #25a15e;
+    background: var(--primary-dark);
     cursor: pointer;
 }
 
 .btn-secondary {
-    background-color: #fff;
+    background-color: var(--white);
 
     padding: 10px;
 
-    color: #333;
+    color: var(--text-primary);
     font-size: clamp(12px, 0.8rem, 1rem);
     font-weight: bold;
 
@@ -51,5 +49,5 @@ button:disabled {
 
 button:disabled:hover {
     background-color: #ccc !important;
-    /* Mantém a cor original no hover */
+    /* Maintain original color on hover */
 }

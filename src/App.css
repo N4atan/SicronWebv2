@@ -1,4 +1,42 @@
-/* garante coluna (header no topo) e evita centralizar tudo */
+:root {
+  --primary-color: #10b981;
+  /* Emerald Green */
+  --primary-light: #34d399;
+  /* Lighter Green */
+  --primary-dark: #059669;
+  /* Darker Green */
+  --secondary-color: #064e3b;
+  /* Dark Forest Green for accents */
+  --text-primary: #1f2937;
+  /* Dark Grey */
+  --text-secondary: #4b5563;
+  /* Medium Grey */
+  --bg-light: #f9fafb;
+  /* Light Grey BG */
+  --white: #ffffff;
+  --font-main: 'Inter', system-ui, -apple-system, sans-serif;
+  --radius-md: 12px;
+  --radius-lg: 24px;
+}
+
+body {
+  font-family: var(--font-main);
+  color: var(--text-primary);
+  background-color: var(--white);
+  line-height: 1.6;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--text-primary);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
 .App {
   min-height: 100vh;
   display: flex;

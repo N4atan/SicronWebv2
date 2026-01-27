@@ -14,7 +14,7 @@ export default function App() {
   return (
     <div className="App">
       <RevealOnScroll><HeroSection /></RevealOnScroll>
-      <RevealOnScroll><ImpactSection /></RevealOnScroll>
+      {/* <RevealOnScroll><ImpactSection /></RevealOnScroll> */}
       <RevealOnScroll><OurImpact /></RevealOnScroll>
       <RevealOnScroll><HowItWorksSection /></RevealOnScroll>
       <RevealOnScroll><ContactSection /></RevealOnScroll>

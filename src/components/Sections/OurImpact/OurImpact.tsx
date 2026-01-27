@@ -1,12 +1,6 @@
 import "./OurImpact.css";
-
-import imgMain from "../../../assets/images/mulheres.jpg";
-import img1 from    "../../../assets/images/Kid.jpg";
-import img2 from    "../../../assets/images/homem.png";
-import img3 from    "../../../assets/images/mundo-origami-papel.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBoxOpen, faFileInvoiceDollar, faHandHoldingHeart, faShieldHalved } from "@fortawesome/free-solid-svg-icons";
-
 
 export default function OurImpact() {
 
@@ -35,37 +29,31 @@ export default function OurImpact() {
 
     return (
         <section className="our-impact">
+            <div className="impact-container">
+                <div className="impact-text-side">
+                    <h2 className="title-section">Conexão e Transparência</h2>
+                    <p className="impact-description">
+                        O SICRON nasceu para revolucionar a solidariedade. Mais do que uma plataforma digital,
+                        criamos uma conexão direta com as necessidades urgentes das instituições.
+                        <br /><br />
+                        Permitimos que você escolha exatamente o impacto que deseja causar —
+                        financiando a compra de itens específicos, desde alimentos até materiais essenciais,
+                        com a garantia de que chegarão a quem precisa.
+                    </p>
+                </div>
 
-            <div className="impact-text">
-                <h2 className="title-section">Conexão e Transparência</h2>
-
-                <p>
-                    O SICRON nasceu para revolucionar a solidariedade, atuando como a ponte segura entre a sua vontade de ajudar e quem realmente precisa. Mais do que uma plataforma digital, criamos uma conexão direta com as necessidades urgentes das instituições, permitindo que você escolha exatamente o impacto que deseja causar — financiando a compra de itens específicos, desde alimentos até materiais essenciais.
-                </p>
-
-                <div className="impact-cards">
-                    { dataCards.map((data) => (
-                        <div className="card">
-                            <div><FontAwesomeIcon icon={data.icon} /></div>
-                            <span>{data.title}</span>
-                            <span>{data.sub}</span>
+                <div className="impact-grid-side">
+                    {dataCards.map((data, index) => (
+                        <div className="feature-card" key={index}>
+                            <div className="feature-icon">
+                                <FontAwesomeIcon icon={data.icon} />
+                            </div>
+                            <h3 className="feature-title">{data.title}</h3>
+                            <p className="feature-sub">{data.sub}</p>
                         </div>
                     ))}
                 </div>
-
-                
             </div>
-
-            <div className="impact-media">
-                <img src={imgMain} alt="Main impact" className="main-impact-img" />
-
-                <div className="impact-images">
-                    <img src={img1} alt="/" />
-                    <img src={img2} alt="/" />
-                    <img src={img3} alt="/" />
-                </div>
-            </div>
-
         </section>
     );
 }

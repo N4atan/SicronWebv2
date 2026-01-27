@@ -1,29 +1,32 @@
 import "./HowItWorksSection.css";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHandHoldingHeart, faSeedling, faRotate } from "@fortawesome/free-solid-svg-icons";
+import { useState } from "react";
 
-
-const guia_passos = [
+const steps = [
     {
         icon: faSeedling,
-        title: 'ONGs Cadastram suas Necessidades',
-        subtitle: 'Organizações,especificando quantidades e detalhes.'
-    }, {
+        title: 'ONGs Cadastram',
+        description: 'Organizações especificam suas necessidades e quantidades.',
+        animation: 'bounce'
+    },
+    {
         icon: faHandHoldingHeart,
-        title: 'Doadores Escolhem Como Ajudar',
-        subtitle: 'Navegue pelo catálogo de ONGs, filtre por região e selecione os itens que deseja patrocinar.'
-    }, {
+        title: 'Doadores Escolhem',
+        description: 'Navegue pelo catálogo, filtre por causa e escolha quem ajudar.',
+        animation: 'bounce'
+    },
+    {
         icon: faRotate,
-        title: 'A Plataforma Cuida de Tudo',
-        subtitle: 'Seu dinheiro vira historia que fica na plataforma, onde a ONG escolhe fornecedores com preços expostos, faz a compra e reúnice os itens.'
+        title: 'Plataforma Cuida',
+        description: 'Garantimos a compra e logística, transformando doação em item entregue.',
+        animation: 'spin'
     }
-
 ]
 
-
-
 export default function HowItWorksSection() {
+    const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
     return (
         <section className="how-section" id='how-section'>
             <div className="how-header">
@@ -33,22 +36,25 @@ export default function HowItWorksSection() {
                 </p>
             </div>
 
-            <div className="guia-container">
-                
-                { guia_passos.map((step, index) => (
-                    <div className="guia-passo" key={index}>
-                        <FontAwesomeIcon icon={step.icon} className="card-icon"/>
-
-                        <h3 className="card-text">
-                            { step.title }
-                        </h3>
-
-                        <p className="card-subtitle">
-                            { step.subtitle }
-                        </p>
+            <div className="steps-container">
+                {steps.map((step, index) => (
+                    <div
+                        className="step-card"
+                        key={index}
+                        onMouseEnter={() => setHoveredIndex(index)}
+                        onMouseLeave={() => setHoveredIndex(null)}
+                    >
+                        <div className="icon-wrapper">
+                            <FontAwesomeIcon
+                                icon={step.icon}
+                                bounce={hoveredIndex === index && step.animation === 'bounce'}
+                                spin={hoveredIndex === index && step.animation === 'spin'}
+                            />
+                        </div>
+                        <h3 className="step-title">{step.title}</h3>
+                        <p className="step-desc">{step.description}</p>
                     </div>
                 ))}
-
             </div>
         </section>
     );
