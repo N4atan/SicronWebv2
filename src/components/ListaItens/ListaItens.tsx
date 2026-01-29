@@ -6,18 +6,11 @@ import { faHeart } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import './ListaItens.css'
 
-type Product = {
-    tag: string;
-    name: string;
-    price: number;
-    description: string;
-    qtd: number;
-    collected?: number;
-};
+import { ViewProduct } from "../../interfaces";
 
 type Props = {
-    datalist: Product[];
-    onAddCart: (newitem: Product) => void;
+    datalist: ViewProduct[];
+    onAddCart: (newitem: ViewProduct) => void;
 };
 
 export default function ListaItens(props: Props) {

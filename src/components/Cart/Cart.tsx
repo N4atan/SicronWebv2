@@ -4,17 +4,13 @@ import Card from "../Card/Card";
 import './Cart.css'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-type Product = {
-    tag: string;
-    name: string;
-    price: number;
-    description: string;
-    qtd: number
-};
+import { ViewProduct } from "../../interfaces";
 
 type Props = {
-    datalist: Array<Product>;
+    datalist: Array<ViewProduct>;
     onClearCart: () => void;
+    onCheckout?: () => void;
+    isLoading?: boolean;
 }
 
 export default function Cart(props: Props) {
@@ -58,7 +54,13 @@ export default function Cart(props: Props) {
                     </div>
 
 
-                    <Button variant="primary" text="Finalizar Doação" style={{ width: '100%', marginBottom: '0.8rem' }} />
+                    <Button
+                        variant="primary"
+                        text={props.isLoading ? "Processando..." : "Finalizar Doação"}
+                        style={{ width: '100%', marginBottom: '0.8rem', opacity: props.isLoading ? 0.7 : 1 }}
+                        onClick={props.onCheckout}
+                        disabled={props.isLoading}
+                    />
                     <Button variant="secondary" text="Limpar Caixinha" style={{ width: '100%' }} onClick={props.onClearCart} />
                 </>
             )}

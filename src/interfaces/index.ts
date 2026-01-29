@@ -102,3 +102,25 @@ export interface User {
 
     [key: string]: any;
 }
+
+export interface DonationItem {
+    product_uuid: string;
+    quantity: number;
+}
+
+export interface DonationPayload {
+    ngo_uuid: string;
+    items: DonationItem[];
+    fileUrl: string;
+}
+
+// Interface visual para exibição (Page-ONG/ListaItens)
+export interface ViewProduct {
+    uuid: string;
+    tag: string;
+    name: string;
+    price: number;
+    description: string;
+    qtd: number; // Meta da ONG
+    collected?: number; // Já doado
+}
