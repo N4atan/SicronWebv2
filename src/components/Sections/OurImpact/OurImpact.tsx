@@ -1,71 +1,57 @@
 import "./OurImpact.css";
 
 import imgMain from "../../../assets/images/mulheres.jpg";
-import img1 from    "../../../assets/images/Kid.jpg";
-import img2 from    "../../../assets/images/homem.png";
-import img3 from    "../../../assets/images/mundo-origami-papel.jpg";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBoxOpen, faFileInvoiceDollar, faHandHoldingHeart, faShieldHalved } from "@fortawesome/free-solid-svg-icons";
+import img1 from "../../../assets/images/Kid.jpg";
+import img2 from "../../../assets/images/homem.png";
+import img3 from "../../../assets/images/mundo-origami-papel.jpg"; // Placeholder if needed
 
+const featuredNGOs = [
+    {
+        image: imgMain,
+        tag: 'Social',
+        title: 'Mãos que Ajudam',
+        desc: 'Liderando esforços de inclusão social e distribuição de alimentos em comunidades vulneráveis.',
+        link: '#'
+    },
+    {
+        image: img1,
+        tag: 'Educação',
+        title: 'Futuro Brilhante',
+        desc: 'Mentoria e desenvolvimento de habilidades para jovens desprivilegiados.',
+        link: '#'
+    },
+    {
+        image: img2,
+        tag: 'Saúde',
+        title: 'Cuidar Mais',
+        desc: 'Apoio direto e serviços especializados para idosos que vivem sozinhos.',
+        link: '#'
+    },
+];
 
 export default function OurImpact() {
-
-    const dataCards = [
-        {
-            icon: faShieldHalved,
-            title: 'ONGs Verificadas',
-            sub: 'Todas as instituições passam por rigorosa auditoria.'
-        },
-        {
-            icon: faFileInvoiceDollar,
-            title: 'Transparência Total',
-            sub: 'Acesso completo às notas fiscais e relatórios.'
-        },
-        {
-            icon: faBoxOpen,
-            title: 'Itens Entregues',
-            sub: 'Garantimos que o item comprado chegue ao local certo.'
-        },
-        {
-            icon: faHandHoldingHeart,
-            title: 'Conexão Direta',
-            sub: 'Crie laços reais com as comunidades que você apoia.'
-        }
-    ]
-
     return (
-        <section className="our-impact">
+        <section className="featured-section">
+            <div className="featured-header">
+                <h2 className="title-section">ONGs em Destaque</h2>
+                <a href="/explorar" className="view-all-link">Ver todas &rarr;</a>
+            </div>
 
-            <div className="impact-text">
-                <h2 className="title-section">Conexão e Transparência</h2>
-
-                <p>
-                    O SICRON nasceu para revolucionar a solidariedade, atuando como a ponte segura entre a sua vontade de ajudar e quem realmente precisa. Mais do que uma plataforma digital, criamos uma conexão direta com as necessidades urgentes das instituições, permitindo que você escolha exatamente o impacto que deseja causar — financiando a compra de itens específicos, desde alimentos até materiais essenciais.
-                </p>
-
-                <div className="impact-cards">
-                    { dataCards.map((data) => (
-                        <div className="card">
-                            <div><FontAwesomeIcon icon={data.icon} /></div>
-                            <span>{data.title}</span>
-                            <span>{data.sub}</span>
+            <div className="ngo-grid">
+                {featuredNGOs.map((ngo, index) => (
+                    <div className="ngo-card" key={index}>
+                        <div className="ngo-image-container">
+                            <span className="ngo-tag">{ngo.tag}</span>
+                            <img src={ngo.image} alt={ngo.title} />
                         </div>
-                    ))}
-                </div>
-
-                
+                        <div className="ngo-content">
+                            <h3 className="ngo-title">{ngo.title}</h3>
+                            <p className="ngo-desc">{ngo.desc}</p>
+                            <a href={ngo.link} className="ngo-link">Saiba Mais</a>
+                        </div>
+                    </div>
+                ))}
             </div>
-
-            <div className="impact-media">
-                <img src={imgMain} alt="Main impact" className="main-impact-img" />
-
-                <div className="impact-images">
-                    <img src={img1} alt="/" />
-                    <img src={img2} alt="/" />
-                    <img src={img3} alt="/" />
-                </div>
-            </div>
-
         </section>
     );
 }

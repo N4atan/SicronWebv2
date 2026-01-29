@@ -4,37 +4,43 @@ import Button from "../../Button/Button";
 import { useNavigate } from "react-router-dom";
 
 export default function HeroSection() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   return (
-    <section className="hero-section">
-      <div className="hero-text">
+    <section
+      className="hero-section"
+      style={{ backgroundImage: `url(${saImage})` }}
+    >
+      <div className="hero-overlay"></div>
+
+      <div className="hero-content">
         <h1 className="hero-title">
-          Conectando doadores<br />a quem realmente precisa
+          Conectando<br />
+          Comunidades à<br />
+          Solidariedade.
         </h1>
-        
+
         <p className="hero-subtitle">
-          Faça a diferença na vida de pessoas de forma segura e transparente. O SICRON garante que sua ajuda chegue ao destino certo, transformando doações digitais em impacto real.
+          Empoderando pessoas para encontrar apoio e organizações para estender seu alcance. Descubra ONGs locais ou solicite serviços vitais com apenas alguns cliques.
         </p>
 
-        <div className="container-buttons-hero">
-          <Button 
-            variant={'primary'} text={"Conhecer Causas"}  style={{height: '100%'}}
+        <div className="hero-buttons">
+          <Button
+            variant={'primary'}
+            text={"Explorar ONGs"}
+            className="btn-hero-primary"
             onClick={() => navigate('/explorar')}
           />
 
-          <Button 
+          <Button
             variant={'secondary'}
-            text={'Como funciona ?'}
-            style={{height: '100%'}}
-            onClick={() => document.getElementById('how-section')?.scrollIntoView({ behavior: 'smooth'})}
+            text={'Solicitar Ajuda'}
+            className="btn-hero-secondary"
+            onClick={() => document.getElementById('how-section')?.scrollIntoView({ behavior: 'smooth' })}
           />
         </div>
-      </div>
-
-      <div className="hero-image">
-        <img src={saImage} alt="Doadores ajudando pessoas"/>
       </div>
     </section>
   );
 }
+
