@@ -162,7 +162,7 @@ export default function PageONG() {
     ], [ongEmail, ongPhone]);
 
 
-    const handleAddToCart = (itemClicado: Product) => {
+    const handleAddToCart = (itemClicado: ViewProduct) => {
 
         setCartList(prevItems => {
 
