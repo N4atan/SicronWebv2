@@ -1,35 +1,37 @@
 import "./OurImpact.css";
-
+import { useEffect, useState } from "react";
+import { getAllOngs } from "../../../services/ong.service";
+import { NGO } from "../../../interfaces";
 import imgMain from "../../../assets/images/mulheres.jpg";
 import img1 from "../../../assets/images/Kid.jpg";
 import img2 from "../../../assets/images/homem.png";
 import img3 from "../../../assets/images/mundo-origami-papel.jpg"; // Placeholder if needed
+import OngRequestCard from "../../OngRequestCard/OngRequestCard";
 
-const featuredNGOs = [
-    {
-        image: imgMain,
-        tag: 'Social',
-        title: 'Mãos que Ajudam',
-        desc: 'Liderando esforços de inclusão social e distribuição de alimentos em comunidades vulneráveis.',
-        link: '#'
-    },
-    {
-        image: img1,
-        tag: 'Educação',
-        title: 'Futuro Brilhante',
-        desc: 'Mentoria e desenvolvimento de habilidades para jovens desprivilegiados.',
-        link: '#'
-    },
-    {
-        image: img2,
-        tag: 'Saúde',
-        title: 'Cuidar Mais',
-        desc: 'Apoio direto e serviços especializados para idosos que vivem sozinhos.',
-        link: '#'
-    },
-];
+const images = [img1, img3, img2];
 
 export default function OurImpact() {
+    const [ngos, setNgos] = useState<NGO[]>([]);
+
+    useEffect(() => {
+        const fetchOngs = async () => {
+            // Buscando direto as aprovadas via filtro da API
+            const approvedOngs = await getAllOngs({ status: 'approved' });
+
+            // Ordenando por data de criação (mais recentes primeiro)
+            const sortedOngs = approvedOngs.sort((a, b) => {
+                const dateA = a.creation_date ? new Date(a.creation_date).getTime() : 0;
+                const dateB = b.creation_date ? new Date(b.creation_date).getTime() : 0;
+                return dateB - dateA;
+            });
+
+            // Pegando apenas as 3 últimas
+            setNgos(sortedOngs.slice(0, 3));
+        };
+
+        fetchOngs();
+    }, []);
+
     return (
         <section className="featured-section">
             <div className="featured-header">
@@ -37,21 +39,15 @@ export default function OurImpact() {
                 <a href="/explorar" className="view-all-link">Ver todas &rarr;</a>
             </div>
 
-            <div className="ngo-grid">
-                {featuredNGOs.map((ngo, index) => (
-                    <div className="ngo-card" key={index}>
-                        <div className="ngo-image-container">
-                            <span className="ngo-tag">{ngo.tag}</span>
-                            <img src={ngo.image} alt={ngo.title} />
-                        </div>
-                        <div className="ngo-content">
-                            <h3 className="ngo-title">{ngo.title}</h3>
-                            <p className="ngo-desc">{ngo.desc}</p>
-                            <a href={ngo.link} className="ngo-link">Saiba Mais</a>
-                        </div>
-                    </div>
-                ))}
-            </div>
+            {ngos.map((ngo) => (
+                <div className="ngo-grid">
+                    <OngRequestCard 
+                        key={ngo.uuid}
+                        ongRequest={ngo}
+                    />
+                </div>
+            ))}
+            
         </section>
     );
 }

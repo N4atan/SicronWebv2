@@ -15,7 +15,7 @@ export default function App() {
     <div className="App">
       <RevealOnScroll><HeroSection /></RevealOnScroll>
       <RevealOnScroll><HowItWorksSection /></RevealOnScroll>
-      <RevealOnScroll><ImpactSection /></RevealOnScroll>
+      {/*<RevealOnScroll><ImpactSection /></RevealOnScroll>*/}
       <RevealOnScroll><OurImpact /></RevealOnScroll>
       <RevealOnScroll><ContactSection /></RevealOnScroll>
       <RevealOnScroll><Footer /></RevealOnScroll>

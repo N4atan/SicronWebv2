@@ -77,7 +77,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         console.log("Logout realizado com sucesso.");
         setUser(null);
         localStorage.removeItem('@App:user_email');
-        window.location.href = '/login';
+        window.location.href = '/entrar';
     };
 
     return (

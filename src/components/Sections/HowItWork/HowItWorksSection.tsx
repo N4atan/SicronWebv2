@@ -1,23 +1,23 @@
 import "./HowItWorksSection.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass, faHandshake, faChartLine } from "@fortawesome/free-solid-svg-icons";
+import { faMapPin, faUsers, faHandHoldingHeart, faMapLocationDot } from "@fortawesome/free-solid-svg-icons";
 
-// Adaptation to Portuguese to match project language
+
 const steps = [
     {
-        icon: faMagnifyingGlass,
+        icon: faMapLocationDot,
         title: 'Descubra',
-        subtitle: 'Encontre organizações e causas que ressoam com suas necessidades específicas ou valores pessoais usando nossa ferramenta inteligente.'
+        subtitle: 'Localize ONGs e projetos sociais próximos a você. Utilize nossos filtros para encontrar causas que precisam do seu apoio ou serviços que atendam às suas necessidades.'
     },
     {
-        icon: faHandshake,
-        title: 'Conecte-se',
-        subtitle: 'Fale diretamente com prestadores de serviço ou candidate-se a vagas de voluntariado. Nós cuidamos da verificação para sua segurança.'
+        icon: faHandHoldingHeart,
+        title: 'Conecte e Apoie',
+        subtitle: 'Estabeleça um contato direto com as instituições para entender as necessidades reais de cada uma. Seja através de doações materiais ou apoio logístico, nossa plataforma facilita o diálogo para que sua ajuda chegue ao destino certo sem burocracia.'
     },
     {
-        icon: faChartLine,
-        title: 'Impacto',
-        subtitle: 'Veja a diferença tangível que seu envolvimento faz na comunidade através de atualizações em tempo real e histórias de sucesso.'
+        icon: faUsers,
+        title: 'Fortaleça a Rede',
+        subtitle: 'Acompanhe o ciclo da solidariedade e veja como a união entre doadores e organizações transforma a realidade local. Ao utilizar o Sicron, você ajuda a fortalecer a infraestrutura social da comunidade, garantindo que o apoio seja constante e sustentável para quem mais precisa.'
     }
 ]
 
@@ -25,8 +25,8 @@ export default function HowItWorksSection() {
     return (
         <section className="how-section" id='how-section'>
             <div className="how-header">
-                <h2 className="how-title">Como funciona</h2>
-                <p className="how-subtitle">
+                <h2 className="title-section">Como funciona</h2>
+                <p className="subtitle-section">
                     Nossa plataforma simplifica o processo de encontrar e receber ajuda em três passos simples.
                 </p>
             </div>

@@ -26,16 +26,13 @@ export default function HeroSection() {
 
         <div className="hero-buttons">
           <Button
-            variant={'primary'}
-            text={"Explorar ONGs"}
-            className="btn-hero-primary"
-            onClick={() => navigate('/explorar')}
+            variant='primary'
+            text="Explorar ONGs"
           />
 
           <Button
-            variant={'secondary'}
-            text={'Solicitar Ajuda'}
-            className="btn-hero-secondary"
+            variant='secondary'
+            text='Solicitar Ajuda'
             onClick={() => document.getElementById('how-section')?.scrollIntoView({ behavior: 'smooth' })}
           />
         </div>

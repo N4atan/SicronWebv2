@@ -16,7 +16,7 @@ body,
 body {
   font-family: 'Poppins', Inter, system-ui, -apple-system, sans-serif;
   /* Poppins como primária, conforme @import */
-  background: #fafafa;
+  background: #fdfdfd;
   color: #222;
   scroll-behavior: smooth;
 }

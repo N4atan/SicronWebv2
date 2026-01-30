@@ -112,7 +112,8 @@ export default function PageONG() {
                     qtd: ngoProduct.quantity || 1,
                     collected: ngoProduct.collected_quantity || 0
                 };
-            });
+            }).filter(item => (item.collected || 0) < item.qtd); // Filtra itens com meta batida
+
             setProductsList(mappedProducts);
         } else {
             console.warn("ONG carregada sem lista de produtos:", ong);
@@ -172,7 +173,7 @@ export default function PageONG() {
 
             if (itemExistente) {
 
-                if (itemExistente.qtd >= itemClicado.qtd) {
+                if (itemExistente.collected! >= itemClicado.qtd) {
                     alert('Quantidade necessária máxima atingida!');
                     return prevItems;
                 }
