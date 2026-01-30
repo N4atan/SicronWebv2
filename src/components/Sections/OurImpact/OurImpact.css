@@ -1,5 +1,5 @@
 .featured-section {
-    padding: 5rem 2rem;
+    padding: 2rem 2rem 5rem;
     background-color: white;
     max-width: 1280px;
     margin: 0 auto;
@@ -8,22 +8,18 @@
 .featured-header {
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
-    margin-bottom: 3rem;
+    align-items: center;
+    margin-bottom: 2rem;
     flex-wrap: wrap;
-    gap: 1rem;
 }
 
-.featured-header .subtitle-section {
-    color: var(--text-light);
-    max-width: 600px;
-    margin-right: auto;
-}
+
 
 .view-all-link {
-    color: var(--primary-color);
+    color: #2bb673;
     font-weight: 600;
-    text-decoration: none;
+    text-decoration: underline;
+    text-underline-offset: 4px;
 }
 
 .ngo-grid {
@@ -49,75 +45,3 @@
     }
 }
 
-.ngo-card {
-    display: flex;
-    flex-direction: column;
-    /* Clean minimal card, maybe no border? Reference has images and text below. */
-}
-
-.ngo-image-container {
-    position: relative;
-    height: 200px;
-    border-radius: 12px;
-    overflow: hidden;
-    margin-bottom: 1rem;
-}
-
-.ngo-image-container img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s;
-}
-
-.ngo-card:hover .ngo-image-container img {
-    transform: scale(1.05);
-}
-
-.ngo-tag {
-    position: absolute;
-    top: 1rem;
-    left: 1rem;
-    background: white;
-    padding: 0.25rem 0.75rem;
-    border-radius: 4px;
-    /* Tag style */
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    color: var(--text-dark);
-}
-
-.ngo-content {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-
-.ngo-title {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--text-dark);
-    margin-bottom: 0.5rem;
-}
-
-.ngo-desc {
-    color: var(--text-light);
-    font-size: 0.95rem;
-    line-height: 1.5;
-    margin-bottom: 1rem;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    line-clamp: 3;
-    /* Standard property */
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-
-.ngo-link {
-    color: var(--text-dark);
-    font-weight: 600;
-    font-size: 0.9rem;
-    text-decoration: underline;
-    text-underline-offset: 4px;
-}
