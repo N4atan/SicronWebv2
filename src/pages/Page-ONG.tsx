@@ -11,19 +11,12 @@ import Cart from "../components/Cart/Cart";
 import ListaItens from "../components/ListaItens/ListaItens";
 import { useLocation, useSearchParams } from "react-router-dom";
 import { getOngByUuid } from "../services/ong.service";
-import { NGO } from "../interfaces";
+import { createDonation } from "../services/donation.service";
+import { NGO, ViewProduct, DonationPayload } from "../interfaces";
 import { Oval } from "react-loader-spinner";
 import { dataFormatter } from "../utils/dataFormatter";
 import RevealOnScroll from "../components/RevealOnScroll/RevealOnScroll";
 
-type Product = {
-    tag: string;
-    name: string;
-    price: number;
-    description: string;
-    qtd: number;
-    collected?: number; // Opcional para compatibilidade
-};
 
 export default function PageONG() {
     const location = useLocation();
@@ -35,61 +28,63 @@ export default function PageONG() {
     const [ongData, setOngData] = useState<NGO | undefined>(location.state?.ong as NGO | undefined);
 
 
-    const [productsList, setProductsList] = useState<Product[]>([]);
+    const [productsList, setProductsList] = useState<ViewProduct[]>([]);
 
     const [isLoading, setIsLoading] = useState<boolean>(!ongData && (!!uuidParam || !!nameParam));
+    const [isDonating, setIsDonating] = useState(false);
 
-    useEffect(() => {
+    const fetchData = async () => {
+        // Só mostra loading (geral) se não tiver dados nenhum
+        if (!ongData) setIsLoading(true);
 
-        if (ongData) {
-            updateProductsFromOng(ongData);
-            return;
-        }
+        try {
+            if (uuidParam) {
+                // Prioridade 1: Busca por UUID
+                const data = await getOngByUuid(uuidParam);
+                if (data) {
+                    setOngData(data);
+                    updateProductsFromOng(data);
+                }
 
-        const fetchData = async () => {
-            setIsLoading(true);
-            try {
-                if (uuidParam) {
-                    // Prioridade 1: Busca por UUID
-                    const data = await getOngByUuid(uuidParam);
-                    if (data) {
-                        setOngData(data);
-                        updateProductsFromOng(data);
-                    }
+            } else if (nameParam) {
+                // Prioridade 2: Busca por Nome Fantasia
+                const { getAllOngs } = await import("../services/ong.service");
 
-                } else if (nameParam) {
-                    // Prioridade 2: Busca por Nome Fantasia
-                    const { getAllOngs } = await import("../services/ong.service");
+                const result = await getAllOngs({ trade_name: nameParam });
 
-                    const result = await getAllOngs({ trade_name: nameParam });
-
-                    if (result && result.length > 0) {
-
-                        setOngData(result[0]);
-                        // Se não tiver products depth, talvez precise de busca detalhada
-                        // Mas por enquanto assumimos que vem ou que getOngByUuid do click resolveria
-                        if (result[0].uuid) {
-                            const detailed = await getOngByUuid(result[0].uuid);
-                            if (detailed) {
-                                setOngData(detailed);
-                                updateProductsFromOng(detailed);
-                            } else {
-                                updateProductsFromOng(result[0]);
-                            }
+                if (result && result.length > 0) {
+                    // Se não tiver products depth, preciso de busca detalhada
+                    if (result[0].uuid) {
+                        const detailed = await getOngByUuid(result[0].uuid);
+                        if (detailed) {
+                            setOngData(detailed);
+                            updateProductsFromOng(detailed);
+                        } else {
+                            setOngData(result[0]);
+                            updateProductsFromOng(result[0]);
                         }
+                    } else {
+                        setOngData(result[0]);
+                        updateProductsFromOng(result[0]);
                     }
                 }
-            } catch (err) {
-                console.error("Erro ao buscar ONG:", err);
-            } finally {
-                setIsLoading(false);
             }
-        };
+        } catch (err) {
+            console.error("Erro ao buscar ONG:", err);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        // Se tiver dados iniciais, popula a lista, mas NÃO retorna, pois precisamos validar/atualizar os UUIDs via fetch
+        if (ongData) {
+            updateProductsFromOng(ongData);
+        }
 
         if (uuidParam || nameParam) {
             fetchData();
         }
-
     }, [uuidParam, nameParam]);
 
 
@@ -109,6 +104,7 @@ export default function PageONG() {
                 }
 
                 return {
+                    uuid: ngoProduct.product?.uuid || "",
                     name: ngoProduct.product?.name || "Item",
                     description: ngoProduct.product?.description || "Ajude com a doação deste item.",
                     tag: ngoProduct.product?.category || "Geral",
@@ -125,7 +121,7 @@ export default function PageONG() {
 
     const [tab, setTab] = useState('sobre'); // sobre | doar | contato
 
-    const [cartlist, setCartList] = useState(Array<Product>());
+    const [cartlist, setCartList] = useState(Array<ViewProduct>());
 
 
     const ongName = ongData?.trade_name || ongData?.name || "ONG Genérica";
@@ -166,7 +162,7 @@ export default function PageONG() {
     ], [ongEmail, ongPhone]);
 
 
-    const handleAddToCart = (itemClicado: Product) => {
+    const handleAddToCart = (itemClicado: ViewProduct) => {
 
         setCartList(prevItems => {
 
@@ -197,6 +193,46 @@ export default function PageONG() {
     const handleClearCart = () => {
         setCartList([]);
     }
+
+    const handleCheckout = async () => {
+        if (!ongData || !ongData.uuid) {
+            alert("Erro: ID da ONG não encontrado.");
+            return;
+        }
+
+        if (cartlist.length === 0) {
+            alert("Sua sacola está vazia.");
+            return;
+        }
+
+        setIsDonating(true);
+
+        const itemsPayload = cartlist.map(item => ({
+            product_uuid: item.uuid,
+            quantity: item.qtd
+        }));
+
+        try {
+            const success = await createDonation({
+                ngo_uuid: ongData.uuid,
+                items: itemsPayload,
+                fileUrl: "https://example.com/receipt-placeholder.jpg"
+            });
+
+            if (success) {
+                alert("Doação realizada com sucesso! Obrigado.");
+                setCartList([]);
+                await fetchData(); // Refresh data
+            } else {
+                alert("Houve um erro ao processar sua doação. Tente novamente.");
+            }
+        } catch (error) {
+            console.error("Checkout error:", error);
+            alert("Erro ao processar doação.");
+        } finally {
+            setIsDonating(false);
+        }
+    };
 
     if (isLoading) {
         return (
@@ -288,7 +324,12 @@ export default function PageONG() {
                     {tab == 'doar' && (
                         <>
                             <aside>
-                                <Cart datalist={cartlist} onClearCart={handleClearCart} />
+                                <Cart
+                                    datalist={cartlist}
+                                    onClearCart={handleClearCart}
+                                    onCheckout={handleCheckout}
+                                    isLoading={isDonating}
+                                />
                             </aside>
 
                             <main>

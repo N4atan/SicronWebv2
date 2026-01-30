@@ -4,10 +4,11 @@ import Button from "../../../../components/Button/Button";
 import Modal from "../../../../components/Modal/Modal";
 import Input from "../../../../components/Inputs/Input/Input";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faMagnifyingGlass, faPencil } from "@fortawesome/free-solid-svg-icons";
 import { getAllProducts, createProduct, deleteProduct } from "../../../../services/product.service";
 import { Product } from "../../../../interfaces";
 import { Oval } from "react-loader-spinner";
+import EntityModal from "../../../../components/Forms/Entity/EntityModal";
 
 export default function TabProdutos() {
     const [products, setProducts] = useState<Product[]>([]);
@@ -16,7 +17,7 @@ export default function TabProdutos() {
 
     // Modal
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [newProduct, setNewProduct] = useState({ name: "", category: "", description: "" });
+    const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
     const [isSaving, setIsSaving] = useState(false);
 
     const loadProducts = async () => {
@@ -42,27 +43,6 @@ export default function TabProdutos() {
         else alert("Erro ao deletar produto.");
     };
 
-    const handleSave = async () => {
-        if (!newProduct.name || !newProduct.category) {
-            alert("Preencha nome e categoria.");
-            return;
-        }
-        setIsSaving(true);
-        const result = await createProduct({
-            ...newProduct,
-            uuid: "" // Backend gera
-        });
-
-        if (result) {
-            alert("Produto criado!");
-            setIsModalOpen(false);
-            setNewProduct({ name: "", category: "", description: "" });
-            loadProducts();
-        } else {
-            alert("Erro ao criar produto.");
-        }
-        setIsSaving(false);
-    };
 
     return (
         <Card titleSection="Gestão de Produtos Globais">
@@ -82,7 +62,7 @@ export default function TabProdutos() {
                 </div>
 
                 <div style={{ marginBottom: '15px' }}>
-                    <Button variant="primary" text="+ Novo Produto" onClick={() => setIsModalOpen(true)} />
+                    <Button variant="primary" text="+ Novo Produto" onClick={() => { setSelectedProduct(null); setIsModalOpen(true); }} />
                 </div>
             </div>
 
@@ -106,6 +86,16 @@ export default function TabProdutos() {
                                 <td style={{ padding: '10px', color: '#666' }}>{p.description}</td>
                                 <td style={{ padding: '10px' }}>
                                     <button
+                                        onClick={() => {
+                                            setSelectedProduct(p);
+                                            setIsModalOpen(true);
+                                        }}
+                                        style={{ border: 'none', background: 'transparent', color: '#666', cursor: 'pointer', marginRight: '10px' }}
+                                        title="Editar"
+                                    >
+                                        <FontAwesomeIcon icon={faPencil} />
+                                    </button>
+                                    <button
                                         onClick={() => handleDelete(p.uuid)}
                                         style={{ border: 'none', background: 'transparent', color: '#d33', cursor: 'pointer' }}
                                         title="Excluir"
@@ -125,57 +115,13 @@ export default function TabProdutos() {
             )}
 
             {isModalOpen && (
-                <Modal
-                    title="Novo Produto Global"
-                    pText="Salvar"
-                    sText="Cancelar"
-                    pEvent={handleSave}
-                    sEvent={() => setIsModalOpen(false)}
-                    xEvent={() => setIsModalOpen(false)}
-                    isLoading={isSaving}
-                >
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-                        <Input
-                            label="Nome do Produto"
-                            placeholder="Ex: Cesta Básica, Arroz 5kg..."
-                            value={newProduct.name}
-                            onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
-                        />
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-                            <label style={{ fontWeight: '500', fontSize: '14px', color: '#555' }}>Categoria</label>
-                            <select
-                                style={{
-                                    padding: '10px 15px',
-                                    borderRadius: '8px',
-                                    border: '1px solid #ddd',
-                                    fontSize: '14px',
-                                    outline: 'none',
-                                    backgroundColor: '#fff',
-                                    cursor: 'pointer'
-                                }}
-                                value={newProduct.category}
-                                onChange={(e) => setNewProduct({ ...newProduct, category: e.target.value })}
-                            >
-                                <option value="" disabled>Selecione uma categoria...</option>
-                                <option value="Alimentação">Alimentação</option>
-                                <option value="Higiene">Higiene</option>
-                                <option value="Limpeza">Limpeza</option>
-                                <option value="Vestuário">Vestuário</option>
-                                <option value="Educação">Educação</option>
-                                <option value="Saúde">Saúde</option>
-                                <option value="Utensílios">Utensílios</option>
-                                <option value="Outros">Outros</option>
-                            </select>
-                        </div>
-                        <Input
-                            label="Descrição (Opcional)"
-                            placeholder="Detalhes do produto..."
-                            variant="text-area"
-                            value={newProduct.description}
-                            onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })}
-                        />
-                    </div>
-                </Modal>
+                <EntityModal
+                    title={selectedProduct ? "Editar Produto" : "Novo Produto Global"}
+                    typeEntity="product"
+                    entity={selectedProduct}
+                    onClose={() => setIsModalOpen(false)}
+                    onRefresh={() => loadProducts()}
+                />
             )}
 
         </Card>

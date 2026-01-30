@@ -7,131 +7,98 @@ import { registerSupplier, errorSupplierService } from "../services/supplier.ser
 import Footer from "../components/Footer/Footer";
 import Button from "../components/Button/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBuildingNgo, faBriefcase } from "@fortawesome/free-solid-svg-icons";
-import ContainerPage from "../components/ContainerPage/ContainerPage";
+
 
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import NGOForm from "../components/Forms/Entity/NGOForm";
+import { Oval } from "react-loader-spinner";
+import { faFileLines } from "@fortawesome/free-regular-svg-icons";
+import SupplierForm from "../components/Forms/Entity/SupplierForm";
 
-export default function PageSolicitarCadastro() {
-    const location = useLocation();
+export default function PageSolicitarCadastro({type}: {type: 'supplier' | 'ngo'}) {
+
     const navigate = useNavigate();
     const { user } = useAuth();
+    const [isLoading, setIsLoading] = useState(false);
 
 
-    const type = location.state?.type === 'supplier' ? 'supplier' : 'ong';
     const isSupplier = type === 'supplier';
+    
 
-    const [currentFields, setCurrentFields] = useState(() => {
-        // @ts-ignore
-        const schema = ENTITY_SCHEMAS[type] || ENTITY_SCHEMAS['ong'];
-        return schema.map((field: any) => ({ ...field, value: '' }));
-    });
-
-
-    useEffect(() => {
-        // @ts-ignore
-        const schema = ENTITY_SCHEMAS[type] || ENTITY_SCHEMAS['ong'];
-        setCurrentFields(schema.map((field: any) => ({ ...field, value: '' })));
-    }, [type]);
-
-    const handleChange = (fieldName: string, value: any) => {
-        setCurrentFields((prevFields: any) =>
-            prevFields.map((f: any) =>
-                f.name === fieldName ? { ...f, value } : f
-            )
-        );
-    };
-
-    const handleSave = async () => {
-        const data = currentFields.reduce((acc: any, field: any) => {
-            acc[field.name] = field.type === 'number' ? Number(field.value) : field.value;
-            return acc;
-        }, {});
-
-        console.log(`Enviando solicitação de ${type}:`, data);
-
-        try {
-            let success = false;
-            let errorMessage = "";
-
-            if (isSupplier) {
-                success = await registerSupplier(data);
-                errorMessage = errorSupplierService;
-            } else {
-                success = await registerOng(data);
-                errorMessage = errorOngService;
-            }
-
-            if (!success) {
-                alert(errorMessage || `Erro desconhecido ao cadastrar ${isSupplier ? 'Fornecedor' : 'ONG'}.`);
-                return;
-            }
-
-            alert(`Pedido de Cadastro Realizado com Sucesso!`);
-            // Redireciona para evitar reenvio ou para dashboard se aprovado auto (mas aqui é solicitação)
-            navigate('/');
-        } catch (e: any) {
-            console.error(e);
-            alert("Erro inesperado na aplicação.");
-        }
+    const handleSuccess = () => {
+        alert('Cadastro realizado com sucesso!');
+        alert('Agora, aguarde a aprovação da equipe do Sicron!.');
+        navigate('/');
     }
+
 
     return (
         <>
             <Card
-                style={{ maxWidth: '800px', margin: '2rem auto 1rem', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}
-            >
-                <div
-                    style={{ backgroundColor: '#eee', padding: '10px', borderRadius: '5px' }}
-                >
-                    <FontAwesomeIcon icon={isSupplier ? faBriefcase : faBuildingNgo} size="2x" color="" />
-                </div>
+                style={{ maxWidth: '700px', margin: '2rem auto 5rem' }}
+            >   
+                <div style={{display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', gap: '0.5rem'}}>                    
+                    <div style={{display: 'flex', alignItems: 'center', backgroundColor: '#eee', borderRadius: '5px', padding: '1rem'}}>
+                        <FontAwesomeIcon icon={faFileLines} size="xl" />
+                    </div>
 
-                <p style={{ fontSize: '28px', fontWeight: '500' }}>
-                    Solicitar Cadastro de {isSupplier ? 'Fornecedor' : 'ONG'}
-                </p>
+                    <h1>Cadastro de Parceiros - <strong style={{color: '#2bb673'}}>{isSupplier ? 'Fornecedor' : 'ONG'}</strong></h1>
+
+                    { isSupplier ? (
+                        <p>Cadastre seu negócio para se tornar um fornecedor parceiro do Sicron</p>
+                    ) : (
+                        <p>Informe os dados da sua ONG para começar a receber doações.</p>
+                    )}                    
+                </div>
+                
+                <div style={{width: '100%', backgroundColor: 'rgba(43, 182, 115, 0.2)', borderRadius: '5px', borderLeft: '4px solid #2bb673', padding: '1rem', margin: '1.5rem 0'}}>
+                    <p style={{fontSize: '1rem', color: '#2bb673', fontWeight: 'bold'}}>Orientações Importantes</p>
+
+                    <p style={{fontSize: '0.75rem'}}>Após o envio, nossa equipe irá revisar as informações e entrar em contato para validar o cadastro da sua ONG. Este processo pode levar até 5 dias úteis.</p>
+                </div>
+                
+                { isLoading && (
+                    <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%'}}>
+                        <Oval
+                            height={100}
+                            width={100}
+                            color="#2bb673"
+                            ariaLabel="oval-loading"
+                            wrapperClass={""}
+                            wrapperStyle={{}}
+                        />
+                    </div>
+                )}
+
+                
+                { !isLoading && (
+                    <>
+                        { isSupplier ? (
+                            <SupplierForm
+                                onLoading={setIsLoading}
+                                onSuccess={handleSuccess}   
+                            />
+                        ) : (
+                            <NGOForm
+                                onLoading={setIsLoading}
+                                onSuccess={handleSuccess}
+                            />
+                        )}
+
+                        <Button
+                            variant="primary"
+                            type="submit"
+                            form="entity-form"
+                            text="Enviar Solicitação"
+                            style={{width: '100%', marginTop: '1rem'}}
+                        />
+                    </>
+                )}
+
             </Card>
 
-            <ContainerPage variant='a-left'>
-                <aside>
-                    <Card titleSection="Orientações">
-                        <p>
-                            Após o envio, nossa equipe irá revisar as informações e entrar em contato para validar o cadastro da sua {isSupplier ? 'empresa' : 'organização'}.
-                            Este processo pode levar até 5 dias úteis.
-                        </p>
-                    </Card>
-                </aside>
 
-                <main>
-                    <Card
-                        titleSection={`Informações da ${isSupplier ? 'Empresa' : 'Organização'}`}
-                        subtitleSection="Todos os campos são obrigatórios."
-                    >
-                        <form style={{ display: 'flex', flexDirection: 'column', gap: '30px' }}>
-                            {currentFields.map((field: any) => (
-                                <Input
-                                    key={field.name}
-                                    variant={field.variant as 'default' | 'text-area' | 'selection' || (field.type === 'textarea' ? 'text-area' : 'default')}
-                                    label={field.label}
-                                    placeholder={field.placeholder}
-                                    type={field.type}
-                                    value={field.value}
-                                    options={field.options}
-                                    onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => handleChange(field.name, e.target.value)}
-                                />
-                            ))}
-
-                            <Button
-                                variant={"primary"}
-                                text="Enviar Solicitação"
-                                type="button"
-                                onClick={() => handleSave()}
-                            />
-                        </form>
-                    </Card>
-                </main>
-            </ContainerPage>
             <Footer />
         </>
     )

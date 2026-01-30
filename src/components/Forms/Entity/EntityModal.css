@@ -1,0 +1,88 @@
+/* EntityUpdate.css */
+
+/* O formulário ocupa todo o espaço disponível dentro do Card */
+/* O formulário ocupa todo o espaço disponível dentro do Card */
+.form-entity {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    /* Garante que o form ocupe a altura do pai */
+    overflow: hidden;
+    /* Impede scroll duplo */
+}
+
+/* A ÁREA DOS INPUTS QUE ROLA */
+.container-body {
+    flex: 1;
+    /* Ocupa todo espaço livre */
+    min-height: 0;
+    /* Truque essencial para scroll aninhado */
+    overflow-y: auto;
+    /* Scroll automático */
+
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 5px;
+    /* Respiro visual */
+}
+
+/* Scrollbar Bonitinha (Opcional) */
+.container-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.container-body::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.container-body::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 10px;
+}
+
+/* A ÁREA DOS BOTÕES FIXA NO RODAPÉ */
+.container-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+
+    padding-top: 20px;
+    margin-top: 10px;
+    border-top: 1px solid #f0f0f0;
+    /* Linha separadora suave */
+
+    flex-shrink: 0;
+    /* Não deixa os botões serem esmagados */
+}
+
+/* --- Layout Grid Responsivo --- */
+.row-col2, .row-col3 {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Versão PC (telas maiores que 768px) */
+@media (min-width: 768px) {
+    .row-col2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        /* Duas colunas iguais */
+        gap: 20px;
+    }
+
+    .row-col3 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        
+        gap: 20px;
+    }
+
+    .row-col4 {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        /* Duas colunas iguais */
+        gap: 20px;
+    }
+}

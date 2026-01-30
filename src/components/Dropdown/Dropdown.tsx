@@ -30,14 +30,36 @@ export default function Dropdown({ trigger, items }: DropdownProps) {
         };
     }, []);
 
+    const [coords, setCoords] = useState({ top: 0, left: 0 });
+
+    const handleOpen = (e: React.MouseEvent) => {
+        if (isOpen) return setIsOpen(false);
+
+        const rect = e.currentTarget.getBoundingClientRect();
+        setCoords({
+            top: rect.bottom + 5,
+            left: rect.left - 100 // Adjust as needed to align right/left
+        });
+        setIsOpen(true);
+    };
+
     return (
         <div className="dropdown-container" ref={dropdownRef}>
-            <div className="dropdown-trigger" onClick={() => setIsOpen(!isOpen)}>
+            <div className="dropdown-trigger" onClick={handleOpen}>
                 {trigger}
             </div>
 
             {isOpen && (
-                <div className="dropdown-menu">
+                <div
+                    className="dropdown-menu"
+                    style={{
+                        position: 'fixed',
+                        top: coords.top,
+                        left: coords.left,
+                        zIndex: 9999,
+                        width: 'max-content'
+                    }}
+                >
                     <ul className="dropdown-list">
                         {items.map((item, index) => (
                             <li

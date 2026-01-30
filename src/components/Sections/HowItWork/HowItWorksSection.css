@@ -1,56 +1,97 @@
 .how-section {
-    padding: 4rem 2rem;
-    background-color: white;
-    text-align: center;
+    padding: 5rem 2rem;
+    background-color: #f8fafc;
+    /* Very light slate/gray */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.how-header {
+    text-align: left;
+    width: 100%;
+    max-width: 1280px;
+    margin-bottom: 3rem;
 }
 
 .how-title {
-    font-size: 1.5rem;
+    font-size: 2rem;
     font-weight: 700;
-    margin-bottom: 0.5rem;
-    color: #222;
-}
-
-.how-subtitle {
-    font-size: 1.1rem;
-    font-weight: 400;
-    margin-bottom: 3.1rem;
-    color: #555;
-}
-
-.guia-container {
-    display: flex;
-    justify-content: center;
-    gap: 3rem;
-    flex-wrap: wrap;
-    /* responsivo para telas pequenas */
-}
-
-.guia-passo {
-    background-color: white;
-    padding: 1.5rem;
-    border-radius: 12px;
-    max-width: 350px;
-    text-align: center;
-}
-
-.card-icon {
-    width: 50px;
-    height: 80px;
-    object-fit: contain;
+    color: var(--text-dark);
     margin-bottom: 1rem;
 }
 
-.card-text {
-    font-size: 1.4rem;
-    color: #222;
-    font-weight: 500;
-    margin: 10px;
+.how-subtitle {
+    color: var(--text-light);
+    max-width: 600px;
+    line-height: 1.6;
 }
 
-.card-subtitle {
-    font-size: 1rem;
-    font-weight: 400;
-    margin-bottom: 3.1rem;
-    color: #555;
+.how-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    /* 280px is good for most mobiles */
+    gap: 2rem;
+    width: 100%;
+    max-width: 1280px;
+}
+
+@media (max-width: 640px) {
+    .how-section {
+        padding: 3rem 1.5rem;
+    }
+
+    .how-grid {
+        grid-template-columns: 1fr;
+        /* Force single column on mobile */
+    }
+}
+
+.how-card {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
+    /* Subtle shadow */
+    border: 1px solid #e2e8f0;
+    transition: transform 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+}
+
+.how-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+}
+
+.how-icon-wrapper {
+    background-color: #dcfce7;
+    /* Light green bg */
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+}
+
+.how-icon {
+    color: var(--primary-color);
+    font-size: 1.25rem;
+}
+
+.how-card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 0.75rem;
+}
+
+.how-card-text {
+    color: var(--text-light);
+    line-height: 1.6;
+    font-size: 0.95rem;
 }

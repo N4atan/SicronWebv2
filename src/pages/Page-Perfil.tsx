@@ -17,6 +17,7 @@ import { useAuth } from "../contexts/AuthContext";
 import Button from "../components/Button/Button";
 import EntityUpdate from "../components/Forms/EntityUpdate/EntityUpdate";
 import HistoryCard from "../components/HistoryCard/HistoryCard";
+import EntityModal from "../components/Forms/Entity/EntityModal";
 
 // ... (imports)
 
@@ -35,7 +36,7 @@ const historyActivities = [
     },
 ]
 
-interface PagePerfilProps {
+type PagePerfilProps = {
     isMe?: boolean;
 }
 
@@ -103,10 +104,6 @@ export default function PagePerfil({ isMe = false }: PagePerfilProps) {
 
         fetchData();
     }, [searchParams, isMe, authUser, authLoading]);
-
-
-
-    console.log(user)
 
 
     const getRoleInfo = (u: Partial<User>) => {
@@ -200,9 +197,10 @@ export default function PagePerfil({ isMe = false }: PagePerfilProps) {
                 </ContainerPage>
             )}
             {isEditing && user && (
-                <EntityUpdate
+                <EntityModal
+                    title="Editar Perfil"
                     entity={user}
-                    typeEntity="user_profile"
+                    typeEntity="user"
                     onClose={() => setIsEditing(false)}
                     onRefresh={handleRefresh}
                 />

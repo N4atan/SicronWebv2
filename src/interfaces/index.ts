@@ -19,7 +19,17 @@ export interface Product {
     name: string;
     description?: string;
     category?: string;
-    supplierProducts?: any[]; // Keep as any[] regarding existing frontend service
+    supplierProducts?: SupplierProduct[];
+    ngoProducts?: any[]; // Defined in Backend as NGOProduct[] but skipping deep nesting for now if unused
+}
+
+export interface SupplierProduct {
+    id: number;
+    supplier?: Supplier;
+    product?: Product;
+    price: number;
+    availableQuantity: number;
+    avgDeliveryTimeDays: number;
 }
 
 export interface NGOProduct {
@@ -27,6 +37,7 @@ export interface NGOProduct {
     quantity: number;
     notes?: string;
     product: Product;
+    ngo?: NGO;
 }
 
 export interface NGO {
@@ -44,9 +55,9 @@ export interface NGO {
     wallet?: number;
     status?: ApprovalStatus | string;
     creation_date?: string; // Backend sends Date, but via JSON it is string
-    created_at?: string; // Legacy support if needed, but should prefer creation_date matching backend
 
     manager?: User;
+    manager_uuid?: string;
     employees?: User[];
     products?: NGOProduct[];
 }
@@ -58,6 +69,7 @@ export interface Supplier {
     tradeName: string;
     cnpj: string;
     contactEmail: string;
+
     phone?: string;
     address?: string;
     city?: string;
@@ -67,10 +79,12 @@ export interface Supplier {
     municipalRegistration?: string;
 
     status?: ApprovalStatus | string;
-    manager_uuid?: string; // Frontend specific for filtering/creation
+    manager_uuid?: string;
 
     manager?: User;
     employees?: User[];
+    products?: SupplierProduct[];
+    paymentReceipts?: any[];
 }
 
 export interface User {
@@ -80,7 +94,6 @@ export interface User {
     email?: string;
     password?: string;
     role?: UserRole;
-    created_at?: string;
 
     managedNGO?: NGO;
     managedSupplier?: Supplier;
@@ -88,4 +101,26 @@ export interface User {
     employedSuppliers?: Supplier[];
 
     [key: string]: any;
+}
+
+export interface DonationItem {
+    product_uuid: string;
+    quantity: number;
+}
+
+export interface DonationPayload {
+    ngo_uuid: string;
+    items: DonationItem[];
+    fileUrl: string;
+}
+
+// Interface visual para exibição (Page-ONG/ListaItens)
+export interface ViewProduct {
+    uuid: string;
+    tag: string;
+    name: string;
+    price: number;
+    description: string;
+    qtd: number; // Meta da ONG
+    collected?: number; // Já doado
 }

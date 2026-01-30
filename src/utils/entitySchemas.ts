@@ -54,3 +54,5 @@ export const ENTITY_SCHEMAS = {
         { name: 'expiration_date', label: 'Validade (Dias)', type: 'number', placeholder: 'Dias' }
     ]
 };
+
+
