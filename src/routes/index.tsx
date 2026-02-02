@@ -21,7 +21,7 @@ export default function AppRoutes() {
             <Route path="/entrar" element={<PageAuthentication />} />
             <Route path='/perfil' element={<PagePerfil />} />
             <Route path='/perfil/me' element={<PagePerfil isMe={true} />} />
-            <Route path='/explorar' element={<ExploreOngs />} />
+            <Route path='/ongs' element={<ExploreOngs />} />
             <Route path='/perfil/ong' element={<PageONG />} />
             <Route path='/perfil/user' element={<PagePerfil />} />
             <Route path='*' element={<PageNotFound />} />

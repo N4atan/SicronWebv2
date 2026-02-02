@@ -95,20 +95,15 @@ export default function PageONG() {
             // @ts-ignore
             const mappedProducts = ong.products.map((ngoProduct: any) => {
 
-                let avgPrice = 0;
-                const sp = ngoProduct.product?.supplierProducts;
-                if (sp && Array.isArray(sp) && sp.length > 0) {
-                    const prices = sp.map((s: any) => Number(s.price));
-                    const sum = prices.reduce((a: number, b: number) => a + b, 0);
-                    avgPrice = sum / prices.length;
-                }
+                // Direct Price from the Linked Supplier Offer
+                const directPrice = Number(ngoProduct.supplierProduct?.price || 0);
 
                 return {
                     uuid: ngoProduct.product?.uuid || "",
                     name: ngoProduct.product?.name || "Item",
                     description: ngoProduct.product?.description || "Ajude com a doação deste item.",
                     tag: ngoProduct.product?.category || "Geral",
-                    price: avgPrice,
+                    price: directPrice,
                     qtd: ngoProduct.quantity || 1,
                     collected: ngoProduct.collected_quantity || 0
                 };

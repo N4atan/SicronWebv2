@@ -36,7 +36,7 @@ export default function OurImpact() {
         <section className="featured-section">
             <div className="featured-header">
                 <h2 className="title-section">ONGs em Destaque</h2>
-                <a href="/explorar" className="view-all-link">Ver todas &rarr;</a>
+                <a href="/ongs" className="view-all-link">Ver todas &rarr;</a>
             </div>
 
             {ngos.map((ngo) => (

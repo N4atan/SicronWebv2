@@ -11,6 +11,7 @@ import EntityModal from "../../components/Forms/Entity/EntityModal";
 import HomeTab from "./Tabs/HomeTab";
 import OffersTab from "./Tabs/OffersTab";
 import SettingsTab from "./Tabs/SettingsTab";
+import CampaignsTab from "./Tabs/CampaignsTab";
 
 export default function DashboardSupplier() {
     const { user } = useAuth();
@@ -77,7 +78,7 @@ export default function DashboardSupplier() {
                 options={[
                     { label: "Início", icon: faHome, value: 'home' },
                     { label: 'Ofertas', icon: faBoxOpen, value: 'ofertas' },
-                    { label: 'Vendas', icon: faTruckFast, value: 'vendas', onClick: () => alert('Em Desenvolvimento...') },
+                    { label: 'Campanhas', icon: faTruckFast, value: 'campanhas' },
                     { label: 'Equipe', icon: faUsers, value: 'equipe', onClick: () => alert('Em Desenvolvimento...') },
                     { label: 'Configurações', icon: faCogs, value: 'settings' }
                 ]}
@@ -100,6 +101,10 @@ export default function DashboardSupplier() {
                         onEdit={handleEditItem}
                         onAddClick={() => setIsAddModalOpen(true)}
                     />
+                )}
+
+                {tabActive === 'campanhas' && (
+                    <CampaignsTab supplier={supplier} />
                 )}
 
                 {tabActive === 'settings' && (

@@ -10,7 +10,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement | HTMLTe
     label?: string;
     icon?: IconDefinition;
     sizeStyle?: 'default' | 'compact';
-    options?: string[] | readonly string[];
+    options?: string[] | readonly string[] | { label: string; value: string | number }[];
     errorMessage?: string;
 }
 
@@ -26,11 +26,16 @@ const SelectionInput = ({ options, ...rest }: InputProps) => (
                 {rest.placeholder}
             </option>
         )}
-        {options?.map((option, index) => (
-            <option key={index} value={option}>
-                {option}
-            </option>
-        ))}
+        {options?.map((option, index) => {
+            const isObject = typeof option === 'object';
+            const value = isObject ? (option as any).value : option;
+            const label = isObject ? (option as any).label : option;
+            return (
+                <option key={index} value={value}>
+                    {label}
+                </option>
+            )
+        })}
     </select>
 )
 

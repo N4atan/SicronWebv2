@@ -38,6 +38,8 @@ export interface NGOProduct {
     notes?: string;
     product: Product;
     ngo?: NGO;
+    active: boolean;
+    collected_quantity: number;
 }
 
 export interface NGO {

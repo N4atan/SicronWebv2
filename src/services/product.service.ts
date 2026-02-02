@@ -107,3 +107,13 @@ export const updateSupplierProduct = async (supplierProductUuid: string | number
         return false;
     }
 };
+
+export const getPartnerCampaigns = async (supplierUuid: string): Promise<NGOProduct[]> => {
+    try {
+        const response = await api.get(`/ngo-products/supplier/${supplierUuid}`);
+        return response.data;
+    } catch (error) {
+        console.error("Erro ao buscar campanhas parceiras:", error);
+        return [];
+    }
+};

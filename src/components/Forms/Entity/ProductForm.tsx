@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import { Product, UserRole } from "../../../interfaces";
 import { useAuth } from "../../../contexts/AuthContext";
 import { schema_createProduct, schema_updateProduct, schema_ngoProduct, schema_updateNgoProduct, schema_supplierProduct, schema_updateSupplierProduct, CATEGORIES_OPTIONS } from "../../../utils/productSchema";
@@ -19,7 +19,9 @@ type Props = {
 
 export default function ProductForm({ initialData, onSuccess, onLoading, typeEntity = 'product', parentUuid, availableOptions = [] }: Props) {
     const { user } = useAuth();
-    const isEditing = !!initialData;
+    // Fix: check if it has ID to consider it editing. 
+    // Just passing partial data (like name) for creation shouldn't trigger edit mode.
+    const isEditing = !!(initialData && (initialData.uuid || initialData.id));
     const isDisabled = isEditing && user?.role !== UserRole.ADMIN && typeEntity === 'product'; // Only verify admin for global products
 
     let schema: any = isEditing ? schema_updateProduct : schema_createProduct;
@@ -40,6 +42,24 @@ export default function ProductForm({ initialData, onSuccess, onLoading, typeEnt
         mode: 'all',
         defaultValues: (initialData || {}) as any
     })
+
+    // Watch for Name selection to determine Max Qty
+    const selectedNameValue = useWatch({ control, name: 'name' });
+
+    let maxQuantity = 999999;
+
+    if (typeEntity === 'ngoProduct' && !isEditing && selectedNameValue) {
+        if (selectedNameValue.includes("::")) {
+            const [_, spId] = selectedNameValue.split("::");
+            for (const prod of (availableOptions || [])) {
+                const foundSp = prod.supplierProducts?.find((sp: any) => String(sp.id) === String(spId));
+                if (foundSp) {
+                    maxQuantity = foundSp.availableQuantity;
+                    break;
+                }
+            }
+        }
+    }
 
     useEffect(() => {
         if (initialData) {
@@ -110,8 +130,40 @@ export default function ProductForm({ initialData, onSuccess, onLoading, typeEnt
         }
     }
 
+    // Prepare Options for Direct Offers
+    let offerOptions: any[] = [];
+    if (typeEntity === 'ngoProduct' && !isEditing) {
+        // Flatten available products into offers
+        offerOptions = (availableOptions || []).flatMap(prod => {
+            const offers = prod.supplierProducts || [];
+            if (offers.length === 0) return []; // Should not happen due to Dashboard filter but safe check
+
+            return offers.map((sp: any) => ({
+                label: `${prod.name} - ${sp.supplier?.trade_name || 'Fornecedor'} (R$ ${Number(sp.price).toFixed(2)}) - Disp: ${sp.availableQuantity}`,
+                value: `${prod.name}::${sp.id}` // Composite Key
+            }));
+        });
+    }
+
     return (
-        <form id='entity-form' onSubmit={handleSubmit((isEditing ? onSubmitUpdate : onSubmitCreate) as any)}>
+        <form id='entity-form' onSubmit={handleSubmit((data) => {
+            // Intercept submit to clean data? 
+            // Actually, data will contain 'supplier_product_id' if we register it.
+            // But 'data.name' will be the composite string if we don't handle it carefully?
+            // No, Controller onChange handles the field value.
+            // Let's rely on the submit handler handling the extra fields.
+            const finalData = { ...data };
+            if (typeEntity === 'ngoProduct' && !isEditing) {
+                // The 'name' field in form state might be "Name::ID" if we just bound it directly.
+                // We need to ensure 'name' sent to API is just the Name.
+                if (finalData.name && finalData.name.includes("::")) {
+                    const [realName, spId] = finalData.name.split("::");
+                    finalData.name = realName;
+                    finalData.supplier_product_id = spId;
+                }
+            }
+            return isEditing ? onSubmitUpdate(finalData) : onSubmitCreate(finalData);
+        })}>
             <div className="container-body">
 
 
@@ -181,9 +233,9 @@ export default function ProductForm({ initialData, onSuccess, onLoading, typeEnt
                                     variant={isEditing ? 'default' : 'selection'}
                                     styleDefault='default'
                                     type="text"
-                                    label="Produto"
-                                    placeholder={isEditing ? "Nome do produto" : "Selecione o produto"}
-                                    options={isEditing ? undefined : (availableOptions || []).map(p => p.name)}
+                                    label="Selecione a Oferta (Produto - Fornecedor - Preço)"
+                                    placeholder={isEditing ? "Nome do produto" : "Escolha uma oferta..."}
+                                    options={isEditing ? undefined : offerOptions}
                                     errorMessage={errors.name?.message?.toString()}
                                     disabled={isEditing}
                                 />
@@ -192,13 +244,18 @@ export default function ProductForm({ initialData, onSuccess, onLoading, typeEnt
                         <Controller
                             control={control}
                             name="quantity"
+                            rules={{
+                                required: "Quantidade é obrigatória",
+                                min: { value: 1, message: "Mínimo 1" },
+                                max: { value: maxQuantity, message: `O estoque disponível é apenas ${maxQuantity}` }
+                            }}
                             render={({ field }) => (
                                 <Input
                                     {...field}
                                     variant='default'
                                     styleDefault='default'
                                     type="number"
-                                    label="Quantidade Necessária"
+                                    label={`Quantidade Necessária (Máx: ${maxQuantity === 999999 ? '-' : maxQuantity})`}
                                     placeholder="Ex: 10"
                                     errorMessage={errors.quantity?.message?.toString()}
                                 />

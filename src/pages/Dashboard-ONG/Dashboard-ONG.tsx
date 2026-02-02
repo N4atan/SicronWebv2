@@ -113,7 +113,7 @@ export default function DashboardONG() {
                 )}
 
                 {tabActive === 'suppliers' && (
-                    <SuppliersTab />
+                    <SuppliersTab ngo={ngo} />
                 )}
 
                 {tabActive === 'settings' && (

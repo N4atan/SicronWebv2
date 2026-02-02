@@ -1,0 +1,120 @@
+.offer-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 15px;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.offer-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-color: #2bb673;
+}
+
+.offer-info-left {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+}
+
+.product-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+}
+
+.supplier-name {
+    font-size: 0.95rem;
+    color: #555;
+    margin: 0;
+}
+
+.supplier-local {
+    font-size: 0.85rem;
+    color: #888;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.offer-info-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+    border-left: 1px solid #f0f0f0;
+    border-right: 1px solid #f0f0f0;
+    margin: 0 20px;
+    min-width: 150px;
+}
+
+.offer-price-label {
+    font-size: 0.8rem;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+}
+
+.offer-price-value {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #2bb673;
+}
+
+.offer-stock {
+    font-size: 0.8rem;
+    color: #666;
+    margin-top: 4px;
+}
+
+.offer-action-right {
+    display: flex;
+    align-items: center;
+}
+
+.btn-select-offer {
+    background-color: transparent;
+    border: 1px solid #2bb673;
+    color: #2bb673;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.btn-select-offer:hover {
+    background-color: #2bb673;
+    color: #fff;
+}
+
+@media (max-width: 768px) {
+    .offer-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .offer-info-center {
+        border: none;
+        padding: 0;
+        margin: 10px 0;
+        align-items: flex-start;
+    }
+
+    .offer-action-right {
+        width: 100%;
+        justify-content: flex-end;
+    }
+}

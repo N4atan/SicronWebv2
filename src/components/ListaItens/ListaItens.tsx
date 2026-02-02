@@ -65,7 +65,7 @@ export default function ListaItens(props: Props) {
                                         <div style={{
                                             width: `${percent}%`,
                                             height: '100%',
-                                            background: percent >= 100 ? '#2BB673' : '#F2C94C', // Verde se completou, amarelo senão
+                                            background: percent >= 100 ? '#2BB673' : '#2BB673', // Verde se completou, amarelo senão
                                             transition: 'width 0.5s ease'
                                         }} />
                                     </div>
