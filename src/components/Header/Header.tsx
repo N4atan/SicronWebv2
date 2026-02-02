@@ -9,13 +9,18 @@ import { useAuth } from "../../contexts/AuthContext";
 import { UserRole } from "../../services/user.service";
 
 export default function Header() {
+  /* --- ESTADOS E HOOKS --- */
+  // Controla abertura do menu mobile
   const [menuIsOpen, setMenuIsOpen] = useState(false);
+  // Controla abertura do dropdown do usuário (desktop)
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Fecha o dropdown se clicar fora
+  /* --- EFEITOS --- */
+  // Fecha o dropdown de usuário ao clicar fora dele
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -28,16 +33,19 @@ export default function Header() {
     };
   }, [dropdownRef]);
 
-  // Links de Navegação Principal
+  /* --- DEFINIÇÃO DE LINKS --- */
+  // Links de Navegação Principal (exibidos no desktop e mobile)
   const navLinks = [
     { to: '/', label: 'Sobre', icon: faHouse },
     { to: '/ongs', label: 'ONGs', icon: faMap },
     { to: '/participe', label: 'Participe', icon: faHandHoldingHeart },
   ];
 
-  // Links do Usuário (Dropdown / Mobile)
+  /* --- LÓGICA DE USUÁRIO --- */
+  // Verifica se o usuário é gestor de ONG para direcionar o link corretamente
   const isOngManager = user?.role === UserRole.NGO_MANAGER;
 
+  // Links específicos do menu de usuário (Dropdown / Mobile)
   const userLinks = [
     { to: '/perfil/me', label: 'Meu Perfil', icon: faUser, state: undefined },
     {
@@ -54,6 +62,7 @@ export default function Header() {
     },
   ];
 
+  // Função de Logout
   const handleLogout = () => {
     signOut();
     setUserMenuOpen(false);
@@ -130,12 +139,14 @@ export default function Header() {
               )}
             </div>
           ) : (
-            <Button
-              text="Entrar"
-              variant="secondary"
-              style={{ width: "100px" }}
-              onClick={() => navigate('/entrar')}
-            />
+            <div className="desktop-only-action">
+              <Button
+                text="Entrar"
+                variant="secondary"
+                style={{ width: "100px" }}
+                onClick={() => navigate('/entrar')}
+              />
+            </div>
           )}
 
           {/* Mobile Toggle */}
@@ -149,51 +160,49 @@ export default function Header() {
       </div>
 
       {/* MOBILE MENU */}
-      {menuIsOpen && (
-        <div className="mobile-menu">
-          <nav>
-            {/* NAVEGAÇÃO PRINCIPAL */}
-            {navLinks.map((link, index) => (
-              <Link
-                key={index}
-                to={link.to}
-                className="mobile-nav-link"
-                onClick={() => setMenuIsOpen(false)}
-              >
-                {link.label}
-              </Link>
-            ))}
+      <div className={`mobile-menu ${menuIsOpen ? 'open' : ''}`}>
+        <nav>
+          {/* NAVEGAÇÃO PRINCIPAL */}
+          {navLinks.map((link, index) => (
+            <Link
+              key={index}
+              to={link.to}
+              className="mobile-nav-link"
+              onClick={() => setMenuIsOpen(false)}
+            >
+              {link.label}
+            </Link>
+          ))}
 
-            <div className="mobile-actions">
-              {user ? (
-                <>
-                  {userLinks.map((link, i) => (
-                    <Link
-                      key={i}
-                      to={link.to}
-                      state={link.state}
-                      onClick={() => setMenuIsOpen(false)}
-                      className="mobile-nav-link"
-                      style={{ fontSize: '1rem', color: '#666' }}
-                    >
-                      <FontAwesomeIcon icon={link.icon} style={{ marginRight: '8px' }} />
-                      {link.label}
-                    </Link>
-                  ))}
-                  <button onClick={handleLogout} className="mobile-nav-link" style={{ color: '#d32f2f', textAlign: 'left', background: 'none', border: 'none', cursor: 'pointer', width: '100%' }}>
-                    Sair
-                  </button>
-                </>
-              ) : (
-                <>
-                  <Link to="/entrar" onClick={() => setMenuIsOpen(false)}>Entrar</Link>
-                  <Link to="/cadastros" onClick={() => setMenuIsOpen(false)}>Participe</Link>
-                </>
-              )}
-            </div>
-          </nav>
-        </div>
-      )}
+          <div className="mobile-actions">
+            {user ? (
+              <>
+                {userLinks.map((link, i) => (
+                  <Link
+                    key={i}
+                    to={link.to}
+                    state={link.state}
+                    onClick={() => setMenuIsOpen(false)}
+                    className="mobile-nav-link"
+                    style={{ fontSize: '1rem', color: '#666' }}
+                  >
+                    <FontAwesomeIcon icon={link.icon} style={{ marginRight: '8px' }} />
+                    {link.label}
+                  </Link>
+                ))}
+                <button onClick={handleLogout} className="mobile-nav-link" style={{ color: '#d32f2f', textAlign: 'left', background: 'none', border: 'none', cursor: 'pointer', width: '100%' }}>
+                  Sair
+                </button>
+              </>
+            ) : (
+              <>
+                <Link to="/entrar" className="mobile-nav-link" onClick={() => setMenuIsOpen(false)}>Entrar</Link>
+                <Link to="/cadastros" className="mobile-nav-link" onClick={() => setMenuIsOpen(false)}>Participe</Link>
+              </>
+            )}
+          </div>
+        </nav>
+      </div>
     </header>
   );
 }

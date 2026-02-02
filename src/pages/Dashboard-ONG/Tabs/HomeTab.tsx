@@ -1,7 +1,7 @@
 import Card from "../../../components/Card/Card";
 import Button from "../../../components/Button/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHandHoldingHeart } from "@fortawesome/free-solid-svg-icons";
+import { faHandHoldingHeart, faMoneyBill, faMoneyBill1Wave, faWallet } from "@fortawesome/free-solid-svg-icons";
 import { NGO } from "../../../interfaces";
 
 interface HomeTabProps {
@@ -23,12 +23,23 @@ export default function HomeTab({ ngo, availableProductsCount, onAddClick }: Hom
             </div>
 
             <div className="dashboard-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px', marginBottom: '40px' }}>
-                <Card titleSection="Itens Necessários">
+                {/* Saldo */}
+                <Card titleSection="Saldo Atual">
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                        <FontAwesomeIcon icon={faWallet} size="2x" color="#2bb673" />
+                        <div style={{ fontSize: '24px', fontWeight: 'bold' }}>R$ {ngo.wallet}</div>
+                    </div>
+                </Card>
+                
+                {/* Campanhas Abertas */}
+                <Card titleSection="Campanhas Abertas">
                     <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
                         <FontAwesomeIcon icon={faHandHoldingHeart} size="2x" color="#2bb673" />
                         <div style={{ fontSize: '24px', fontWeight: 'bold' }}>{ngo.products?.length || 0} Itens</div>
                     </div>
                 </Card>
+
+                {/* Acesso rápido */}
                 <Card titleSection="Acesso Rápido">
                     <Button
                         text="+ Adicionar Necessidade"
