@@ -65,7 +65,7 @@ export default function ListaItens(props: Props) {
                                         <div style={{
                                             width: `${percent}%`,
                                             height: '100%',
-                                            background: '#2BB673', // Verde se completou, laranja senão
+                                            background: percent >= 100 ? '#2BB673' : '#F2C94C', // Verde se completou, amarelo senão
                                             transition: 'width 0.5s ease'
                                         }} />
                                     </div>
@@ -73,10 +73,16 @@ export default function ListaItens(props: Props) {
 
                                 <button className="btn-donation"
                                     onClick={() => props.onAddCart(item)}
-                                    style={{ marginTop: '15px' }} // Espaço extra
+                                    // Espaço extra e estilo condicional
+                                    style={{
+                                        marginTop: '15px',
+                                        backgroundColor: percent >= 100 ? '#ccc' : '',
+                                        cursor: percent >= 100 ? 'not-allowed' : 'pointer'
+                                    }}
+                                    disabled={percent >= 100}
                                 >
-                                    <FontAwesomeIcon icon={faHeart} />
-                                    Doar
+                                    <FontAwesomeIcon icon={percent >= 100 ? faHeart : faHeart} />
+                                    {percent >= 100 ? " Meta Atingida" : " Doar"}
                                 </button>
 
                             </div>

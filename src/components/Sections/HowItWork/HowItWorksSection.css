@@ -1,6 +1,6 @@
 .how-section {
     padding: 5rem 2rem;
-    background-color: #f8fafc;
+    background-color: #fff;
     /* Very light slate/gray */
     display: flex;
     flex-direction: column;
@@ -11,21 +11,9 @@
     text-align: left;
     width: 100%;
     max-width: 1280px;
-    margin-bottom: 3rem;
 }
 
-.how-title {
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--text-dark);
-    margin-bottom: 1rem;
-}
 
-.how-subtitle {
-    color: var(--text-light);
-    max-width: 600px;
-    line-height: 1.6;
-}
 
 .how-grid {
     display: grid;
@@ -67,7 +55,7 @@
 }
 
 .how-icon-wrapper {
-    background-color: #dcfce7;
+    background-color: #84fa842f;
     /* Light green bg */
     width: 48px;
     height: 48px;
@@ -79,7 +67,7 @@
 }
 
 .how-icon {
-    color: var(--primary-color);
+    color: #079c07;
     font-size: 1.25rem;
 }
 

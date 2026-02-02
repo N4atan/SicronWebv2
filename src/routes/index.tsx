@@ -18,7 +18,7 @@ export default function AppRoutes() {
     return (
         <Routes>
             <Route path="/" element={<App />} />
-            <Route path="/login" element={<PageAuthentication />} />
+            <Route path="/entrar" element={<PageAuthentication />} />
             <Route path='/perfil' element={<PagePerfil />} />
             <Route path='/perfil/me' element={<PagePerfil isMe={true} />} />
             <Route path='/explorar' element={<ExploreOngs />} />

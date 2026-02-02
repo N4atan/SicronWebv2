@@ -112,7 +112,8 @@ export default function PageONG() {
                     qtd: ngoProduct.quantity || 1,
                     collected: ngoProduct.collected_quantity || 0
                 };
-            });
+            }).filter(item => (item.collected || 0) < item.qtd); // Filtra itens com meta batida
+
             setProductsList(mappedProducts);
         } else {
             console.warn("ONG carregada sem lista de produtos:", ong);
@@ -163,17 +164,16 @@ export default function PageONG() {
 
 
     const handleAddToCart = (itemClicado: ViewProduct) => {
+        const goal = itemClicado.qtd;
+        const currentlyCollected = itemClicado.collected || 0;
+        const maxDonatable = goal - currentlyCollected;
 
         setCartList(prevItems => {
-
-
-
             const itemExistente = prevItems.find(item => item.name === itemClicado.name);
 
             if (itemExistente) {
-
-                if (itemExistente.qtd >= itemClicado.qtd) {
-                    alert('Quantidade necessária máxima atingida!');
+                if (itemExistente.qtd + 1 > maxDonatable) {
+                    alert(`Quantidade máxima atingida! Restam apenas ${maxDonatable} para atingir a meta.`);
                     return prevItems;
                 }
 
@@ -183,7 +183,10 @@ export default function PageONG() {
                         : item
                 );
             } else {
-
+                if (maxDonatable < 1) {
+                    alert("Esta meta já foi atingida!");
+                    return prevItems;
+                }
                 // IMPORTANTE: Sobrescrever 'qtd' para 1, pois itemClicado.qtd é a META da ONG
                 return [...prevItems, { ...itemClicado, qtd: 1 }];
             }

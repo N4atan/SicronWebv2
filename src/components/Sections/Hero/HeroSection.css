@@ -56,30 +56,13 @@
 
 .hero-buttons {
   display: flex;
-  gap: 1rem;
+  gap: 2rem;
 }
 
 /* Custom Overrides for Buttons in Hero */
 .hero-buttons button {
   padding: 1rem 2rem;
   font-size: 1rem;
-  border-radius: 6px;
-}
-
-/* Primary Green Button is default from Button component, just needs size tweak above */
-
-/* Secondary Transparent Button */
-.hero-buttons .btn-secondary,
-/* If class passes through */
-.hero-buttons button[class*="secondary"] {
-  background-color: rgba(255, 255, 255, 0.15) !important;
-  backdrop-filter: blur(4px);
-  border: 1px solid rgba(255, 255, 255, 0.3) !important;
-  color: white !important;
-}
-
-.hero-buttons .btn-secondary:hover {
-  background-color: rgba(255, 255, 255, 0.25) !important;
 }
 
 /* Responsive */
