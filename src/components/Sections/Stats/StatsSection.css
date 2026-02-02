@@ -1,0 +1,67 @@
+.stats-section {
+    background-color: #16F57B; /* Vibrant green to match design */
+    padding: 3rem 2rem;
+    width: 100%;
+    margin-top: 2rem;
+}
+
+.stats-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+
+.stat-item {
+    text-align: center;
+    flex: 1;
+    min-width: 200px;
+    position: relative;
+    padding: 0 1rem;
+}
+
+/* Add dividers between items on desktop */
+@media (min-width: 900px) {
+    .with-divider::after {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        height: 60px;
+        width: 1px;
+        background-color: rgba(0, 0, 0, 0.1);
+    }
+}
+
+.stat-number {
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: #111;
+    margin-bottom: 0.2rem;
+    line-height: 1;
+    font-family: 'Poppins', sans-serif;
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: #111;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+    .stats-container {
+        flex-direction: column;
+        gap: 3rem;
+    }
+    
+    .with-divider::after {
+        display: none;
+    }
+}
